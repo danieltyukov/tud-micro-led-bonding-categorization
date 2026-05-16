@@ -489,7 +489,9 @@ def tlm_footprint(ref: str, cx: float, cy: float, finger_w: float, spacings_um: 
     """TLM ladder. The finger spacings (5–200 µm) are intentionally smaller
     than the board-level clearance rule, so each finger pad carries a per-pad
     clearance override of 0.002 mm — DRC will not flag intra-TLM clearance."""
-    finger_len = 2.5
+    finger_len = 3.0    # extended from 2.5 → 3.0 mm for better probe landing area
+                        # on the narrow W=0.25 mm fingers; preserves silk clearances
+                        # to the TLM frame and surrounding labels
     centres = [-finger_w / 2]
     for s_um in spacings_um:
         centres.append(centres[-1] + finger_w + s_um / 1000.0)
@@ -919,12 +921,23 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     drawings.append(emit_silk_text("TLM LADDERS",
                                    BOARD_W/2, tlm_box_y0 + 1.6,
                                    size=1.2, justify="center", bold=True))
-    drawings.append(emit_silk_text("spacings:  5  /  10  /  20  /  50  /  100  /  200 um",
+    drawings.append(emit_silk_text("spacings:  100  /  150  /  250  /  500  /  1000  /  2000 um",
                                    BOARD_W/2, tlm_box_y0 + 3.3,
                                    size=0.8, justify="center"))
-    spacings = [5, 10, 20, 50, 100, 200]   # µm
+    # Spacings updated v4.0.3: original [5/10/20/50/100/200 µm] from the ECTC
+    # paper required semiconductor-grade photolithography. Standard PCB fabs
+    # (Aisler / Eurocircuits) cannot manufacture sub-100 µm features — those
+    # would merge into solid copper. New range [100…2000 µm]:
+    #   - 100 µm: Aisler "Beagle" min, Eurocircuits Class 8 min (75 µm) → fab-clean
+    #   - 200…2000 µm: all standard-pool manufacturable with margin
+    #   - 20× dynamic range → good linear-fit leverage for R_c extraction
+    spacings = [100, 150, 250, 500, 1000, 2000]   # µm
     widths = [0.25, 0.5, 1.0]              # mm
-    tlm_x_centres = [22.0, 50.0, 78.0]
+    # TLM W=0.5 shifted from x=50 to x=48 — with the wider 100-2000 µm spacings
+    # F7 of W=0.5 is now at +6.75 mm from centre. At x=50 this puts F7 at x=53,
+    # which collides with the DCL12_IN north route trace at x=52.85. Moving the
+    # whole ladder to x=48 gives F7 at x=51.0, 1.85 mm clear of the trace.
+    tlm_x_centres = [22.0, 48.0, 78.0]
     for x_c, w in zip(tlm_x_centres, widths):
         fp_str, nets = tlm_footprint(f"TLM_W{w}", x_c, ROW_TLM, w, spacings, nm)
         fps.append(fp_str)
