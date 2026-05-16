@@ -35,34 +35,31 @@ PRO_PATH = REPO / "new-pcb" / "tud-microled-v2.kicad_pro"
 # ---------------------------------------------------------------------------
 
 BOARD_W = 100.0
-BOARD_H = 80.0
+BOARD_H = 100.0
 EDGE_MARGIN = 2.5
 
 # DoE bond-pad array
 DOE_ROWS = 6
 DOE_COLS = 6
 DOE_PITCH = 3.5
-DOE_ORIGIN_X_CENTRE = BOARD_W / 2          # array centred horizontally
-DOE_ORIGIN_Y = 17.0                        # top row centre
+DOE_ORIGIN_Y = 21.0                        # top row centre (was 17 on smaller board)
 
 # Probe pad geometry
 PROBE_PAD = 1.27
-DOE_NORTH_PROBE_Y = [9.0, 11.0, 13.0]       # R1, R2, R3 (top → bottom)
-DOE_SOUTH_PROBE_Y = [38.5, 40.5, 42.5]      # R4, R5, R6 (top → bottom)
+DOE_NORTH_PROBE_Y = [13.0, 15.0, 17.0]       # unused in v3 (DoE probed directly)
+DOE_SOUTH_PROBE_Y = [42.0, 44.0, 46.0]       # unused in v3
 
-# Test-structure row Y positions
-ROW_NORTH_HEADER = 6.5
-ROW_TLM           = 47.0
-ROW_TLM_PROBES    = 51.5
-ROW_VDP           = 55.5
-ROW_VDP_PROBES    = 59.0
-ROW_DAISY         = 63.0
-ROW_DAISY_PROBES  = 66.5
-ROW_LED           = 70.0
-ROW_LED_PROBES    = 72.8
-ROW_SOUTH_HEADER  = 75.5
-ROW_RULER_Y       = 78.0
+# Test-structure row Y positions (re-spaced for BOARD_H = 100mm with frames)
 ROW_TITLE_Y       = 3.0
+ROW_NORTH_HEADER  = 13.5
+ROW_TLM           = 51.5
+ROW_VDP           = 62.0
+ROW_DAISY         = 73.0
+ROW_DAISY_PROBES  = 76.5
+ROW_LED           = 82.5
+ROW_LED_PROBES    = 85.5
+ROW_SOUTH_HEADER  = 89.0
+ROW_RULER_Y       = 93.5
 
 # Bond pad geometry
 BOND_PAD = 1.0
@@ -206,18 +203,91 @@ def emit_footprint(
     )
 
 
-def emit_silk_text(text: str, x: float, y: float, size: float = 1.0, rotation: float = 0) -> str:
+def emit_silk_text(
+    text: str,
+    x: float,
+    y: float,
+    size: float = 1.0,
+    rotation: float = 0,
+    justify: str = "left",     # "left" | "center" | "right"
+    layer: str = "F.SilkS",
+    bold: bool = False,
+) -> str:
+    """Emit silkscreen text. KiCad's gr_text uses `(justify left)` or
+    `(justify right)` for left/right anchored text; CENTER is the default
+    and is expressed by omitting the (justify) clause entirely.
+    For B.SilkS layers, `mirror` is added so text reads correctly when
+    viewing the board from the back. Double-quotes and backslashes are
+    escaped because KiCad's S-expression parser does not accept them raw."""
     size = max(0.8, size)
-    thickness = max(0.15, size * 0.15)
+    thickness = max(0.15, size * (0.20 if bold else 0.15))
     rot_str = f" {f(rotation)}" if rotation else ""
+    is_back = layer.startswith("B.")
+    if justify == "center":
+        justify_tokens = "mirror" if is_back else ""
+    else:
+        justify_tokens = justify + (" mirror" if is_back else "")
+    effects_inner = f"(font (size {f(size)} {f(size)}) (thickness {f(thickness)}))"
+    if justify_tokens:
+        effects_inner += f" (justify {justify_tokens})"
+    # Escape backslashes first, then quotes
+    text_escaped = text.replace("\\", "\\\\").replace('"', '\\"')
     return (
-        f'(gr_text "{text}"\n'
+        f'(gr_text "{text_escaped}"\n'
         f'  (at {f(x)} {f(y)}{rot_str})\n'
-        f'  (layer "F.SilkS")\n'
+        f'  (layer "{layer}")\n'
         f'  (uuid "{uuid()}")\n'
-        f'  (effects (font (size {f(size)} {f(size)}) (thickness {f(thickness)})) (justify left))\n'
+        f'  (effects {effects_inner})\n'
         f')\n'
     )
+
+
+def emit_silk_line(x1: float, y1: float, x2: float, y2: float, layer: str = "F.SilkS", width: float = 0.15) -> str:
+    return (
+        f'(gr_line (start {f(x1)} {f(y1)}) (end {f(x2)} {f(y2)}) '
+        f'(stroke (width {f(width)}) (type default)) (layer "{layer}") (uuid "{uuid()}"))\n'
+    )
+
+
+def emit_silk_rect(x1: float, y1: float, x2: float, y2: float, layer: str = "F.SilkS", width: float = 0.15) -> str:
+    """Four-line rectangle on silkscreen (open border, not filled)."""
+    return (
+        emit_silk_line(x1, y1, x2, y1, layer=layer, width=width) +
+        emit_silk_line(x2, y1, x2, y2, layer=layer, width=width) +
+        emit_silk_line(x2, y2, x1, y2, layer=layer, width=width) +
+        emit_silk_line(x1, y2, x1, y1, layer=layer, width=width)
+    )
+
+
+def emit_silk_circle(cx: float, cy: float, radius: float, layer: str = "F.SilkS", width: float = 0.15, fill: bool = False) -> str:
+    fill_str = "(fill solid)" if fill else "(fill no)"
+    return (
+        f'(gr_circle (center {f(cx)} {f(cy)}) (end {f(cx + radius)} {f(cy)}) '
+        f'(stroke (width {f(width)}) (type default)) {fill_str} (layer "{layer}") (uuid "{uuid()}"))\n'
+    )
+
+
+def emit_tudelft_mark(cx: float, cy: float, scale: float = 1.0, layer: str = "F.SilkS") -> str:
+    """A compact stylized 'TU' flame mark + 'TUDelft' text — the same
+    convention as the v1 board's silkscreen 'TUDelft' label.
+    Total bounding box: ~ 18*scale × 4*scale mm. (cx, cy) = centre."""
+    out = ""
+    # Stylized flame on the left: 3 ascending lines suggesting the TU Delft flame
+    fx = cx - 7.5 * scale
+    fy_top = cy - 1.5 * scale
+    fy_bot = cy + 1.5 * scale
+    for i, dx in enumerate([0, 0.6, 1.2]):
+        out += emit_silk_line(
+            fx + dx * scale, fy_bot,
+            fx + (dx + 0.5) * scale, fy_top,
+            layer=layer, width=0.25 * scale,
+        )
+    # Wordmark
+    out += emit_silk_text(
+        "TUDelft", cx + 1.5 * scale, cy,
+        size=2.0 * scale, justify="center", layer=layer, bold=True,
+    )
+    return out
 
 
 def emit_edge_rect(x1: float, y1: float, x2: float, y2: float) -> str:
@@ -374,18 +444,55 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
 
     # --- Board outline -------------------------------------------------
     drawings.append(emit_edge_rect(0, 0, BOARD_W, BOARD_H))
+    # Decorative silkscreen frame just inside the edge cuts
+    drawings.append(emit_silk_rect(1.5, 1.5, BOARD_W - 1.5, BOARD_H - 1.5, width=0.15))
 
     # --- Fiducials -----------------------------------------------------
     for i, (x, y) in enumerate([(4.0, 4.0), (BOARD_W - 4.0, 4.0),
                                  (4.0, BOARD_H - 4.0), (BOARD_W - 4.0, BOARD_H - 4.0)], 1):
         fps.append(fiducial_footprint(f"FID{i}", x, y))
-    drawings.append(emit_silk_text("L", 8.0, 4.0, size=1.5))
+    # Asymmetric orientation indicator — small triangle ▲ on top-left
+    # outside the title frame (well clear of the NW fiducial copper).
+    drawings.append(emit_silk_line(3.0, 12.5, 4.5, 12.5, width=0.3))
+    drawings.append(emit_silk_line(4.5, 12.5, 3.75, 11.0, width=0.3))
+    drawings.append(emit_silk_line(3.75, 11.0, 3.0, 12.5, width=0.3))
 
-    # --- Title block silkscreen (kept away from header pin column) ---
-    drawings.append(emit_silk_text("TUD micro-LED v2", 12.0, ROW_TITLE_Y, size=1.2))
-    drawings.append(emit_silk_text("Ahmed Abdelwahab - ECTM + ITEC", 12.0, ROW_TITLE_Y + 1.7, size=0.9))
+    # =====================================================================
+    # TITLE BLOCK (y=3..11) — 3 zones (TUDelft mark | project | author)
+    # divided by vertical silkscreen lines. Frame keeps clear of fiducials
+    # at the corners (fiducial copper at x = 4 ± 0.5, y = 4 ± 0.5).
+    # =====================================================================
+    title_box_y0 = 3.0
+    title_box_y1 = 11.0
+    title_cy = (title_box_y0 + title_box_y1) / 2
+    drawings.append(emit_silk_rect(6.0, title_box_y0, BOARD_W - 6.0, title_box_y1, width=0.25))
+    # Zone dividers
+    zone_l = 23.0   # left of project zone
+    zone_r = 75.0   # right of project zone
+    drawings.append(emit_silk_line(zone_l, title_box_y0, zone_l, title_box_y1, width=0.2))
+    drawings.append(emit_silk_line(zone_r, title_box_y0, zone_r, title_box_y1, width=0.2))
+    # Zone 1: TUDelft mark (centered in its zone)
+    drawings.append(emit_tudelft_mark((6.0 + zone_l) / 2, title_cy, scale=1.0))
+    # Zone 2: project name + sub
+    proj_cx = (zone_l + zone_r) / 2
+    drawings.append(emit_silk_text("MICRO-LED BOND CHARACTERIZATION", proj_cx, title_cy - 1.5,
+                                   size=1.4, justify="center", bold=True))
+    drawings.append(emit_silk_text("PCB v2.0   /   ECTM + ITEC   /   2026", proj_cx, title_cy + 0.8,
+                                   size=0.95, justify="center"))
+    drawings.append(emit_silk_text("100 x 100 mm  -  2-layer FR-4  -  ENIG", proj_cx, title_cy + 2.5,
+                                   size=0.8, justify="center"))
+    # Zone 3: author info
+    info_cx = (zone_r + BOARD_W - 6.0) / 2
+    drawings.append(emit_silk_text("Daniel Tyukov", info_cx, title_cy - 1.8,
+                                   size=1.1, justify="center", bold=True))
+    drawings.append(emit_silk_text("student no.  5714699", info_cx, title_cy + 0.2,
+                                   size=0.9, justify="center"))
+    drawings.append(emit_silk_text("ET4277  +  ET4391", info_cx, title_cy + 2.0,
+                                   size=0.9, justify="center"))
 
-    # --- 2.54 mm pin-header rows (Tier-2) -----------------------------
+    # =====================================================================
+    # 2.54 mm pin-header rows (Tier-2) — physical pins
+    # =====================================================================
     n_pins = 30
     total_w = (n_pins - 1) * 2.54
     x0 = (BOARD_W - total_w) / 2
@@ -393,11 +500,26 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         xh = x0 + i * 2.54
         fps.append(th_header_footprint(f"H_N_{i+1}", xh, ROW_NORTH_HEADER))
         fps.append(th_header_footprint(f"H_S_{i+1}", xh, ROW_SOUTH_HEADER))
+    # Section labels
+    drawings.append(emit_silk_text("TIER-2 NORTH  -  30 pins  -  2.54 mm pitch",
+                                   BOARD_W/2, ROW_NORTH_HEADER + 2.5,
+                                   size=0.9, justify="center"))
 
-    # --- DoE bond-pad array (6×6) -------------------------------------
-    drawings.append(emit_silk_text("DoE bond-pads (6x6)", BOARD_W/2 - 13, ROW_NORTH_HEADER + 1.5, size=1.0))
+    # =====================================================================
+    # DoE BOND-PAD ARRAY (6×6) — concise framed section.
+    # Array centered. R1..R6 + C1..C6 tags on the sides. Compact LEGEND
+    # box on the right with short bullets.
+    # =====================================================================
+    doe_box_y0 = 17.0
+    doe_box_y1 = 43.5
+    drawings.append(emit_silk_rect(3.5, doe_box_y0, BOARD_W - 3.5, doe_box_y1, width=0.15))
+    drawings.append(emit_silk_text("BOND-PAD DoE  (6 x 6 @ 3.5 mm pitch)",
+                                   BOARD_W/2, doe_box_y0 + 1.2,
+                                   size=1.1, justify="center", bold=True))
+
     array_total_w = (DOE_COLS - 1) * DOE_PITCH
-    array_x0 = (BOARD_W - array_total_w) / 2
+    array_x0 = 14.0
+    array_x1 = array_x0 + array_total_w
     doe_meta = []
     for r in range(DOE_ROWS):
         for c in range(DOE_COLS):
@@ -413,11 +535,42 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
             net = nm.get(f"BP_{site_id}_P1")
             fps.append(bond_pad_footprint(site_id, cx, cy, geom, R, minis, net))
             doe_meta.append((r, c, cx, cy, site_id, net))
-    # Row legend
+
+    # Row tags on the LEFT of the array (right-anchored for tight alignment)
     for r in range(DOE_ROWS):
         cy = DOE_ORIGIN_Y + r * DOE_PITCH
-        drawings.append(emit_silk_text(f"R{r+1}", array_x0 - 3.0, cy - 0.3, size=0.9))
-        drawings.append(emit_silk_text(f"R{r+1}", array_x0 + array_total_w + 1.5, cy - 0.3, size=0.9))
+        drawings.append(emit_silk_text(f"R{r+1}", array_x0 - 1.8, cy + 0.3,
+                                       size=0.9, justify="right", bold=True))
+    # Column tags BELOW the array (so they don't collide with the section header)
+    for c in range(DOE_COLS):
+        cx = array_x0 + c * DOE_PITCH
+        drawings.append(emit_silk_text(f"C{c+1}", cx,
+                                       DOE_ORIGIN_Y + 5 * DOE_PITCH + 2.0,
+                                       size=0.85, justify="center"))
+
+    # Compact LEGEND on the right
+    leg_x0 = array_x1 + 5.0
+    leg_x1 = BOARD_W - 5.5
+    leg_y0 = DOE_ORIGIN_Y - 1.5
+    leg_y1 = DOE_ORIGIN_Y + 5 * DOE_PITCH + 1.5
+    leg_cx = (leg_x0 + leg_x1) / 2
+    drawings.append(emit_silk_rect(leg_x0, leg_y0, leg_x1, leg_y1, width=0.15))
+    drawings.append(emit_silk_text("LEGEND", leg_cx, leg_y0 + 1.5,
+                                   size=0.95, justify="center", bold=True))
+    legend_lines = [
+        "R1, R2  :  plain",
+        "R3, R4  :  + 4 minis",
+        "R5, R6  :  rounded + minis",
+        "",
+        "C1, C4  :  R = 50 um",
+        "C2, C5  :  R = 100 um",
+        "C3, C6  :  R = 200 um",
+    ]
+    for i, ln in enumerate(legend_lines):
+        if not ln:
+            continue
+        drawings.append(emit_silk_text(ln, leg_cx, leg_y0 + 3.5 + i * 2.2,
+                                       size=0.8, justify="center"))
 
     # --- DoE probe pads ------------------------------------------------
     # IMPORTANT: each DoE bond pad is 1×1 mm, large enough to probe DIRECTLY
@@ -426,73 +579,88 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # pads and proper 2-layer fan-out is deferred to v2.1.
     # Row IDs are silkscreened next to the array so sites are addressable.
 
-    # --- TLM ladders --------------------------------------------------
-    # The TLM fingers themselves (W=0.25/0.5/1.0 mm, lengths 2.5 mm) are
-    # large enough to probe DIRECTLY. We DO NOT add separate probe pads
-    # for TLM in v2.0 because the smallest finger spacing (5 µm) cannot be
-    # accommodated by a 0.20 mm trace without shorting. Future v2.1: use
-    # back-layer vias from each finger.
+    # =====================================================================
+    # TLM LADDERS — contact resistivity, sub-µm spacings
+    # =====================================================================
+    tlm_box_y0 = 45.0
+    tlm_box_y1 = 58.0
+    drawings.append(emit_silk_rect(3.5, tlm_box_y0, BOARD_W - 3.5, tlm_box_y1, width=0.15))
+    drawings.append(emit_silk_text("TLM LADDERS",
+                                   BOARD_W/2, tlm_box_y0 + 1.6,
+                                   size=1.2, justify="center", bold=True))
+    drawings.append(emit_silk_text("spacings:  5  /  10  /  20  /  50  /  100  /  200 um",
+                                   BOARD_W/2, tlm_box_y0 + 3.3,
+                                   size=0.8, justify="center"))
     spacings = [5, 10, 20, 50, 100, 200]   # µm
     widths = [0.25, 0.5, 1.0]              # mm
     tlm_x_centres = [22.0, 50.0, 78.0]
     for x_c, w in zip(tlm_x_centres, widths):
         fp_str, nets = tlm_footprint(f"TLM_W{w}", x_c, ROW_TLM, w, spacings, nm)
         fps.append(fp_str)
-        drawings.append(emit_silk_text(f"TLM W={w}mm", x_c - 7, ROW_TLM - 2.2, size=1.0))
+        drawings.append(emit_silk_text(f"TLM  W = {w} mm", x_c, ROW_TLM + 2.5,
+                                       size=1.0, justify="center", bold=True))
 
-    # --- VDP cloverleaves --------------------------------------------
-    # Same rationale as TLM: probe the cloverleaf arms directly with needles.
-    # No external probe pads or routing in v2.0.
+    # =====================================================================
+    # VDP CLOVERLEAVES — sheet resistance
+    # =====================================================================
+    vdp_box_y0 = 59.0
+    vdp_box_y1 = 67.0
+    drawings.append(emit_silk_rect(3.5, vdp_box_y0, BOARD_W - 3.5, vdp_box_y1, width=0.15))
+    drawings.append(emit_silk_text("VAN DER PAUW",
+                                   BOARD_W/2, vdp_box_y0 + 1.5,
+                                   size=1.2, justify="center", bold=True))
     vdp_widths = [1.0, 0.5, 0.25, 0.1]
     vdp_x_centres = [15.0, 38.0, 62.0, 85.0]
     for x_c, w in zip(vdp_x_centres, vdp_widths):
         fp_str, nets = vdp_footprint(f"VDP_W{w}", x_c, ROW_VDP, w, nm)
         fps.append(fp_str)
-        # label well above the cloverleaf (its arms extend ~1.4 mm vertically)
-        drawings.append(emit_silk_text(f"VDP W={w}", x_c - 4, ROW_VDP - 3.5, size=1.0))
+        drawings.append(emit_silk_text(f"VDP  W = {w} mm", x_c, ROW_VDP + 2.5,
+                                       size=0.9, justify="center", bold=True))
 
-    # --- Daisy chains -------------------------------------------------
-    # v2.0 ships N=6 and N=12. N=24 (would need 50 pads × 1.8 mm = 90 mm width)
-    # doesn't comfortably fit alongside the LED row on a 100×80 mm board and
-    # is deferred to v2.1 (likely 4-layer, denser stack).
+    # =====================================================================
+    # DAISY CHAINS — n bond joints in series
+    # =====================================================================
+    dc_box_y0 = 68.0
+    dc_box_y1 = 79.0
+    drawings.append(emit_silk_rect(3.5, dc_box_y0, BOARD_W - 3.5, dc_box_y1, width=0.15))
+    drawings.append(emit_silk_text("DAISY CHAINS",
+                                   BOARD_W/2, dc_box_y0 + 1.5,
+                                   size=1.2, justify="center", bold=True))
     dc_layouts = [
-        # (n_dies, x_centre, y_centre)
         ( 6, 22.0, ROW_DAISY),
         (12, 70.0, ROW_DAISY),
     ]
     for n, x_c, y_c in dc_layouts:
         fp_str, in_net, out_net = daisy_chain_footprint(f"DC_N{n}", x_c, y_c, n, nm)
         fps.append(fp_str)
-        drawings.append(emit_silk_text(f"DC N={n}", x_c - 4, y_c - 2.2, size=1.0))
+        drawings.append(emit_silk_text(f"DC  N = {n}  dies", x_c, y_c - 2.0,
+                                       size=1.0, justify="center", bold=True))
         chain_w = (2 * n + 1) * DC_PITCH
         chain_in_x = x_c - chain_w/2
         chain_out_x = x_c + chain_w/2
-        # Probe pads JUST OUTSIDE the chain horizontally, on the probe-row Y.
         in_x = max(EDGE_MARGIN + PROBE_PAD/2 + 0.5, chain_in_x - 2.0)
         out_x = min(BOARD_W - EDGE_MARGIN - PROBE_PAD/2 - 0.5, chain_out_x + 2.0)
         probe_y = y_c + 3.5
         fps.append(probe_pad_footprint(f"PP_DC{n}_IN", in_x, probe_y, in_net))
         fps.append(probe_pad_footprint(f"PP_DC{n}_OUT", out_x, probe_y, out_net))
+        drawings.append(emit_silk_text("IN", in_x, probe_y + 1.2, size=0.7, justify="center"))
+        drawings.append(emit_silk_text("OUT", out_x, probe_y + 1.2, size=0.7, justify="center"))
         segments.append(emit_track(in_x, probe_y, in_x, y_c, in_net))
         segments.append(emit_track(in_x, y_c, chain_in_x, y_c, in_net))
         segments.append(emit_track(out_x, probe_y, out_x, y_c, out_net))
         segments.append(emit_track(out_x, y_c, chain_out_x, y_c, out_net))
 
-    # --- LED row -----------------------------------------------------
-    # 8 Würth WL-SFCC RGB LEDs. Each LED has 4 pins (A common-anode + 3
-    # cathodes R/G/B). For v2.0, each LED's 4 nets get 4 probe pads
-    # PLACED ON THE SAME SIDE AS THEIR LED PAD so traces don't cross.
-    # The Würth land pattern is:
-    #     2 (KR)   3 (KB)         ← top side (y < 0)
-    #         x                    ← LED center
-    #     1 (A)    4 (KG)         ← bottom side (y > 0)
-    # Wait — for SFCC the convention is (per Würth library):
-    #     pad 1 (A)  at (-0.4, -0.4)  top-left
-    #     pad 2 (-R) at (+0.4, -0.4)  top-right
-    #     pad 3 (-B) at (+0.4, +0.4)  bottom-right
-    #     pad 4 (-G) at (-0.4, +0.4)  bottom-left
-    # So LEFT-side pads = {1,4} = A, KG; RIGHT-side pads = {2,3} = KR, KB.
-    # Probe order from left to right:  A, KG, KB, KR (no crossings).
+    # =====================================================================
+    # LED ROW — 8 × Würth WL-SFCC 0404 super-flat RGB LEDs
+    # Vertical packing (mm): header 80.5 | LED 82.5 | D-tag 84.0 | probes 85.5
+    # =====================================================================
+    led_box_y0 = 79.5
+    led_box_y1 = 86.7
+    drawings.append(emit_silk_rect(3.5, led_box_y0, BOARD_W - 3.5, led_box_y1, width=0.15))
+    drawings.append(emit_silk_text("WL-SFCC 0404 RGB LEDs",
+                                   BOARD_W/2, led_box_y0 + 1.2,
+                                   size=1.1, justify="center", bold=True))
+
     led_pitch = 10.0
     led_x0 = (BOARD_W - 7 * led_pitch) / 2
     common_anode = nm.get("LED_VCC")
@@ -502,7 +670,6 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         "KB": ( 0.4,  0.4),
         "KG": (-0.4,  0.4),
     }
-    # Track each LED's A probe X so we can bus them all on B.Cu afterwards
     a_probe_xs = []
     for i in range(8):
         x = led_x0 + i * led_pitch
@@ -510,8 +677,9 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         net_b = nm.get(f"LED{i+1}_KB")
         net_g = nm.get(f"LED{i+1}_KG")
         fps.append(led_footprint(f"D{i+1}", x, ROW_LED, common_anode, net_r, net_b, net_g))
-        drawings.append(emit_silk_text(f"D{i+1}", x - 1.5, ROW_LED - 2.0, size=0.9))
-        # Probe order (left → right) matches the side of the LED pad
+        # D-tag goes BELOW the LED footprint (between LED and probe row).
+        drawings.append(emit_silk_text(f"D{i+1}", x, ROW_LED + 1.8,
+                                       size=0.85, justify="center", bold=True))
         probe_layout = [
             (-3.0, "A",  common_anode),
             (-1.0, "KG", net_g),
@@ -525,7 +693,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
             pad_dx, pad_dy = led_pad_offsets[label]
             target_x = x + pad_dx
             target_y = ROW_LED + pad_dy
-            meet_y = ROW_LED + 1.2
+            meet_y = ROW_LED + 1.0
             segments.append(emit_track(px, py, px, meet_y, net))
             segments.append(emit_track(px, meet_y, target_x, target_y, net))
             if label == "A":
@@ -548,13 +716,114 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
                 common_anode, layer="B.Cu", width=0.4,
             ))
 
-    # --- Ruler silkscreen ---------------------------------------------
+    # =====================================================================
+    # SOUTH-HEADER LABEL + mm RULER
+    # =====================================================================
+    drawings.append(emit_silk_text("TIER-2 SOUTH  -  30 pins  -  2.54 mm pitch",
+                                   BOARD_W/2, ROW_SOUTH_HEADER + 2.5,
+                                   size=0.9, justify="center"))
+
+    # mm ruler: horizontal line with tick marks every 5mm and labels every 10mm
     ruler_x0 = (BOARD_W - 80) / 2
-    for mm_val in range(0, 81, 10):
+    ruler_x1 = ruler_x0 + 80
+    ruler_y = ROW_RULER_Y
+    drawings.append(emit_silk_line(ruler_x0, ruler_y, ruler_x1, ruler_y, width=0.18))
+    for mm_val in range(0, 81, 5):
         x = ruler_x0 + mm_val
-        drawings.append(emit_silk_text(str(mm_val), x - 1.5, ROW_RULER_Y, size=0.8))
+        tick = 1.0 if mm_val % 10 == 0 else 0.6
+        drawings.append(emit_silk_line(x, ruler_y, x, ruler_y + tick, width=0.18))
+        if mm_val % 10 == 0:
+            drawings.append(emit_silk_text(str(mm_val), x, ruler_y + 1.8,
+                                           size=0.85, justify="center"))
+
+    # =====================================================================
+    # BACK-SIDE silkscreen — title, fab notes, pinout table, course info
+    # =====================================================================
+    _emit_back_side_silk(drawings)
 
     return fps, drawings, segments, nm
+
+
+def _emit_back_side_silk(drawings: list) -> None:
+    """B.SilkS — minimal, all text centered, no overflow."""
+    L = "B.SilkS"
+    cx = BOARD_W / 2
+
+    # Outer decorative frame matching the front
+    drawings.append(emit_silk_rect(1.5, 1.5, BOARD_W - 1.5, BOARD_H - 1.5, layer=L, width=0.15))
+
+    # ── TITLE BLOCK ────────────────────────────────────────────────────
+    drawings.append(emit_silk_rect(3.5, 3.0, BOARD_W - 3.5, 12.0, layer=L, width=0.25))
+    drawings.append(emit_tudelft_mark(cx, 6.5, scale=1.4, layer=L))
+    drawings.append(emit_silk_text("BOTTOM  -  tud-microled-v2  -  2026",
+                                   cx, 10.5, size=0.95, justify="center", layer=L))
+
+    # ── FABRICATION (single column, compact) ───────────────────────────
+    fab_y0 = 16.0
+    fab_y1 = 36.0
+    drawings.append(emit_silk_rect(3.5, fab_y0, BOARD_W - 3.5, fab_y1, layer=L, width=0.15))
+    drawings.append(emit_silk_text("FABRICATION", cx, fab_y0 + 2.0,
+                                   size=1.2, justify="center", bold=True, layer=L))
+    fab_lines = [
+        "2-layer FR-4   1.6 mm   1 oz Cu",
+        "Finish:  ENIG   (Ni 4 um / Au 0.075 um)",
+        "Mask:  matte green   /   silk:  white",
+        "Min clearance 0.15 mm   /   min trace 0.20 mm",
+        "Min via / drill   0.45 / 0.20 mm",
+    ]
+    for i, ln in enumerate(fab_lines):
+        drawings.append(emit_silk_text(ln, cx, fab_y0 + 5.0 + i * 2.8,
+                                       size=0.85, justify="center", layer=L))
+
+    # ── ASSEMBLY (single column, compact) ──────────────────────────────
+    asm_y0 = 38.0
+    asm_y1 = 58.0
+    drawings.append(emit_silk_rect(3.5, asm_y0, BOARD_W - 3.5, asm_y1, layer=L, width=0.15))
+    drawings.append(emit_silk_text("ASSEMBLY", cx, asm_y0 + 2.0,
+                                   size=1.2, justify="center", bold=True, layer=L))
+    asm_lines = [
+        "Paste:   TS391LT  Sn42 Bi57.6 Ag0.4",
+        "Stencil:  100 um SS  (eC-stencil-mate)",
+        "Bonder:  Tresky T-3000-PRO",
+        "Reflow:  hot-plate, peak 165 C",
+        "Metrology:  Keyence VK-X250 + X-ray + shear",
+    ]
+    for i, ln in enumerate(asm_lines):
+        drawings.append(emit_silk_text(ln, cx, asm_y0 + 5.0 + i * 2.8,
+                                       size=0.85, justify="center", layer=L))
+
+    # ── DESIGNER ───────────────────────────────────────────────────────
+    aut_y0 = 59.0
+    aut_y1 = 72.0
+    drawings.append(emit_silk_rect(3.5, aut_y0, BOARD_W - 3.5, aut_y1, layer=L, width=0.15))
+    drawings.append(emit_silk_text("DESIGNER", cx, aut_y0 + 2.0,
+                                   size=1.2, justify="center", bold=True, layer=L))
+    drawings.append(emit_silk_text("Daniel Tyukov  -  student no. 5714699",
+                                   cx, aut_y0 + 5.0, size=0.95, justify="center", layer=L))
+    drawings.append(emit_silk_text("ET4277  +  ET4391  -  TU Delft  MSc EE",
+                                   cx, aut_y0 + 7.5, size=0.9, justify="center", layer=L))
+    drawings.append(emit_silk_text("based on  Abdelwahab et al.  ECTC 2025",
+                                   cx, aut_y0 + 10.0, size=0.85, justify="center", layer=L))
+
+    # ── SECTION KEY ────────────────────────────────────────────────────
+    # South-header through-holes are at y=89 (pad dia 1.7 → 88.15-89.85).
+    # Box and ALL text must clear y < 87.5 with margin.
+    key_y0 = 73.5
+    key_y1 = 86.0
+    drawings.append(emit_silk_rect(3.5, key_y0, BOARD_W - 3.5, key_y1, layer=L, width=0.15))
+    drawings.append(emit_silk_text("SECTION KEY", cx, key_y0 + 1.7,
+                                   size=1.1, justify="center", bold=True, layer=L))
+    # Combine LEDs and probes into one line so we have 5, not 6
+    key_lines = [
+        "DoE  -  6 x 6 isolated bond pads",
+        "TLM  -  contact-resistivity ladder",
+        "VDP  -  Van der Pauw cloverleaf",
+        "DC   -  daisy chain (N joints)",
+        "D1..D8  +  PP-*  -  LEDs and probes",
+    ]
+    for i, ln in enumerate(key_lines):
+        drawings.append(emit_silk_text(ln, cx, key_y0 + 3.8 + i * 1.55,
+                                       size=0.8, justify="center", layer=L))
 
 
 # ---------------------------------------------------------------------------
