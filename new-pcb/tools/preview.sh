@@ -23,6 +23,14 @@ mkdir -p "$PREVIEW_DIR"
 if [ "${1:-}" != "--no-regen" ]; then
     echo "[1/4] Regenerating PCB from generate_pcb_text.py …"
     python3 new-pcb/tools/generate_pcb_text.py | tail -5
+    echo "[1b]  Refilling zones (B.Cu GND pour)…"
+    ~/tools/KiCAD-MCP-Server/.venv/bin/python -c "
+import pcbnew
+b = pcbnew.LoadBoard('$PCB')
+pcbnew.ZONE_FILLER(b).Fill(b.Zones())
+pcbnew.SaveBoard('$PCB', b)
+print('zones refilled')
+" 2>&1 | grep -v "memory leak\|destructor"
 else
     echo "[1/4] Skipping regeneration (--no-regen)"
 fi

@@ -427,6 +427,44 @@ def fiducial_footprint(name: str, cx: float, cy: float, copper: float = 1.0, mas
     return emit_footprint(name, cx, cy, [pad], library_id="Fiducial_1mm")
 
 
+def ntc_footprint(name: str, cx: float, cy: float, signal_net: Net, gnd_net: Net) -> str:
+    """0402 NTC thermistor (e.g. Murata NCP15XH103J03RC, 10 kΩ @ 25 °C).
+    Body ~1 × 0.5 mm; two 0.5 × 0.6 mm SMD pads centred at x = ±0.5 mm."""
+    pads = [
+        emit_pad("1", "rect", -0.50, 0, 0.5, 0.6, net=signal_net),
+        emit_pad("2", "rect",  0.50, 0, 0.5, 0.6, net=gnd_net),
+    ]
+    return emit_footprint(name, cx, cy, pads, library_id="NTC_0402")
+
+
+def tc_pad_footprint(name: str, cx: float, cy: float) -> str:
+    """1 × 1 mm gold pad for soldering a thermocouple wire during reflow."""
+    pad = emit_pad("1", "rect", 0, 0, 1.0, 1.0)
+    return emit_footprint(name, cx, cy, [pad], library_id="TC_Pad_1mm")
+
+
+def emit_zone(
+    x1: float, y1: float, x2: float, y2: float,
+    net: Net, layer: str = "B.Cu",
+    thermal_gap: float = 0.30, thermal_bridge: float = 0.30,
+    clearance: float = 0.20, min_thickness: float = 0.20,
+) -> str:
+    """Poured copper zone — rectangular outline, filled at plot time."""
+    return (
+        f'(zone (net {net.code}) (net_name "{net.name}") (layer "{layer}") '
+        f'(uuid "{uuid()}") (hatch edge 0.5)\n'
+        f'  (connect_pads (clearance {f(clearance)}))\n'
+        f'  (min_thickness {f(min_thickness)})\n'
+        f'  (filled_areas_thickness no)\n'
+        f'  (fill yes (thermal_gap {f(thermal_gap)}) (thermal_bridge_width {f(thermal_bridge)}))\n'
+        f'  (polygon (pts\n'
+        f'    (xy {f(x1)} {f(y1)}) (xy {f(x2)} {f(y1)}) '
+        f'(xy {f(x2)} {f(y2)}) (xy {f(x1)} {f(y2)})\n'
+        f'  ))\n'
+        f')\n'
+    )
+
+
 def vdp_footprint(ref: str, cx: float, cy: float, arm_w: float, nm: NetManager) -> tuple[str, list[Net]]:
     arm_len = max(0.8, arm_w + 0.4)  # centre-to-centre — ensures ≥ 0.3 mm gap at corners
     pads = []
@@ -587,7 +625,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
                                    size=1.4, justify="center", bold=True))
     drawings.append(emit_silk_text("PCB v2.0   /   ECTM + ITEC   /   2026", proj_cx, title_cy + 0.8,
                                    size=0.95, justify="center"))
-    drawings.append(emit_silk_text("100 x 100 mm  -  2-layer FR-4  -  ENIG", proj_cx, title_cy + 2.5,
+    drawings.append(emit_silk_text("100 x 100 mm  -  2-layer FR-4  -  ENIG (all pads gold)", proj_cx, title_cy + 2.5,
                                    size=0.8, justify="center"))
     # Zone 3: author info
     info_cx = (zone_r + BOARD_W - 6.0) / 2
@@ -744,7 +782,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # DAISY CHAINS — n bond joints in series
     # =====================================================================
     dc_box_y0 = 68.0
-    dc_box_y1 = 79.0
+    dc_box_y1 = 77.5
     drawings.append(emit_silk_rect(3.5, dc_box_y0, BOARD_W - 3.5, dc_box_y1, width=0.15))
     drawings.append(emit_silk_text("DAISY CHAINS",
                                    BOARD_W/2, dc_box_y0 + 1.5,
@@ -766,8 +804,9 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         probe_y = y_c + 3.5
         fps.append(probe_pad_footprint(f"PP_DC{n}_IN", in_x, probe_y, in_net))
         fps.append(probe_pad_footprint(f"PP_DC{n}_OUT", out_x, probe_y, out_net))
-        drawings.append(emit_silk_text("IN", in_x, probe_y + 1.2, size=0.7, justify="center"))
-        drawings.append(emit_silk_text("OUT", out_x, probe_y + 1.2, size=0.7, justify="center"))
+        # Labels ABOVE the probe pads (below would overlap DC section frame at y=78)
+        drawings.append(emit_silk_text("IN", in_x, probe_y - 1.1, size=0.7, justify="center"))
+        drawings.append(emit_silk_text("OUT", out_x, probe_y - 1.1, size=0.7, justify="center"))
         dc_targets.append((f"DC_N{n}_IN", in_net, in_x, probe_y))
         dc_targets.append((f"DC_N{n}_OUT", out_net, out_x, probe_y))
         segments.append(emit_track(in_x, probe_y, in_x, y_c, in_net))
@@ -777,14 +816,22 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
 
     # =====================================================================
     # LED ROW — 8 × Würth WL-SFCC 0404 super-flat RGB LEDs
-    # Vertical packing (mm): header 80.5 | LED 82.5 | D-tag 84.0 | probes 85.5
+    # Vertical packing (mm):
+    #   y = 78.5 section title (placed ABOVE the section frame)
+    #   y = 79.5 NTC row (0402 thermistors)
+    #   y = 80.5 TH labels
+    #   y = 82.5 LEDs
+    #   y = 84.0 D-tags
+    #   y = 85.5 probes
     # =====================================================================
-    led_box_y0 = 79.5
+    led_box_y0 = 79.0
     led_box_y1 = 86.7
     drawings.append(emit_silk_rect(3.5, led_box_y0, BOARD_W - 3.5, led_box_y1, width=0.15))
+    # Section title sits in the gap between DC frame end (y=77.5) and LED frame start (y=79.0)
+    # Centred at y=78.25 with size 0.85 → text spans y=77.83-78.68. Clear of both frames.
     drawings.append(emit_silk_text("WL-SFCC 0404 RGB LEDs",
-                                   BOARD_W/2, led_box_y0 + 1.2,
-                                   size=1.1, justify="center", bold=True))
+                                   BOARD_W/2, 78.25,
+                                   size=0.85, justify="center", bold=True))
 
     led_pitch = 10.0
     led_x0 = (BOARD_W - 7 * led_pitch) / 2
@@ -826,12 +873,10 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
             # Register probe pad for south-header routing
             led_probe_targets.append((f"PP_D{i+1}_{label}", net, px, py))
 
-    # Common-anode bus on B.Cu — vias at each A probe + horizontal trace.
-    # Sits below the LED row in the inverted-Y plane (B.Cu has no other
-    # routing so it's a clean ground plane / bus area).
+    # Common-anode bus on B.Cu — vias at each A probe + WIDE 0.8 mm trace
+    # (low-inductance return path for pulsed-IV measurements).
     if a_probe_xs:
         for px in a_probe_xs:
-            # Via from F.Cu A-probe through to B.Cu
             segments.append(
                 f'(via (at {f(px)} {f(ROW_LED_PROBES)}) (size 0.6) (drill 0.3) '
                 f'(layers "F.Cu" "B.Cu") {common_anode.ref()} (uuid "{uuid()}"))\n'
@@ -840,8 +885,65 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         for i in range(len(a_probe_xs) - 1):
             segments.append(emit_track(
                 a_probe_xs[i], bus_y, a_probe_xs[i + 1], bus_y,
-                common_anode, layer="B.Cu", width=0.4,
+                common_anode, layer="B.Cu", width=0.8,   # widened from 0.4
             ))
+
+    # =====================================================================
+    # NTC THERMISTORS — 4 × 0402 NTCs between LED pairs for V_F-TSP and
+    # aging temp monitoring. Signal pin → per-NTC probe pad; common pin → GND.
+    # =====================================================================
+    gnd = nm.get("GND")
+    ntc_y = 79.6           # inside LED frame top, above LEDs at 82.5
+    ntc_xs = [20.0, 40.0, 60.0, 80.0]
+    for i, nx in enumerate(ntc_xs, 1):
+        ntc_net = nm.get(f"NTC{i}")
+        fps.append(ntc_footprint(f"TH{i}", nx, ntc_y, ntc_net, gnd))
+        # Probe pad to the LEFT (signal pin)
+        ppx = nx - 2.5
+        fps.append(probe_pad_footprint(f"PP_NTC{i}", ppx, ntc_y, ntc_net))
+        segments.append(emit_track(nx - 0.5, ntc_y, ppx, ntc_y, ntc_net))
+        # Via at GND pin (RIGHT side) → B.Cu GND pour
+        segments.append(emit_via(nx + 0.5, ntc_y, gnd))
+        # Label TH<i> CENTERED below the NTC, in the gap between NTC and LED row
+        drawings.append(emit_silk_text(f"TH{i}", nx, 81.0,
+                                       size=0.6, justify="center", bold=True))
+
+    # =====================================================================
+    # REFLOW TC PADS — 4 × 1 mm gold pads for soldering a fine-wire
+    # thermocouple. Placed in the truly empty strip between sections at the
+    # board edges, clear of all section frames and other copper.
+    # Labels omitted — the four small isolated gold pads at the corners are
+    # self-evident; identification is in the back-side silkscreen.
+    # =====================================================================
+    # TC pads placed inside section frames at the LEFT/RIGHT extremities
+    # (clear of TLM/VDP/DC structures which all sit between x=10 and x=90).
+    for i, (tx, ty) in enumerate([
+        (6.5, 51.5), (6.5, 65.5),   # left: inside TLM/VDP frames
+        (93.5, 51.5), (93.5, 65.5),
+    ], 1):
+        fps.append(tc_pad_footprint(f"TC{i}", tx, ty))
+
+    # =====================================================================
+    # GND PROBE PADS at the 4 corners (1.27 mm gold) + B.Cu GND POUR.
+    # The pour ties all GND points together and gives a clean low-impedance
+    # return for AC impedance / EIS / pulsed-IV measurements.
+    # =====================================================================
+    for i, (gx, gy) in enumerate([(7.0, 14.5), (BOARD_W - 7.0, 14.5),
+                                   (7.0, 92.5), (BOARD_W - 7.0, 92.5)], 1):
+        fps.append(probe_pad_footprint(f"PP_GND{i}", gx, gy, gnd))
+        # Via to B.Cu GND pour
+        segments.append(emit_via(gx, gy, gnd))
+        # GND label to the side (not above where outer silk frame sits)
+        drawings.append(emit_silk_text("GND", gx + 2.5 if gx < 50 else gx - 2.5, gy,
+                                       size=0.6, justify="center"))
+    # Poured GND zone on B.Cu — covers most of the back, excludes the
+    # area immediately around the LED_VCC bus (KiCad's auto-clearance
+    # honours the 0.2 mm pad-clearance set in `connect_pads`).
+    drawings.append(emit_zone(
+        x1=EDGE_MARGIN, y1=EDGE_MARGIN,
+        x2=BOARD_W - EDGE_MARGIN, y2=BOARD_H - EDGE_MARGIN,
+        net=gnd, layer="B.Cu",
+    ))
 
     # =====================================================================
     # SOUTH-HEADER LABEL + mm RULER
