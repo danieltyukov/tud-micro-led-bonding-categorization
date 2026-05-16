@@ -1,0 +1,971 @@
+(pcb "new-pcb/tud-microled-v2.dsn"
+  (parser
+    (string_quote ")
+    (space_in_quoted_tokens on)
+    (host_cad "KiCad's Pcbnew")
+    (host_version "9.0.8-9.0.8~ubuntu24.04.1")
+  )
+  (resolution um 10)
+  (unit um)
+  (structure
+    (layer F.Cu
+      (type signal)
+      (property
+        (index 0)
+      )
+    )
+    (layer B.Cu
+      (type signal)
+      (property
+        (index 1)
+      )
+    )
+    (boundary
+      (path pcb 0  100000 -100000  0 -100000  0 0  100000 0  100000 -100000)
+    )
+    (via "Via[0-1]_600:300_um")
+    (rule
+      (width 200)
+      (clearance 200)
+      (clearance 50 (type smd_smd))
+    )
+  )
+  (placement
+    (component Fiducial_1mm
+      (place FID1 4000.000000 -4000.000000 front 0.000000 (PN FID1))
+      (place FID2 96000.000000 -4000.000000 front 0.000000 (PN FID2))
+      (place FID3 4000.000000 -96000.000000 front 0.000000 (PN FID3))
+      (place FID4 96000.000000 -96000.000000 front 0.000000 (PN FID4))
+    )
+    (component Header_2.54mm
+      (place H_N_1 13170.000000 -13500.000000 front 0.000000 (PN H_N_1))
+      (place H_N_2 15710.000000 -13500.000000 front 0.000000 (PN H_N_2))
+      (place H_N_3 18250.000000 -13500.000000 front 0.000000 (PN H_N_3))
+      (place H_N_4 20790.000000 -13500.000000 front 0.000000 (PN H_N_4))
+      (place H_N_5 23330.000000 -13500.000000 front 0.000000 (PN H_N_5))
+      (place H_N_6 25870.000000 -13500.000000 front 0.000000 (PN H_N_6))
+      (place H_N_7 28410.000000 -13500.000000 front 0.000000 (PN H_N_7))
+      (place H_N_8 30950.000000 -13500.000000 front 0.000000 (PN H_N_8))
+      (place H_N_9 33490.000000 -13500.000000 front 0.000000 (PN H_N_9))
+      (place H_N_10 36030.000000 -13500.000000 front 0.000000 (PN H_N_10))
+      (place H_N_11 38570.000000 -13500.000000 front 0.000000 (PN H_N_11))
+      (place H_N_12 41110.000000 -13500.000000 front 0.000000 (PN H_N_12))
+      (place H_N_13 43650.000000 -13500.000000 front 0.000000 (PN H_N_13))
+      (place H_N_14 46190.000000 -13500.000000 front 0.000000 (PN H_N_14))
+      (place H_N_15 48730.000000 -13500.000000 front 0.000000 (PN H_N_15))
+      (place H_N_16 51270.000000 -13500.000000 front 0.000000 (PN H_N_16))
+      (place H_N_17 53810.000000 -13500.000000 front 0.000000 (PN H_N_17))
+      (place H_N_18 56350.000000 -13500.000000 front 0.000000 (PN H_N_18))
+      (place H_N_19 58890.000000 -13500.000000 front 0.000000 (PN H_N_19))
+      (place H_N_20 61430.000000 -13500.000000 front 0.000000 (PN H_N_20))
+      (place H_N_21 63970.000000 -13500.000000 front 0.000000 (PN H_N_21))
+      (place H_N_22 66510.000000 -13500.000000 front 0.000000 (PN H_N_22))
+      (place H_N_23 69050.000000 -13500.000000 front 0.000000 (PN H_N_23))
+      (place H_N_24 71590.000000 -13500.000000 front 0.000000 (PN H_N_24))
+      (place H_N_25 74130.000000 -13500.000000 front 0.000000 (PN H_N_25))
+      (place H_N_26 76670.000000 -13500.000000 front 0.000000 (PN H_N_26))
+      (place H_N_27 79210.000000 -13500.000000 front 0.000000 (PN H_N_27))
+      (place H_N_28 81750.000000 -13500.000000 front 0.000000 (PN H_N_28))
+      (place H_N_29 84290.000000 -13500.000000 front 0.000000 (PN H_N_29))
+      (place H_N_30 86830.000000 -13500.000000 front 0.000000 (PN H_N_30))
+      (place H_S_1 10630.000000 -89000.000000 front 0.000000 (PN H_S_1))
+      (place H_S_2 13170.000000 -89000.000000 front 0.000000 (PN H_S_2))
+      (place H_S_3 15710.000000 -89000.000000 front 0.000000 (PN H_S_3))
+      (place H_S_4 18250.000000 -89000.000000 front 0.000000 (PN H_S_4))
+      (place H_S_5 20790.000000 -89000.000000 front 0.000000 (PN H_S_5))
+      (place H_S_6 23330.000000 -89000.000000 front 0.000000 (PN H_S_6))
+      (place H_S_7 25870.000000 -89000.000000 front 0.000000 (PN H_S_7))
+      (place H_S_8 28410.000000 -89000.000000 front 0.000000 (PN H_S_8))
+      (place H_S_9 30950.000000 -89000.000000 front 0.000000 (PN H_S_9))
+      (place H_S_10 33490.000000 -89000.000000 front 0.000000 (PN H_S_10))
+      (place H_S_11 36030.000000 -89000.000000 front 0.000000 (PN H_S_11))
+      (place H_S_12 38570.000000 -89000.000000 front 0.000000 (PN H_S_12))
+      (place H_S_13 41110.000000 -89000.000000 front 0.000000 (PN H_S_13))
+      (place H_S_14 43650.000000 -89000.000000 front 0.000000 (PN H_S_14))
+      (place H_S_15 46190.000000 -89000.000000 front 0.000000 (PN H_S_15))
+      (place H_S_16 48730.000000 -89000.000000 front 0.000000 (PN H_S_16))
+      (place H_S_17 51270.000000 -89000.000000 front 0.000000 (PN H_S_17))
+      (place H_S_18 53810.000000 -89000.000000 front 0.000000 (PN H_S_18))
+      (place H_S_19 56350.000000 -89000.000000 front 0.000000 (PN H_S_19))
+      (place H_S_20 58890.000000 -89000.000000 front 0.000000 (PN H_S_20))
+      (place H_S_21 61430.000000 -89000.000000 front 0.000000 (PN H_S_21))
+      (place H_S_22 63970.000000 -89000.000000 front 0.000000 (PN H_S_22))
+      (place H_S_23 66510.000000 -89000.000000 front 0.000000 (PN H_S_23))
+      (place H_S_24 69050.000000 -89000.000000 front 0.000000 (PN H_S_24))
+      (place H_S_25 71590.000000 -89000.000000 front 0.000000 (PN H_S_25))
+      (place H_S_26 74130.000000 -89000.000000 front 0.000000 (PN H_S_26))
+      (place H_S_27 76670.000000 -89000.000000 front 0.000000 (PN H_S_27))
+      (place H_S_28 79210.000000 -89000.000000 front 0.000000 (PN H_S_28))
+      (place H_S_29 81750.000000 -89000.000000 front 0.000000 (PN H_S_29))
+      (place H_S_30 84290.000000 -89000.000000 front 0.000000 (PN H_S_30))
+      (place H_S_31 86830.000000 -89000.000000 front 0.000000 (PN H_S_31))
+      (place H_S_32 89370.000000 -89000.000000 front 0.000000 (PN H_S_32))
+    )
+    (component BondPad_DoE
+      (place BP_R1C1 14000.000000 -21000.000000 front 0.000000 (PN BP_R1C1))
+      (place BP_R1C2 17500.000000 -21000.000000 front 0.000000 (PN BP_R1C2))
+      (place BP_R1C3 21000.000000 -21000.000000 front 0.000000 (PN BP_R1C3))
+      (place BP_R1C4 24500.000000 -21000.000000 front 0.000000 (PN BP_R1C4))
+      (place BP_R1C5 28000.000000 -21000.000000 front 0.000000 (PN BP_R1C5))
+      (place BP_R1C6 31500.000000 -21000.000000 front 0.000000 (PN BP_R1C6))
+      (place BP_R2C1 14000.000000 -24500.000000 front 0.000000 (PN BP_R2C1))
+      (place BP_R2C2 17500.000000 -24500.000000 front 0.000000 (PN BP_R2C2))
+      (place BP_R2C3 21000.000000 -24500.000000 front 0.000000 (PN BP_R2C3))
+      (place BP_R2C4 24500.000000 -24500.000000 front 0.000000 (PN BP_R2C4))
+      (place BP_R2C5 28000.000000 -24500.000000 front 0.000000 (PN BP_R2C5))
+      (place BP_R2C6 31500.000000 -24500.000000 front 0.000000 (PN BP_R2C6))
+    )
+    (component BondPad_DoE::1
+      (place BP_R3C1 14000.000000 -28000.000000 front 0.000000 (PN BP_R3C1))
+      (place BP_R3C2 17500.000000 -28000.000000 front 0.000000 (PN BP_R3C2))
+      (place BP_R3C3 21000.000000 -28000.000000 front 0.000000 (PN BP_R3C3))
+      (place BP_R3C4 24500.000000 -28000.000000 front 0.000000 (PN BP_R3C4))
+      (place BP_R3C5 28000.000000 -28000.000000 front 0.000000 (PN BP_R3C5))
+      (place BP_R3C6 31500.000000 -28000.000000 front 0.000000 (PN BP_R3C6))
+      (place BP_R4C1 14000.000000 -31500.000000 front 0.000000 (PN BP_R4C1))
+      (place BP_R4C2 17500.000000 -31500.000000 front 0.000000 (PN BP_R4C2))
+      (place BP_R4C3 21000.000000 -31500.000000 front 0.000000 (PN BP_R4C3))
+      (place BP_R4C4 24500.000000 -31500.000000 front 0.000000 (PN BP_R4C4))
+      (place BP_R4C5 28000.000000 -31500.000000 front 0.000000 (PN BP_R4C5))
+      (place BP_R4C6 31500.000000 -31500.000000 front 0.000000 (PN BP_R4C6))
+    )
+    (component BondPad_DoE::2
+      (place BP_R5C1 14000.000000 -35000.000000 front 0.000000 (PN BP_R5C1))
+      (place BP_R5C4 24500.000000 -35000.000000 front 0.000000 (PN BP_R5C4))
+      (place BP_R6C1 14000.000000 -38500.000000 front 0.000000 (PN BP_R6C1))
+      (place BP_R6C4 24500.000000 -38500.000000 front 0.000000 (PN BP_R6C4))
+    )
+    (component BondPad_DoE::3
+      (place BP_R5C2 17500.000000 -35000.000000 front 0.000000 (PN BP_R5C2))
+      (place BP_R5C5 28000.000000 -35000.000000 front 0.000000 (PN BP_R5C5))
+      (place BP_R6C2 17500.000000 -38500.000000 front 0.000000 (PN BP_R6C2))
+      (place BP_R6C5 28000.000000 -38500.000000 front 0.000000 (PN BP_R6C5))
+    )
+    (component BondPad_DoE::4
+      (place BP_R5C3 21000.000000 -35000.000000 front 0.000000 (PN BP_R5C3))
+      (place BP_R5C6 31500.000000 -35000.000000 front 0.000000 (PN BP_R5C6))
+      (place BP_R6C3 21000.000000 -38500.000000 front 0.000000 (PN BP_R6C3))
+      (place BP_R6C6 31500.000000 -38500.000000 front 0.000000 (PN BP_R6C6))
+    )
+    (component TLM
+      (place TLM_W0.25 22000.000000 -51500.000000 front 0.000000 (PN TLM_W0.25))
+    )
+    (component TLM::1
+      (place TLM_W0.5 50000.000000 -51500.000000 front 0.000000 (PN TLM_W0.5))
+    )
+    (component TLM::2
+      (place TLM_W1.0 78000.000000 -51500.000000 front 0.000000 (PN TLM_W1.0))
+    )
+    (component VDP
+      (place VDP_W1.0 15000.000000 -62000.000000 front 0.000000 (PN VDP_W1.0))
+    )
+    (component VDP::1
+      (place VDP_W0.5 38000.000000 -62000.000000 front 0.000000 (PN VDP_W0.5))
+    )
+    (component VDP::2
+      (place VDP_W0.25 62000.000000 -62000.000000 front 0.000000 (PN VDP_W0.25))
+    )
+    (component VDP::3
+      (place VDP_W0.1 85000.000000 -62000.000000 front 0.000000 (PN VDP_W0.1))
+    )
+    (component DaisyChain
+      (place DC_N6 22000.000000 -73000.000000 front 0.000000 (PN DC_N6))
+    )
+    (component Probe_1.27mm
+      (place PP_DC6_IN 8300.000000 -76500.000000 front 0.000000 (PN PP_DC6_IN))
+      (place PP_DC6_OUT 35700.000000 -76500.000000 front 0.000000 (PN PP_DC6_OUT))
+      (place PP_DC12_IN 45500.000000 -76500.000000 front 0.000000 (PN PP_DC12_IN))
+      (place PP_DC12_OUT 94500.000000 -76500.000000 front 0.000000 (PN PP_DC12_OUT))
+      (place PP_D1_A 12000.000000 -85500.000000 front 0.000000 (PN PP_D1_A))
+      (place PP_D1_KG 14000.000000 -85500.000000 front 0.000000 (PN PP_D1_KG))
+      (place PP_D1_KB 16000.000000 -85500.000000 front 0.000000 (PN PP_D1_KB))
+      (place PP_D1_KR 18000.000000 -85500.000000 front 0.000000 (PN PP_D1_KR))
+      (place PP_D2_A 22000.000000 -85500.000000 front 0.000000 (PN PP_D2_A))
+      (place PP_D2_KG 24000.000000 -85500.000000 front 0.000000 (PN PP_D2_KG))
+      (place PP_D2_KB 26000.000000 -85500.000000 front 0.000000 (PN PP_D2_KB))
+      (place PP_D2_KR 28000.000000 -85500.000000 front 0.000000 (PN PP_D2_KR))
+      (place PP_D3_A 32000.000000 -85500.000000 front 0.000000 (PN PP_D3_A))
+      (place PP_D3_KG 34000.000000 -85500.000000 front 0.000000 (PN PP_D3_KG))
+      (place PP_D3_KB 36000.000000 -85500.000000 front 0.000000 (PN PP_D3_KB))
+      (place PP_D3_KR 38000.000000 -85500.000000 front 0.000000 (PN PP_D3_KR))
+      (place PP_D4_A 42000.000000 -85500.000000 front 0.000000 (PN PP_D4_A))
+      (place PP_D4_KG 44000.000000 -85500.000000 front 0.000000 (PN PP_D4_KG))
+      (place PP_D4_KB 46000.000000 -85500.000000 front 0.000000 (PN PP_D4_KB))
+      (place PP_D4_KR 48000.000000 -85500.000000 front 0.000000 (PN PP_D4_KR))
+      (place PP_D5_A 52000.000000 -85500.000000 front 0.000000 (PN PP_D5_A))
+      (place PP_D5_KG 54000.000000 -85500.000000 front 0.000000 (PN PP_D5_KG))
+      (place PP_D5_KB 56000.000000 -85500.000000 front 0.000000 (PN PP_D5_KB))
+      (place PP_D5_KR 58000.000000 -85500.000000 front 0.000000 (PN PP_D5_KR))
+      (place PP_D6_A 62000.000000 -85500.000000 front 0.000000 (PN PP_D6_A))
+      (place PP_D6_KG 64000.000000 -85500.000000 front 0.000000 (PN PP_D6_KG))
+      (place PP_D6_KB 66000.000000 -85500.000000 front 0.000000 (PN PP_D6_KB))
+      (place PP_D6_KR 68000.000000 -85500.000000 front 0.000000 (PN PP_D6_KR))
+      (place PP_D7_A 72000.000000 -85500.000000 front 0.000000 (PN PP_D7_A))
+      (place PP_D7_KG 74000.000000 -85500.000000 front 0.000000 (PN PP_D7_KG))
+      (place PP_D7_KB 76000.000000 -85500.000000 front 0.000000 (PN PP_D7_KB))
+      (place PP_D7_KR 78000.000000 -85500.000000 front 0.000000 (PN PP_D7_KR))
+      (place PP_D8_A 82000.000000 -85500.000000 front 0.000000 (PN PP_D8_A))
+      (place PP_D8_KG 84000.000000 -85500.000000 front 0.000000 (PN PP_D8_KG))
+      (place PP_D8_KB 86000.000000 -85500.000000 front 0.000000 (PN PP_D8_KB))
+      (place PP_D8_KR 88000.000000 -85500.000000 front 0.000000 (PN PP_D8_KR))
+    )
+    (component DaisyChain::1
+      (place DC_N12 70000.000000 -73000.000000 front 0.000000 (PN DC_N12))
+    )
+    (component "WL-SFCC_0404"
+      (place D1 15000.000000 -82500.000000 front 0.000000 (PN D1))
+      (place D2 25000.000000 -82500.000000 front 0.000000 (PN D2))
+      (place D3 35000.000000 -82500.000000 front 0.000000 (PN D3))
+      (place D4 45000.000000 -82500.000000 front 0.000000 (PN D4))
+      (place D5 55000.000000 -82500.000000 front 0.000000 (PN D5))
+      (place D6 65000.000000 -82500.000000 front 0.000000 (PN D6))
+      (place D7 75000.000000 -82500.000000 front 0.000000 (PN D7))
+      (place D8 85000.000000 -82500.000000 front 0.000000 (PN D8))
+    )
+  )
+  (library
+    (image Fiducial_1mm
+      (pin Round[T]Pad_1000.000000_um @1 0 0)
+    )
+    (image Header_2.54mm
+      (pin Round[A]Pad_1700.000000_um 1 0 0)
+    )
+    (image BondPad_DoE
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 1 0 0)
+    )
+    (image BondPad_DoE::1
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 1 0 0)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@1 -500 500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@2 500 500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@3 -500 -500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@4 500 -500)
+    )
+    (image BondPad_DoE::2
+      (pin RoundRect[T]Pad_1000.000000x1000.000000_50.190000_um_0.000000_0 1 0 0)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@1 -500 500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@2 500 500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@3 -500 -500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@4 500 -500)
+    )
+    (image BondPad_DoE::3
+      (pin RoundRect[T]Pad_1000.000000x1000.000000_100.381000_um_0.000000_0 1 0 0)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@1 -500 500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@2 500 500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@3 -500 -500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@4 500 -500)
+    )
+    (image BondPad_DoE::4
+      (pin RoundRect[T]Pad_1000.000000x1000.000000_200.761000_um_0.000000_0 1 0 0)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@1 -500 500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@2 500 500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@3 -500 -500)
+      (pin Rect[T]Pad_500.000000x500.000000_um 1@4 500 -500)
+    )
+    (image TLM
+      (pin Rect[T]Pad_250.000000x2500.000000_um 1 -1192.5 0)
+      (pin Rect[T]Pad_250.000000x2500.000000_um 2 -937.5 0)
+      (pin Rect[T]Pad_250.000000x2500.000000_um 3 -677.5 0)
+      (pin Rect[T]Pad_250.000000x2500.000000_um 4 -407.5 0)
+      (pin Rect[T]Pad_250.000000x2500.000000_um 5 -107.5 0)
+      (pin Rect[T]Pad_250.000000x2500.000000_um 6 242.5 0)
+      (pin Rect[T]Pad_250.000000x2500.000000_um 7 692.5 0)
+    )
+    (image TLM::1
+      (pin Rect[T]Pad_500.000000x2500.000000_um 1 -2192.5 0)
+      (pin Rect[T]Pad_500.000000x2500.000000_um 2 -1687.5 0)
+      (pin Rect[T]Pad_500.000000x2500.000000_um 3 -1177.5 0)
+      (pin Rect[T]Pad_500.000000x2500.000000_um 4 -657.5 0)
+      (pin Rect[T]Pad_500.000000x2500.000000_um 5 -107.5 0)
+      (pin Rect[T]Pad_500.000000x2500.000000_um 6 492.5 0)
+      (pin Rect[T]Pad_500.000000x2500.000000_um 7 1192.5 0)
+    )
+    (image TLM::2
+      (pin Rect[T]Pad_1000.000000x2500.000000_um 1 -4192.5 0)
+      (pin Rect[T]Pad_1000.000000x2500.000000_um 2 -3187.5 0)
+      (pin Rect[T]Pad_1000.000000x2500.000000_um 3 -2177.5 0)
+      (pin Rect[T]Pad_1000.000000x2500.000000_um 4 -1157.5 0)
+      (pin Rect[T]Pad_1000.000000x2500.000000_um 5 -107.5 0)
+      (pin Rect[T]Pad_1000.000000x2500.000000_um 6 992.5 0)
+      (pin Rect[T]Pad_1000.000000x2500.000000_um 7 2192.5 0)
+    )
+    (image VDP
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 1 -1400 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 2 1400 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um (rotate 90) 3 0 1400)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um (rotate 90) 4 0 -1400)
+    )
+    (image VDP::1
+      (pin Rect[T]Pad_500.000000x500.000000_um 1 -900 0)
+      (pin Rect[T]Pad_500.000000x500.000000_um 2 900 0)
+      (pin Rect[T]Pad_500.000000x500.000000_um (rotate 90) 3 0 900)
+      (pin Rect[T]Pad_500.000000x500.000000_um (rotate 90) 4 0 -900)
+    )
+    (image VDP::2
+      (pin Rect[T]Pad_250.000000x250.000000_um 1 -800 0)
+      (pin Rect[T]Pad_250.000000x250.000000_um 2 800 0)
+      (pin Rect[T]Pad_250.000000x250.000000_um (rotate 90) 3 0 800)
+      (pin Rect[T]Pad_250.000000x250.000000_um (rotate 90) 4 0 -800)
+    )
+    (image VDP::3
+      (pin Rect[T]Pad_100.000000x100.000000_um 1 -800 0)
+      (pin Rect[T]Pad_100.000000x100.000000_um 2 800 0)
+      (pin Rect[T]Pad_100.000000x100.000000_um (rotate 90) 3 0 800)
+      (pin Rect[T]Pad_100.000000x100.000000_um (rotate 90) 4 0 -800)
+    )
+    (image DaisyChain
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 1 -11700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 2 -9900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 3 -8100 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 4 -6300 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 5 -4500 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 6 -2700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 7 -900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 8 900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 9 2700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 10 4500 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 11 6300 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 12 8100 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 13 9900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 14 11700 0)
+    )
+    (image Probe_1.27mm
+      (pin Rect[T]Pad_1270.000000x1270.000000_um 1 0 0)
+    )
+    (image DaisyChain::1
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 1 -22500 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 2 -20700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 3 -18900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 4 -17100 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 5 -15300 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 6 -13500 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 7 -11700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 8 -9900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 9 -8100 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 10 -6300 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 11 -4500 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 12 -2700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 13 -900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 14 900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 15 2700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 16 4500 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 17 6300 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 18 8100 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 19 9900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 20 11700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 21 13500 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 22 15300 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 23 17100 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 24 18900 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 25 20700 0)
+      (pin Rect[T]Pad_1000.000000x1000.000000_um 26 22500 0)
+    )
+    (image "WL-SFCC_0404"
+      (pin Rect[T]Pad_400.000000x400.000000_um 1 -400 400)
+      (pin Rect[T]Pad_400.000000x400.000000_um 2 400 400)
+      (pin Rect[T]Pad_400.000000x400.000000_um 3 400 -400)
+      (pin Rect[T]Pad_400.000000x400.000000_um 4 -400 -400)
+    )
+    (padstack Round[T]Pad_1000.000000_um
+      (shape (circle F.Cu 1000))
+      (attach off)
+    )
+    (padstack Round[A]Pad_1700.000000_um
+      (shape (circle F.Cu 1700))
+      (shape (circle B.Cu 1700))
+      (attach off)
+    )
+    (padstack RoundRect[T]Pad_1000.000000x1000.000000_50.190000_um_0.000000_0
+      (shape (polygon F.Cu 0  -500.19 450  -496.37 469.207  -485.49 485.49  -469.207 496.37
+            -450 500.19  450 500.19  469.207 496.37  485.49 485.49  496.37 469.207
+            500.19 450  500.19 -450  496.37 -469.207  485.49 -485.49  469.207 -496.37
+            450 -500.19  -450 -500.19  -469.207 -496.37  -485.49 -485.49
+            -496.37 -469.207  -500.19 -450  -500.19 450))
+      (attach off)
+    )
+    (padstack RoundRect[T]Pad_1000.000000x1000.000000_100.381000_um_0.000000_0
+      (shape (polygon F.Cu 0  -500.381 400  -492.74 438.414  -470.98 470.98  -438.414 492.74
+            -399.999 500.38  400 500.381  438.414 492.74  470.98 470.98
+            492.74 438.414  500.38 399.999  500.381 -400  492.74 -438.414
+            470.98 -470.98  438.414 -492.74  399.999 -500.38  -400 -500.381
+            -438.414 -492.74  -470.98 -470.98  -492.74 -438.414  -500.38 -399.999
+            -500.381 400))
+      (attach off)
+    )
+    (padstack RoundRect[T]Pad_1000.000000x1000.000000_200.761000_um_0.000000_0
+      (shape (polygon F.Cu 0  -500.761 300  -485.479 376.828  -441.959 441.959  -376.828 485.479
+            -299.999 500.76  300 500.761  376.828 485.479  441.959 441.959
+            485.479 376.828  500.76 299.999  500.761 -300  485.479 -376.828
+            441.959 -441.959  376.828 -485.479  299.999 -500.76  -300 -500.761
+            -376.828 -485.479  -441.959 -441.959  -485.479 -376.828  -500.76 -299.999
+            -500.761 300))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_250.000000x2500.000000_um
+      (shape (rect F.Cu -125 -1250 125 1250))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_250.000000x250.000000_um
+      (shape (rect F.Cu -125 -125 125 125))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_400.000000x400.000000_um
+      (shape (rect F.Cu -200 -200 200 200))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_500.000000x2500.000000_um
+      (shape (rect F.Cu -250 -1250 250 1250))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_500.000000x500.000000_um
+      (shape (rect F.Cu -250 -250 250 250))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_100.000000x100.000000_um
+      (shape (rect F.Cu -50 -50 50 50))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_1000.000000x2500.000000_um
+      (shape (rect F.Cu -500 -1250 500 1250))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_1000.000000x1000.000000_um
+      (shape (rect F.Cu -500 -500 500 500))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_1270.000000x1270.000000_um
+      (shape (rect F.Cu -635 -635 635 635))
+      (attach off)
+    )
+    (padstack "Via[0-1]_600:300_um"
+      (shape (circle F.Cu 600))
+      (shape (circle B.Cu 600))
+      (attach off)
+    )
+  )
+  (network
+    (net LED_VCC
+      (pins H_S_1-1 H_S_5-1 H_S_9-1 H_S_13-1 H_S_17-1 H_S_21-1 H_S_25-1 H_S_29-1 D1-1
+        PP_D1_A-1 D2-1 PP_D2_A-1 D3-1 PP_D3_A-1 D4-1 PP_D4_A-1 D5-1 PP_D5_A-1 D6-1
+        PP_D6_A-1 D7-1 PP_D7_A-1 D8-1 PP_D8_A-1)
+    )
+    (net LED1_KG
+      (pins H_S_2-1 D1-4 PP_D1_KG-1)
+    )
+    (net LED1_KB
+      (pins H_S_3-1 D1-3 PP_D1_KB-1)
+    )
+    (net LED1_KR
+      (pins H_S_4-1 D1-2 PP_D1_KR-1)
+    )
+    (net LED2_KG
+      (pins H_S_6-1 D2-4 PP_D2_KG-1)
+    )
+    (net LED2_KB
+      (pins H_S_7-1 D2-3 PP_D2_KB-1)
+    )
+    (net LED2_KR
+      (pins H_S_8-1 D2-2 PP_D2_KR-1)
+    )
+    (net LED3_KG
+      (pins H_S_10-1 D3-4 PP_D3_KG-1)
+    )
+    (net LED3_KB
+      (pins H_S_11-1 D3-3 PP_D3_KB-1)
+    )
+    (net LED3_KR
+      (pins H_S_12-1 D3-2 PP_D3_KR-1)
+    )
+    (net LED4_KG
+      (pins H_S_14-1 D4-4 PP_D4_KG-1)
+    )
+    (net LED4_KB
+      (pins H_S_15-1 D4-3 PP_D4_KB-1)
+    )
+    (net LED4_KR
+      (pins H_S_16-1 D4-2 PP_D4_KR-1)
+    )
+    (net LED5_KG
+      (pins H_S_18-1 D5-4 PP_D5_KG-1)
+    )
+    (net LED5_KB
+      (pins H_S_19-1 D5-3 PP_D5_KB-1)
+    )
+    (net LED5_KR
+      (pins H_S_20-1 D5-2 PP_D5_KR-1)
+    )
+    (net LED6_KG
+      (pins H_S_22-1 D6-4 PP_D6_KG-1)
+    )
+    (net LED6_KB
+      (pins H_S_23-1 D6-3 PP_D6_KB-1)
+    )
+    (net LED6_KR
+      (pins H_S_24-1 D6-2 PP_D6_KR-1)
+    )
+    (net LED7_KG
+      (pins H_S_26-1 D7-4 PP_D7_KG-1)
+    )
+    (net LED7_KB
+      (pins H_S_27-1 D7-3 PP_D7_KB-1)
+    )
+    (net LED7_KR
+      (pins H_S_28-1 D7-2 PP_D7_KR-1)
+    )
+    (net LED8_KG
+      (pins H_S_30-1 D8-4 PP_D8_KG-1)
+    )
+    (net LED8_KB
+      (pins H_S_31-1 D8-3 PP_D8_KB-1)
+    )
+    (net LED8_KR
+      (pins H_S_32-1 D8-2 PP_D8_KR-1)
+    )
+    (net BP_R1C1_P1
+      (pins BP_R1C1-1)
+    )
+    (net BP_R1C2_P1
+      (pins BP_R1C2-1)
+    )
+    (net BP_R1C3_P1
+      (pins BP_R1C3-1)
+    )
+    (net BP_R1C4_P1
+      (pins BP_R1C4-1)
+    )
+    (net BP_R1C5_P1
+      (pins BP_R1C5-1)
+    )
+    (net BP_R1C6_P1
+      (pins BP_R1C6-1)
+    )
+    (net BP_R2C1_P1
+      (pins BP_R2C1-1)
+    )
+    (net BP_R2C2_P1
+      (pins BP_R2C2-1)
+    )
+    (net BP_R2C3_P1
+      (pins BP_R2C3-1)
+    )
+    (net BP_R2C4_P1
+      (pins BP_R2C4-1)
+    )
+    (net BP_R2C5_P1
+      (pins BP_R2C5-1)
+    )
+    (net BP_R2C6_P1
+      (pins BP_R2C6-1)
+    )
+    (net BP_R3C1_P1
+      (pins BP_R3C1-1 BP_R3C1-1@1 BP_R3C1-1@2 BP_R3C1-1@3 BP_R3C1-1@4)
+    )
+    (net BP_R3C2_P1
+      (pins BP_R3C2-1 BP_R3C2-1@1 BP_R3C2-1@2 BP_R3C2-1@3 BP_R3C2-1@4)
+    )
+    (net BP_R3C3_P1
+      (pins BP_R3C3-1 BP_R3C3-1@1 BP_R3C3-1@2 BP_R3C3-1@3 BP_R3C3-1@4)
+    )
+    (net BP_R3C4_P1
+      (pins BP_R3C4-1 BP_R3C4-1@1 BP_R3C4-1@2 BP_R3C4-1@3 BP_R3C4-1@4)
+    )
+    (net BP_R3C5_P1
+      (pins BP_R3C5-1 BP_R3C5-1@1 BP_R3C5-1@2 BP_R3C5-1@3 BP_R3C5-1@4)
+    )
+    (net BP_R3C6_P1
+      (pins BP_R3C6-1 BP_R3C6-1@1 BP_R3C6-1@2 BP_R3C6-1@3 BP_R3C6-1@4)
+    )
+    (net BP_R4C1_P1
+      (pins BP_R4C1-1 BP_R4C1-1@1 BP_R4C1-1@2 BP_R4C1-1@3 BP_R4C1-1@4)
+    )
+    (net BP_R4C2_P1
+      (pins BP_R4C2-1 BP_R4C2-1@1 BP_R4C2-1@2 BP_R4C2-1@3 BP_R4C2-1@4)
+    )
+    (net BP_R4C3_P1
+      (pins BP_R4C3-1 BP_R4C3-1@1 BP_R4C3-1@2 BP_R4C3-1@3 BP_R4C3-1@4)
+    )
+    (net BP_R4C4_P1
+      (pins BP_R4C4-1 BP_R4C4-1@1 BP_R4C4-1@2 BP_R4C4-1@3 BP_R4C4-1@4)
+    )
+    (net BP_R4C5_P1
+      (pins BP_R4C5-1 BP_R4C5-1@1 BP_R4C5-1@2 BP_R4C5-1@3 BP_R4C5-1@4)
+    )
+    (net BP_R4C6_P1
+      (pins BP_R4C6-1 BP_R4C6-1@1 BP_R4C6-1@2 BP_R4C6-1@3 BP_R4C6-1@4)
+    )
+    (net BP_R5C1_P1
+      (pins BP_R5C1-1 BP_R5C1-1@1 BP_R5C1-1@2 BP_R5C1-1@3 BP_R5C1-1@4)
+    )
+    (net BP_R5C2_P1
+      (pins BP_R5C2-1 BP_R5C2-1@1 BP_R5C2-1@2 BP_R5C2-1@3 BP_R5C2-1@4)
+    )
+    (net BP_R5C3_P1
+      (pins BP_R5C3-1 BP_R5C3-1@1 BP_R5C3-1@2 BP_R5C3-1@3 BP_R5C3-1@4)
+    )
+    (net BP_R5C4_P1
+      (pins BP_R5C4-1 BP_R5C4-1@1 BP_R5C4-1@2 BP_R5C4-1@3 BP_R5C4-1@4)
+    )
+    (net BP_R5C5_P1
+      (pins BP_R5C5-1 BP_R5C5-1@1 BP_R5C5-1@2 BP_R5C5-1@3 BP_R5C5-1@4)
+    )
+    (net BP_R5C6_P1
+      (pins BP_R5C6-1 BP_R5C6-1@1 BP_R5C6-1@2 BP_R5C6-1@3 BP_R5C6-1@4)
+    )
+    (net BP_R6C1_P1
+      (pins BP_R6C1-1 BP_R6C1-1@1 BP_R6C1-1@2 BP_R6C1-1@3 BP_R6C1-1@4)
+    )
+    (net BP_R6C2_P1
+      (pins BP_R6C2-1 BP_R6C2-1@1 BP_R6C2-1@2 BP_R6C2-1@3 BP_R6C2-1@4)
+    )
+    (net BP_R6C3_P1
+      (pins BP_R6C3-1 BP_R6C3-1@1 BP_R6C3-1@2 BP_R6C3-1@3 BP_R6C3-1@4)
+    )
+    (net BP_R6C4_P1
+      (pins BP_R6C4-1 BP_R6C4-1@1 BP_R6C4-1@2 BP_R6C4-1@3 BP_R6C4-1@4)
+    )
+    (net BP_R6C5_P1
+      (pins BP_R6C5-1 BP_R6C5-1@1 BP_R6C5-1@2 BP_R6C5-1@3 BP_R6C5-1@4)
+    )
+    (net BP_R6C6_P1
+      (pins BP_R6C6-1 BP_R6C6-1@1 BP_R6C6-1@2 BP_R6C6-1@3 BP_R6C6-1@4)
+    )
+    (net TLM_W0.25_F1
+      (pins H_N_6-1 TLM_W0.25-1)
+    )
+    (net TLM_W0.25_F2
+      (pins TLM_W0.25-2)
+    )
+    (net TLM_W0.25_F3
+      (pins TLM_W0.25-3)
+    )
+    (net TLM_W0.25_F4
+      (pins TLM_W0.25-4)
+    )
+    (net TLM_W0.25_F5
+      (pins TLM_W0.25-5)
+    )
+    (net TLM_W0.25_F6
+      (pins TLM_W0.25-6)
+    )
+    (net TLM_W0.25_F7
+      (pins H_N_7-1 TLM_W0.25-7)
+    )
+    (net TLM_W0.5_F1
+      (pins H_N_14-1 TLM_W0.5-1)
+    )
+    (net TLM_W0.5_F2
+      (pins TLM_W0.5-2)
+    )
+    (net TLM_W0.5_F3
+      (pins TLM_W0.5-3)
+    )
+    (net TLM_W0.5_F4
+      (pins TLM_W0.5-4)
+    )
+    (net TLM_W0.5_F5
+      (pins TLM_W0.5-5)
+    )
+    (net TLM_W0.5_F6
+      (pins TLM_W0.5-6)
+    )
+    (net TLM_W0.5_F7
+      (pins H_N_15-1 TLM_W0.5-7)
+    )
+    (net TLM_W1.0_F1
+      (pins H_N_20-1 TLM_W1.0-1)
+    )
+    (net TLM_W1.0_F2
+      (pins TLM_W1.0-2)
+    )
+    (net TLM_W1.0_F3
+      (pins TLM_W1.0-3)
+    )
+    (net TLM_W1.0_F4
+      (pins TLM_W1.0-4)
+    )
+    (net TLM_W1.0_F5
+      (pins TLM_W1.0-5)
+    )
+    (net TLM_W1.0_F6
+      (pins TLM_W1.0-6)
+    )
+    (net TLM_W1.0_F7
+      (pins H_N_21-1 TLM_W1.0-7)
+    )
+    (net VDP_W1.0_1
+      (pins H_N_2-1 VDP_W1.0-1)
+    )
+    (net VDP_W1.0_2
+      (pins H_N_5-1 VDP_W1.0-2)
+    )
+    (net VDP_W1.0_3
+      (pins H_N_3-1 VDP_W1.0-3)
+    )
+    (net VDP_W1.0_4
+      (pins H_N_4-1 VDP_W1.0-4)
+    )
+    (net VDP_W0.5_1
+      (pins H_N_9-1 VDP_W0.5-1)
+    )
+    (net VDP_W0.5_2
+      (pins H_N_12-1 VDP_W0.5-2)
+    )
+    (net VDP_W0.5_3
+      (pins H_N_10-1 VDP_W0.5-3)
+    )
+    (net VDP_W0.5_4
+      (pins H_N_11-1 VDP_W0.5-4)
+    )
+    (net VDP_W0.25_1
+      (pins H_N_16-1 VDP_W0.25-1)
+    )
+    (net VDP_W0.25_2
+      (pins H_N_19-1 VDP_W0.25-2)
+    )
+    (net VDP_W0.25_3
+      (pins H_N_17-1 VDP_W0.25-3)
+    )
+    (net VDP_W0.25_4
+      (pins H_N_18-1 VDP_W0.25-4)
+    )
+    (net VDP_W0.1_1
+      (pins H_N_22-1 VDP_W0.1-1)
+    )
+    (net VDP_W0.1_2
+      (pins H_N_25-1 VDP_W0.1-2)
+    )
+    (net VDP_W0.1_3
+      (pins H_N_23-1 VDP_W0.1-3)
+    )
+    (net VDP_W0.1_4
+      (pins H_N_24-1 VDP_W0.1-4)
+    )
+    (net DC_N6_IN
+      (pins H_N_1-1 DC_N6-1 PP_DC6_IN-1)
+    )
+    (net DC_N6_OUT
+      (pins H_N_8-1 DC_N6-14 PP_DC6_OUT-1)
+    )
+    (net DC_N6_N1
+      (pins DC_N6-2)
+    )
+    (net DC_N6_N2
+      (pins DC_N6-3)
+    )
+    (net DC_N6_N3
+      (pins DC_N6-4)
+    )
+    (net DC_N6_N4
+      (pins DC_N6-5)
+    )
+    (net DC_N6_N5
+      (pins DC_N6-6)
+    )
+    (net DC_N6_N6
+      (pins DC_N6-7)
+    )
+    (net DC_N6_N7
+      (pins DC_N6-8)
+    )
+    (net DC_N6_N8
+      (pins DC_N6-9)
+    )
+    (net DC_N6_N9
+      (pins DC_N6-10)
+    )
+    (net DC_N6_N10
+      (pins DC_N6-11)
+    )
+    (net DC_N6_N11
+      (pins DC_N6-12)
+    )
+    (net DC_N6_N12
+      (pins DC_N6-13)
+    )
+    (net DC_N12_IN
+      (pins H_N_13-1 DC_N12-1 PP_DC12_IN-1)
+    )
+    (net DC_N12_OUT
+      (pins H_N_26-1 DC_N12-26 PP_DC12_OUT-1)
+    )
+    (net DC_N12_N1
+      (pins DC_N12-2)
+    )
+    (net DC_N12_N2
+      (pins DC_N12-3)
+    )
+    (net DC_N12_N3
+      (pins DC_N12-4)
+    )
+    (net DC_N12_N4
+      (pins DC_N12-5)
+    )
+    (net DC_N12_N5
+      (pins DC_N12-6)
+    )
+    (net DC_N12_N6
+      (pins DC_N12-7)
+    )
+    (net DC_N12_N7
+      (pins DC_N12-8)
+    )
+    (net DC_N12_N8
+      (pins DC_N12-9)
+    )
+    (net DC_N12_N9
+      (pins DC_N12-10)
+    )
+    (net DC_N12_N10
+      (pins DC_N12-11)
+    )
+    (net DC_N12_N11
+      (pins DC_N12-12)
+    )
+    (net DC_N12_N12
+      (pins DC_N12-13)
+    )
+    (net DC_N12_N13
+      (pins DC_N12-14)
+    )
+    (net DC_N12_N14
+      (pins DC_N12-15)
+    )
+    (net DC_N12_N15
+      (pins DC_N12-16)
+    )
+    (net DC_N12_N16
+      (pins DC_N12-17)
+    )
+    (net DC_N12_N17
+      (pins DC_N12-18)
+    )
+    (net DC_N12_N18
+      (pins DC_N12-19)
+    )
+    (net DC_N12_N19
+      (pins DC_N12-20)
+    )
+    (net DC_N12_N20
+      (pins DC_N12-21)
+    )
+    (net DC_N12_N21
+      (pins DC_N12-22)
+    )
+    (net DC_N12_N22
+      (pins DC_N12-23)
+    )
+    (net DC_N12_N23
+      (pins DC_N12-24)
+    )
+    (net DC_N12_N24
+      (pins DC_N12-25)
+    )
+    (class kicad_default BP_R1C1_P1 BP_R1C2_P1 BP_R1C3_P1 BP_R1C4_P1 BP_R1C5_P1
+      BP_R1C6_P1 BP_R2C1_P1 BP_R2C2_P1 BP_R2C3_P1 BP_R2C4_P1 BP_R2C5_P1 BP_R2C6_P1
+      BP_R3C1_P1 BP_R3C2_P1 BP_R3C3_P1 BP_R3C4_P1 BP_R3C5_P1 BP_R3C6_P1 BP_R4C1_P1
+      BP_R4C2_P1 BP_R4C3_P1 BP_R4C4_P1 BP_R4C5_P1 BP_R4C6_P1 BP_R5C1_P1 BP_R5C2_P1
+      BP_R5C3_P1 BP_R5C4_P1 BP_R5C5_P1 BP_R5C6_P1 BP_R6C1_P1 BP_R6C2_P1 BP_R6C3_P1
+      BP_R6C4_P1 BP_R6C5_P1 BP_R6C6_P1 DC_N12_IN DC_N12_N1 DC_N12_N10 DC_N12_N11
+      DC_N12_N12 DC_N12_N13 DC_N12_N14 DC_N12_N15 DC_N12_N16 DC_N12_N17 DC_N12_N18
+      DC_N12_N19 DC_N12_N2 DC_N12_N20 DC_N12_N21 DC_N12_N22 DC_N12_N23 DC_N12_N24
+      DC_N12_N3 DC_N12_N4 DC_N12_N5 DC_N12_N6 DC_N12_N7 DC_N12_N8 DC_N12_N9
+      DC_N12_OUT DC_N6_IN DC_N6_N1 DC_N6_N10 DC_N6_N11 DC_N6_N12 DC_N6_N2
+      DC_N6_N3 DC_N6_N4 DC_N6_N5 DC_N6_N6 DC_N6_N7 DC_N6_N8 DC_N6_N9 DC_N6_OUT
+      LED1_KB LED1_KG LED1_KR LED2_KB LED2_KG LED2_KR LED3_KB LED3_KG LED3_KR
+      LED4_KB LED4_KG LED4_KR LED5_KB LED5_KG LED5_KR LED6_KB LED6_KG LED6_KR
+      LED7_KB LED7_KG LED7_KR LED8_KB LED8_KG LED8_KR LED_VCC TLM_W0.25_F1
+      TLM_W0.25_F2 TLM_W0.25_F3 TLM_W0.25_F4 TLM_W0.25_F5 TLM_W0.25_F6 TLM_W0.25_F7
+      TLM_W0.5_F1 TLM_W0.5_F2 TLM_W0.5_F3 TLM_W0.5_F4 TLM_W0.5_F5 TLM_W0.5_F6
+      TLM_W0.5_F7 TLM_W1.0_F1 TLM_W1.0_F2 TLM_W1.0_F3 TLM_W1.0_F4 TLM_W1.0_F5
+      TLM_W1.0_F6 TLM_W1.0_F7 VDP_W0.1_1 VDP_W0.1_2 VDP_W0.1_3 VDP_W0.1_4
+      VDP_W0.25_1 VDP_W0.25_2 VDP_W0.25_3 VDP_W0.25_4 VDP_W0.5_1 VDP_W0.5_2
+      VDP_W0.5_3 VDP_W0.5_4 VDP_W1.0_1 VDP_W1.0_2 VDP_W1.0_3 VDP_W1.0_4
+      (circuit
+        (use_via "Via[0-1]_600:300_um")
+      )
+      (rule
+        (width 200)
+        (clearance 200)
+      )
+    )
+  )
+  (wiring
+    (wire (path F.Cu 200  8300 -76500  8300 -73000  10300 -73000)(net DC_N6_IN)(type route))
+    (wire (path F.Cu 200  35700 -76500  35700 -73000  33700 -73000)(net DC_N6_OUT)(type route))
+    (wire (path F.Cu 200  45500 -76500  45500 -73000  47500 -73000)(net DC_N12_IN)(type route))
+    (wire (path F.Cu 200  94500 -76500  94500 -73000  92500 -73000)(net DC_N12_OUT)(type route))
+    (wire (path F.Cu 200  12000 -85500  12000 -83500  14600 -82100)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  14000 -85500  14000 -83500  14600 -82900)(net LED1_KG)(type route))
+    (wire (path F.Cu 200  16000 -85500  16000 -83500  15400 -82900)(net LED1_KB)(type route))
+    (wire (path F.Cu 200  18000 -85500  18000 -83500  15400 -82100)(net LED1_KR)(type route))
+    (wire (path F.Cu 200  22000 -85500  22000 -83500  24600 -82100)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  24000 -85500  24000 -83500  24600 -82900)(net LED2_KG)(type route))
+    (wire (path F.Cu 200  26000 -85500  26000 -83500  25400 -82900)(net LED2_KB)(type route))
+    (wire (path F.Cu 200  28000 -85500  28000 -83500  25400 -82100)(net LED2_KR)(type route))
+    (wire (path F.Cu 200  32000 -85500  32000 -83500  34600 -82100)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  34000 -85500  34000 -83500  34600 -82900)(net LED3_KG)(type route))
+    (wire (path F.Cu 200  36000 -85500  36000 -83500  35400 -82900)(net LED3_KB)(type route))
+    (wire (path F.Cu 200  38000 -85500  38000 -83500  35400 -82100)(net LED3_KR)(type route))
+    (wire (path F.Cu 200  42000 -85500  42000 -83500  44600 -82100)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  44000 -85500  44000 -83500  44600 -82900)(net LED4_KG)(type route))
+    (wire (path F.Cu 200  46000 -85500  46000 -83500  45400 -82900)(net LED4_KB)(type route))
+    (wire (path F.Cu 200  48000 -85500  48000 -83500  45400 -82100)(net LED4_KR)(type route))
+    (wire (path F.Cu 200  52000 -85500  52000 -83500  54600 -82100)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  54000 -85500  54000 -83500  54600 -82900)(net LED5_KG)(type route))
+    (wire (path F.Cu 200  56000 -85500  56000 -83500  55400 -82900)(net LED5_KB)(type route))
+    (wire (path F.Cu 200  58000 -85500  58000 -83500  55400 -82100)(net LED5_KR)(type route))
+    (wire (path F.Cu 200  62000 -85500  62000 -83500  64600 -82100)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  64000 -85500  64000 -83500  64600 -82900)(net LED6_KG)(type route))
+    (wire (path F.Cu 200  66000 -85500  66000 -83500  65400 -82900)(net LED6_KB)(type route))
+    (wire (path F.Cu 200  68000 -85500  68000 -83500  65400 -82100)(net LED6_KR)(type route))
+    (wire (path F.Cu 200  72000 -85500  72000 -83500  74600 -82100)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  74000 -85500  74000 -83500  74600 -82900)(net LED7_KG)(type route))
+    (wire (path F.Cu 200  76000 -85500  76000 -83500  75400 -82900)(net LED7_KB)(type route))
+    (wire (path F.Cu 200  78000 -85500  78000 -83500  75400 -82100)(net LED7_KR)(type route))
+    (wire (path F.Cu 200  82000 -85500  82000 -83500  84600 -82100)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  84000 -85500  84000 -83500  84600 -82900)(net LED8_KG)(type route))
+    (wire (path F.Cu 200  86000 -85500  86000 -83500  85400 -82900)(net LED8_KB)(type route))
+    (wire (path F.Cu 200  88000 -85500  88000 -83500  85400 -82100)(net LED8_KR)(type route))
+    (wire (path B.Cu 400  12000 -85500  22000 -85500  32000 -85500  42000 -85500  52000 -85500
+            62000 -85500  72000 -85500  82000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  10630 -89000  10630 -87700  12000 -87700  12000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  13170 -89000  13170 -87300  14000 -87300  14000 -85500)(net LED1_KG)(type route))
+    (wire (path F.Cu 200  15710 -89000  15710 -86900  16000 -86900  16000 -85500)(net LED1_KB)(type route))
+    (wire (path F.Cu 200  18250 -89000  18250 -86500  18000 -86500  18000 -85500)(net LED1_KR)(type route))
+    (wire (path F.Cu 200  20790 -89000  20790 -87700  22000 -87700  22000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  23330 -89000  23330 -87300  24000 -87300  24000 -85500)(net LED2_KG)(type route))
+    (wire (path F.Cu 200  25870 -89000  25870 -86900  26000 -86900  26000 -85500)(net LED2_KB)(type route))
+    (wire (path F.Cu 200  28410 -89000  28410 -86500  28000 -86500  28000 -85500)(net LED2_KR)(type route))
+    (wire (path F.Cu 200  30950 -89000  30950 -87700  32000 -87700  32000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  33490 -89000  33490 -87300  34000 -87300  34000 -85500)(net LED3_KG)(type route))
+    (wire (path F.Cu 200  36030 -89000  36030 -86900  36000 -86900  36000 -85500)(net LED3_KB)(type route))
+    (wire (path F.Cu 200  38570 -89000  38570 -86500  38000 -86500  38000 -85500)(net LED3_KR)(type route))
+    (wire (path F.Cu 200  41110 -89000  41110 -87700  42000 -87700  42000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  43650 -89000  43650 -87300  44000 -87300  44000 -85500)(net LED4_KG)(type route))
+    (wire (path F.Cu 200  46190 -89000  46190 -86900  46000 -86900  46000 -85500)(net LED4_KB)(type route))
+    (wire (path F.Cu 200  48730 -89000  48730 -86500  48000 -86500  48000 -85500)(net LED4_KR)(type route))
+    (wire (path F.Cu 200  51270 -89000  51270 -87700  52000 -87700  52000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  53810 -89000  53810 -87300  54000 -87300  54000 -85500)(net LED5_KG)(type route))
+    (wire (path F.Cu 200  56350 -89000  56350 -86900  56000 -86900  56000 -85500)(net LED5_KB)(type route))
+    (wire (path F.Cu 200  58890 -89000  58890 -86500  58000 -86500  58000 -85500)(net LED5_KR)(type route))
+    (wire (path F.Cu 200  61430 -89000  61430 -87700  62000 -87700  62000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  63970 -89000  63970 -87300  64000 -87300  64000 -85500)(net LED6_KG)(type route))
+    (wire (path F.Cu 200  66510 -89000  66510 -86900  66000 -86900  66000 -85500)(net LED6_KB)(type route))
+    (wire (path F.Cu 200  69050 -89000  69050 -86500  68000 -86500  68000 -85500)(net LED6_KR)(type route))
+    (wire (path F.Cu 200  71590 -89000  71590 -87700  72000 -87700  72000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  74130 -89000  74130 -87300  74000 -87300  74000 -85500)(net LED7_KG)(type route))
+    (wire (path F.Cu 200  76670 -89000  76670 -86900  76000 -86900  76000 -85500)(net LED7_KB)(type route))
+    (wire (path F.Cu 200  79210 -89000  79210 -86500  78000 -86500  78000 -85500)(net LED7_KR)(type route))
+    (wire (path F.Cu 200  81750 -89000  81750 -87700  82000 -87700  82000 -85500)(net LED_VCC)(type route))
+    (wire (path F.Cu 200  84290 -89000  84290 -87300  84000 -87300  84000 -85500)(net LED8_KG)(type route))
+    (wire (path F.Cu 200  86830 -89000  86830 -86900  86000 -86900  86000 -85500)(net LED8_KB)(type route))
+    (wire (path F.Cu 200  89370 -89000  89370 -86500  88000 -86500  88000 -85500)(net LED8_KR)(type route))
+    (via "Via[0-1]_600:300_um"  12000 -85500 (net LED_VCC)(type route))
+    (via "Via[0-1]_600:300_um"  22000 -85500 (net LED_VCC)(type route))
+    (via "Via[0-1]_600:300_um"  32000 -85500 (net LED_VCC)(type route))
+    (via "Via[0-1]_600:300_um"  42000 -85500 (net LED_VCC)(type route))
+    (via "Via[0-1]_600:300_um"  52000 -85500 (net LED_VCC)(type route))
+    (via "Via[0-1]_600:300_um"  62000 -85500 (net LED_VCC)(type route))
+    (via "Via[0-1]_600:300_um"  72000 -85500 (net LED_VCC)(type route))
+    (via "Via[0-1]_600:300_um"  82000 -85500 (net LED_VCC)(type route))
+  )
+)

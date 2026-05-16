@@ -19,8 +19,13 @@ PCB="new-pcb/tud-microled-v2.kicad_pcb"
 PREVIEW_DIR="new-pcb/fab/preview"
 mkdir -p "$PREVIEW_DIR"
 
-echo "[1/4] Regenerating PCB from generate_pcb_text.py …"
-python3 new-pcb/tools/generate_pcb_text.py | tail -5
+# Pass --no-regen to skip the generator (keeps freerouted traces)
+if [ "${1:-}" != "--no-regen" ]; then
+    echo "[1/4] Regenerating PCB from generate_pcb_text.py …"
+    python3 new-pcb/tools/generate_pcb_text.py | tail -5
+else
+    echo "[1/4] Skipping regeneration (--no-regen)"
+fi
 
 echo ""
 echo "[2/4] Running DRC …"

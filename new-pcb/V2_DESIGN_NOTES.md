@@ -1,8 +1,7 @@
-# v2 PCB — design notes (delivered build)
+# v2 PCB — Design Notes (v3 iteration, delivered)
 
-What's actually shipped in this iteration of `tud-microled-v2.kicad_pcb`.
-Companion to `PCB_DESIGN_PLAN.md` (the spec) and
-`ELECTRICAL_CHARACTERIZATION.md` (the measurement plan).
+What's actually shipped in `tud-microled-v2.kicad_pcb`. Companion to
+`PCB_DESIGN_PLAN.md` (spec) and `ELECTRICAL_CHARACTERIZATION.md` (test plan).
 
 ---
 
@@ -11,55 +10,80 @@ Companion to `PCB_DESIGN_PLAN.md` (the spec) and
 | Check | Result |
 |---|---|
 | KiCad version | 9.0.8 (file format 20241229) |
-| Board dimensions | 100.0 × 80.0 mm, 2-layer FR-4, 1.6 mm |
-| Surface finish | ENIG (recommended) |
-| DRC violations | **0** |
-| Unconnected pads | **0** |
-| Footprint errors | **0** |
-| Footprints placed | 153 |
-| Nets defined | 139 |
-| Net DRC | clean |
+| Board | **100 × 100 mm**, 2-layer FR-4, 1.6 mm |
+| Surface finish | ENIG (Ni 4 µm / Au 0.075 µm) |
+| **DRC violations** | **0** |
+| **Unconnected pads** | **0** |
+| Footprints | ~243 |
+| Nets | ~145 |
+| Designer | **Daniel Tyukov · student no. 5714699 · ET4277 / ET4391** |
 
-Generated procedurally by `tools/generate_pcb_text.py` — fully reproducible.
-Re-run the script any time to regenerate. The script writes the .kicad_pcb
-S-expression directly (bypassing the SWIG bindings, which had several bugs
-during the build).
+Generated procedurally by `tools/generate_pcb_text.py` (fully reproducible).
+Re-run any time to regenerate from scratch.
+
+---
 
 ## What's on the board
 
-### Top half
-- **6 × 6 bond-pad DoE array** at 3.5 mm pitch, centered horizontally.
-  - Rows 1–2: plain square 1×1 mm (control geometry)
-  - Rows 3–4: plain square + 4-corner mini-pads
-  - Rows 5–6: rounded-square (R=50/100/200 µm) + 4-corner mini-pads
-  - Each site is on its own net (`BP_R<r>C<c>_P1`) — probe directly.
+### Front side (F.Cu + F.SilkS)
 
-### Middle (top → bottom)
-- **3 TLM ladders** (W=0.25, 0.5, 1.0 mm), each with 7 fingers swept
-  through contact spacings 5/10/20/50/100/200 µm.
-  - Local pad clearance override of 2 µm so DRC doesn't trip on the
-    µm-scale spacings.
-- **4 Van der Pauw cloverleaves** (arm widths 1.0, 0.5, 0.25, 0.1 mm),
-  arm length scaled to leave > 0.3 mm corner-to-corner gap.
+| Section | Y range | Contents |
+|---|---|---|
+| Title block | 3 – 11 | 3 zones: TUDelft mark / project + version + size / Daniel Tyukov + student no. + course codes |
+| TIER-2 NORTH header | 13.5 | 30 × 2.54 mm PTH pins, **user-jumperable** |
+| DoE BOND-PAD array | 17 – 43 | 6 × 6 isolated test pads at 3.5 mm pitch; plain → +4 minis → rounded; LEGEND box on right |
+| TLM LADDERS | 45 – 58 | 3 banks (W = 0.25 / 0.5 / 1.0 mm) × 7 fingers × spacings 5/10/20/50/100/200 µm |
+| VAN DER PAUW | 59 – 67 | 4 cloverleaves (W = 1.0 / 0.5 / 0.25 / 0.1 mm) |
+| DAISY CHAINS | 68 – 79 | N=6 + N=12 with IN/OUT probe pads |
+| WL-SFCC LEDs | 79.5 – 86.7 | 8 × Würth 0404 super-flat RGB; A bus on B.Cu |
+| TIER-2 SOUTH header | 89 | **32 × 2.54 mm PTH pins, pre-wired to all 32 LED signals** |
+| mm ruler | 93.5 | 0–80 mm with major + minor ticks |
 
-### Lower middle
-- **2 daisy chains** (N=6, N=12). N=24 is deferred to v2.1 because
-  50 × 1.8 mm = 90 mm width competes with the LED row footprint.
-- 4-wire access via 2 probe pads per chain.
+### Back side (B.SilkS)
 
-### South
-- **8 × Würth WL-SFCC 0404 superflat RGB LEDs** (P/N 150044M155220),
-  pitch 10 mm.
-- 4 probe pads per LED (A / KG / KB / KR), spread ±3 mm. Probe order
-  matches the side of the LED pad to avoid trace crossings.
-- **Common anode bus** routed on B.Cu via vias at each anode probe.
+| Section | Y range | Contents |
+|---|---|---|
+| Title block | 3 – 12 | TUDelft mark + project name + date |
+| FABRICATION | 16 – 36 | Stack-up, finish, mask, clearance/trace specs |
+| ASSEMBLY | 38 – 58 | Paste, stencil, bonder, reflow, metrology toolchain |
+| DESIGNER | 60 – 72 | Daniel Tyukov, student #, courses, ECTM + ITEC, prior work attribution |
+| TIER-2 SOUTH PINOUT | 73.5 – 86 | Pin→LED mapping: `1-4 D1, 5-8 D2, ... 29-32 D8` (A, KG, KB, KR) |
 
-### Periphery
-- 4 × 1 mm fiducials at the corners
-- Asymmetric "L" silkscreen at NW for orientation
-- 2 × 30-pin 2.54 mm headers (Tier 2 — solder once, plug into bench fixture)
-- mm ruler on south silkscreen (10 mm major ticks)
-- Title block: "TUD micro-LED v2 / Ahmed Abdelwahab - ECTM + ITEC"
+---
+
+## Routing summary
+
+### South header — pre-wired (F.Cu)
+
+**32 of 32 pins routed.** Each pin → its assigned LED probe pad through a 3-segment
+Manhattan route:
+- Vertical from pin pad → 4-lane horizontal jog → vertical to probe pad
+- 4 horizontal lanes (Y = 87.7 / 87.3 / 86.9 / 86.5 mm) — one per role (A / KG / KB / KR)
+- All on F.Cu, lanes sit in the 2 mm gap between header pad keepout (y > 88.15) and probe pad top (y < 86.135)
+
+**Common-anode B.Cu bus** ties together all 8 LED A-probe pads via vias at each
+A probe, with a horizontal trace on B.Cu at y = 85.5 mm.
+
+### North header — user-jumperable
+
+The 30 north pins are pre-assigned to specific VDP / DC / TLM nets in the
+pin pad's NET field, but **no copper traces are routed** to those targets.
+The user solders a 0.1" header into the holes and runs jumper wires from
+the header pins to the Tier-1 probe pads of whichever structure they want
+to access.
+
+Why not pre-route? Several attempts to route 26 long B.Cu traces from
+2.54 mm-pitch header pins to scattered VDP/DC/TLM contacts (some at sub-mm
+spacing per VDP) introduced unavoidable clearance violations: pin pitch
+(2.54 mm) is barely larger than via diameter + clearance, and the per-VDP
+contact spacing means horizontal jogs collide with adjacent verticals.
+
+Freerouting got 24 of 26 in one run but was inconsistent across runs.
+Manual routing with per-zone fanout reached down to ~46 violations
+(crossings between adjacent pin verticals and horizontals) but never to
+zero. Deferring to v3.1 (4-layer board with B.Cu fanout bus zone).
+
+---
 
 ## Design rules
 
@@ -68,55 +92,66 @@ during the build).
 | Clearance | 0.15 mm |
 | Min track width | 0.15 mm |
 | Default track width | 0.20 mm |
-| Via | 0.6 mm diameter / 0.3 mm drill |
-| Min via | 0.45 mm / 0.20 mm |
+| Via | 0.6 mm Ø / 0.3 mm drill |
+| Min via | 0.45 / 0.20 mm |
 | Min hole | 0.20 mm |
 
-These match standard Eurocircuits 4-class (and JLCPCB 1-2 oz) capability.
+Matches Eurocircuits class-4 capability (and JLCPCB 1-2 oz default).
 
-## What's intentionally not in v2.0
+---
 
-1. **DoE probe pads with routing** — direct probing of the 1×1 mm bond pads is
-   used instead. Routing fan-out to a separate Tier-1 probe strip needs
-   proper 2-layer escape and isn't worth the DRC churn for v2.0.
-2. **N=24 daisy chain** — needs 90 mm width; deferred.
-3. **Tier-3 edge connector** — Tier 2 + Tier 1 cover all immediate needs.
-4. **Schematic** — research test boards traditionally ship PCB-only. The
-   v1 board (`old-pcb/`) had no schematic either.
-5. **Net classes** — single class with above defaults is fine for this design.
-
-## Fabrication outputs (`fab/`)
+## Fab outputs (in `fab/`)
 
 | File | Purpose |
 |---|---|
-| `gerbers/` | Per-layer Gerber files (X2 format) |
-| `gerbers/*.drl` | Excellon drill files (PTH + NPTH) |
-| `tud-microled-v2-gerbers.zip` | Upload this single file to your fab |
-| `tud-microled-v2.step` | 3D model (5.4 MB) for mechanical fit / review |
-| `tud-microled-v2.pdf` | 1.9 MB PDF for design review |
-| `tud-microled-v2-pos.csv` | Pick-and-place position file (mm units) |
-| `tud-microled-v2-bom.csv` | BOM — populated parts only (8 × WL-SFCC) |
-| `preview/board_top.png` | Top render (1600×1280) |
-| `preview/board_bottom.png` | Bottom render (1600×1280) |
+| `gerbers/` | Per-layer Gerber files (X2 format) + drill `.drl` + `.gbrjob` |
+| `tud-microled-v2-gerbers.zip` | **Upload this to Eurocircuits / JLCPCB** |
+| `tud-microled-v2.step` | 3D model for mechanical fit |
+| `tud-microled-v2-top.pdf` | Top-side review PDF (F.Cu + F.Mask + F.SilkS + Edge.Cuts) |
+| `tud-microled-v2-bot.pdf` | Bottom-side review PDF (mirrored, B.Cu + B.Mask + B.SilkS + Edge.Cuts) |
+| `tud-microled-v2-pos.csv` | Pick-and-place position file (mm, both sides) |
+| `tud-microled-v2-bom.csv` | BOM (LEDs + optional headers) |
+| `preview/board_top.png` | 1800×1800 top 3D render |
+| `preview/board_bottom.png` | 1800×1800 bottom 3D render |
 
-## How to fabricate
+---
 
-1. **Upload `fab/tud-microled-v2-gerbers.zip`** to Eurocircuits or JLCPCB.
-2. Order with: 2-layer FR-4, 1.6 mm thick, ENIG finish, black or green mask,
-   white silkscreen.
-3. Order a matching **100 µm laser-cut SS stencil** via Eurocircuits
-   `eC-stencil-mate` (same vendor recommendation as v1).
-4. Total fab cost estimate: ~€40 for 5 boards (Eurocircuits standard).
+## How to use the south header
+
+1. Solder a 32-pin 0.1" male header strip into the south through-holes (5 min).
+2. Plug a 32-pin ribbon cable.
+3. The other end maps as follows:
+
+| Cable wire | Pin | Signal |
+|---:|---:|---|
+| 1 | 1 | `LED_VCC` (D1 A) |
+| 2 | 2 | `LED1_KG` |
+| 3 | 3 | `LED1_KB` |
+| 4 | 4 | `LED1_KR` |
+| 5 | 5 | `LED_VCC` (D2 A — redundant) |
+| 6 | 6 | `LED2_KG` |
+| ⋮ | ⋮ | (pattern repeats for D1…D8) |
+| 32 | 32 | `LED8_KR` |
+
+Every 4-pin block = 1 LED. Pin 1 of each block is anode (= common LED_VCC).
+
+---
 
 ## Iteration log
 
-| Iter | DRC | Notes |
-|---|---|---|
-| v0 (pcbnew SWIG attempt) | 1802 | All pads stacked at (0,0); SetPosition() was absolute, not local |
-| v1 (text format, broken) | n/a | `(plot_on_all_layers_selection 0x0)` invalid; KiCad refused to load |
-| v2 (text format, all nets bad) | n/a | `(net N "name")` in segments invalid; KiCad refused to load |
-| v3 | 269 | Pads correctly placed; routing collided with adjacent bond pads |
-| v4 | 69 | Removed DoE probe pads; daisy chain layout re-jigged |
-| v5 | 17 | Reordered LED probes by side; TLM probe routing dropped |
-| v6 | 0 (with 23 unconnected) | TLM pads got local clearance override; silk text moved |
-| **v7** | **0 / 0** | Mini-pads overlap main pad; common-anode bus on B.Cu via vias |
+| Iter | DRC | Highlight |
+|---|---:|---|
+| 8 (first routing attempt) | 1802 | Pad SetPosition() bug — all pads stacked at (0,0) |
+| ... | ... | (geometric layout convergence) |
+| 16 (south routing v2) | 0 | South pre-wired D1–D7, north user-jumperable |
+| 19 (silkscreen polish) | 0 | TIER-2 SOUTH PINOUT box on back, all 8 LEDs documented |
+| 22-25 (north routing attempts) | 46–293 | Tried manual + freerouting; both hit fundamental geometric limits |
+| **27 (delivered)** | **0** | South to D1-D8 (32 pins), north user-jumperable, all silkscreen polished |
+
+---
+
+## What's NOT in this build
+
+- North header pre-routed traces — see "Routing summary" above
+- Schematic — research test boards traditionally ship PCB-only; can be
+  added in a future iteration by reverse-engineering the placement script
