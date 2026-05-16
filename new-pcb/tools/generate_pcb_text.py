@@ -537,6 +537,77 @@ def led_footprint(ref: str, cx: float, cy: float, anode: Net, k_r: Net, k_b: Net
     return emit_footprint(ref, cx, cy, pads, library_id="WL-SFCC_0404")
 
 
+# WL-SFCC LED chain pitch. With body 0.95 mm + clearance, 2.5 mm pitch
+# leaves a 1.55 mm gap between bodies → comfortable inter-LED trace + reflow
+# void evacuation. Tighter than the original DC_PITCH (1.8 mm) is unsafe
+# because the LED body is wider than the 1 mm² dummy-die pad.
+LED_CHAIN_PITCH = 2.5
+
+
+def led_chain_footprints(
+    ref_prefix: str,
+    cx: float,
+    cy: float,
+    n_leds: int,
+    nm: "NetManager",
+    pitch: float = LED_CHAIN_PITCH,
+) -> tuple[list[str], "Net", "Net", list[str], float, float]:
+    """N WL-SFCC 0404 LEDs in a horizontal row centred at (cx, cy), wired
+    in series via the RED diode chain only:
+
+        IN+ → LED1.A → R-diode → LED1.K_R → [inter-LED trace] → LED2.A → ...
+              ... → LED_N.K_R → OUT−
+
+    Each LED forward-biases via its red die under chain current. The chain
+    tests 2N bonds (one A bond + one K_R bond per LED). A single failed
+    bond opens the chain.
+
+    The green (K_G) and blue (K_B) cathode pads of each LED are bonded
+    during reflow (they receive solder paste from the stencil) and are
+    given UNIQUE per-LED nets — this keeps them out of any electrical
+    short with the chain, leaves them probe-accessible directly on the
+    LED pad, and is recognised as a 1-pad net by DRC (no unconnected-pad
+    warning).
+
+    Returns (footprints, in_net, out_net, segments, chain_left_x, chain_right_x).
+    `chain_left_x` is the X of LED_1.A pad centre, `chain_right_x` is the X of
+    LED_N.K_R pad centre — used by the caller to land IN/OUT probe traces.
+    """
+    in_net = nm.get(f"{ref_prefix}_IN")
+    out_net = nm.get(f"{ref_prefix}_OUT")
+
+    width = (n_leds - 1) * pitch
+    x0 = cx - width / 2  # X of first LED's centre
+
+    fps: list[str] = []
+    segments: list[str] = []
+
+    for i in range(n_leds):
+        x = x0 + i * pitch
+        ref = f"{ref_prefix}_L{i + 1}"
+        # Anode: chain IN for first LED, junction-with-previous otherwise
+        a_net = in_net if i == 0 else nm.get(f"{ref_prefix}_J{i}")
+        # K_R: chain OUT for last LED, junction-with-next otherwise
+        k_r_net = out_net if i == n_leds - 1 else nm.get(f"{ref_prefix}_J{i + 1}")
+        # K_G and K_B: per-LED isolated nets (intentionally not on the chain;
+        # accessible only via manual probing directly on the LED pad).
+        k_g_net = nm.get(f"{ref_prefix}_L{i + 1}_KG")
+        k_b_net = nm.get(f"{ref_prefix}_L{i + 1}_KB")
+        fps.append(led_footprint(ref, x, cy, a_net, k_r_net, k_b_net, k_g_net))
+        # Inter-LED trace on F.Cu: from K_R of THIS LED to A of NEXT LED.
+        # Both pads are at the "top" row (y = cy − 0.4) of their respective
+        # footprints, so the trace is a single horizontal segment.
+        if i < n_leds - 1:
+            x_kr_here = x + 0.4
+            x_a_next = x + pitch - 0.4
+            y_trace = cy - 0.4
+            segments.append(emit_track(x_kr_here, y_trace, x_a_next, y_trace, k_r_net))
+
+    chain_left_x = x0 - 0.4                                 # LED_1.A pad centre
+    chain_right_x = x0 + (n_leds - 1) * pitch + 0.4         # LED_N.K_R pad centre
+    return fps, in_net, out_net, segments, chain_left_x, chain_right_x
+
+
 # ---------------------------------------------------------------------------
 # Composition: all footprints + silkscreen for the v2 board
 # ---------------------------------------------------------------------------
@@ -779,12 +850,16 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
             vdp_targets.append((f"VDP_W{w}_{i}", net, x_c + dx, ROW_VDP + dy))
 
     # =====================================================================
-    # DAISY CHAINS — n bond joints in series
+    # LED DAISY CHAINS — N WL-SFCC LEDs in series via RED chain (A → K_R).
+    # Replaces the original dummy-die ladders (we only have LED inventory,
+    # not Si dummy dies). Each chain tests 2N bonds; failure of any one
+    # opens the chain. K_G / K_B pads are bonded but isolated per-LED,
+    # accessible via manual probing on the LED pad.
     # =====================================================================
     dc_box_y0 = 68.0
     dc_box_y1 = 77.5
     drawings.append(emit_silk_rect(3.5, dc_box_y0, BOARD_W - 3.5, dc_box_y1, width=0.15))
-    drawings.append(emit_silk_text("DAISY CHAINS",
+    drawings.append(emit_silk_text("LED DAISY CHAINS",
                                    BOARD_W/2, dc_box_y0 + 1.5,
                                    size=1.2, justify="center", bold=True))
     dc_layouts = [
@@ -792,27 +867,31 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         (12, 70.0, ROW_DAISY),
     ]
     for n, x_c, y_c in dc_layouts:
-        fp_str, in_net, out_net = daisy_chain_footprint(f"DC_N{n}", x_c, y_c, n, nm)
-        fps.append(fp_str)
-        drawings.append(emit_silk_text(f"DC  N = {n}  dies", x_c, y_c - 2.0,
+        fp_list, in_net, out_net, chain_segs, chain_left_x, chain_right_x = \
+            led_chain_footprints(f"DCL{n}", x_c, y_c, n, nm)
+        fps.extend(fp_list)
+        segments.extend(chain_segs)
+        drawings.append(emit_silk_text(f"DC-R  N = {n}  LEDs", x_c, y_c - 2.0,
                                        size=1.0, justify="center", bold=True))
-        chain_w = (2 * n + 1) * DC_PITCH
-        chain_in_x = x_c - chain_w/2
-        chain_out_x = x_c + chain_w/2
-        in_x = max(EDGE_MARGIN + PROBE_PAD/2 + 0.5, chain_in_x - 2.0)
-        out_x = min(BOARD_W - EDGE_MARGIN - PROBE_PAD/2 - 0.5, chain_out_x + 2.0)
+        # IN/OUT probe pads. Place them just outside the chain endpoints,
+        # honouring board-edge margins.
+        in_x = max(EDGE_MARGIN + PROBE_PAD/2 + 0.5, chain_left_x - 2.0)
+        out_x = min(BOARD_W - EDGE_MARGIN - PROBE_PAD/2 - 0.5, chain_right_x + 2.0)
         probe_y = y_c + 3.5
-        fps.append(probe_pad_footprint(f"PP_DC{n}_IN", in_x, probe_y, in_net))
-        fps.append(probe_pad_footprint(f"PP_DC{n}_OUT", out_x, probe_y, out_net))
-        # Labels ABOVE the probe pads (below would overlap DC section frame at y=78)
+        fps.append(probe_pad_footprint(f"PP_DCL{n}_IN", in_x, probe_y, in_net))
+        fps.append(probe_pad_footprint(f"PP_DCL{n}_OUT", out_x, probe_y, out_net))
+        # IN/OUT labels above the probe pads (below would clash with DC frame)
         drawings.append(emit_silk_text("IN", in_x, probe_y - 1.1, size=0.7, justify="center"))
         drawings.append(emit_silk_text("OUT", out_x, probe_y - 1.1, size=0.7, justify="center"))
-        dc_targets.append((f"DC_N{n}_IN", in_net, in_x, probe_y))
-        dc_targets.append((f"DC_N{n}_OUT", out_net, out_x, probe_y))
-        segments.append(emit_track(in_x, probe_y, in_x, y_c, in_net))
-        segments.append(emit_track(in_x, y_c, chain_in_x, y_c, in_net))
-        segments.append(emit_track(out_x, probe_y, out_x, y_c, out_net))
-        segments.append(emit_track(out_x, y_c, chain_out_x, y_c, out_net))
+        dc_targets.append((f"DCL{n}_IN", in_net, in_x, probe_y))
+        dc_targets.append((f"DCL{n}_OUT", out_net, out_x, probe_y))
+        # Route IN probe → LED_1.A pad. The chain trace row is at y_c - 0.4
+        # (top row of LED footprints, where both A and K_R pads sit).
+        chain_lead_y = y_c - 0.4
+        segments.append(emit_track(in_x, probe_y, in_x, chain_lead_y, in_net))
+        segments.append(emit_track(in_x, chain_lead_y, chain_left_x, chain_lead_y, in_net))
+        segments.append(emit_track(out_x, probe_y, out_x, chain_lead_y, out_net))
+        segments.append(emit_track(out_x, chain_lead_y, chain_right_x, chain_lead_y, out_net))
 
     # =====================================================================
     # LED ROW — 8 × Würth WL-SFCC 0404 super-flat RGB LEDs
@@ -1179,7 +1258,7 @@ def _emit_back_side_silk(drawings: list, south_assignments=None, north_assignmen
             "DoE  -  6 x 6 isolated bond pads",
             "TLM  -  contact-resistivity ladder",
             "VDP  -  Van der Pauw cloverleaf",
-            "DC   -  daisy chain (N joints)",
+            "DC-R  -  LED chain N in series (RED)",
             "D1..D8  +  PP-*  -  LEDs and probes",
         ]):
             drawings.append(emit_silk_text(ln, cx, key_y0 + 3.8 + i * 1.55,

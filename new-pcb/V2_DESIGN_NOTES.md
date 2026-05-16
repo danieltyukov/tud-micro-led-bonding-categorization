@@ -12,10 +12,10 @@ What's actually shipped in `tud-microled-v2.kicad_pcb`. Companion to
 | KiCad version | 9.0.8 (file format 20241229) |
 | Board | **100 × 100 mm**, 2-layer FR-4, 1.6 mm |
 | Surface finish | ENIG (Ni 4 µm / Au 0.075 µm) |
-| **DRC violations** | **0** |
+| **DRC violations** | **1 silk-over-copper warning** (pre-existing, LED frame top edge vs adjacent text bbox — cosmetic only, no fab impact) |
 | **Unconnected pads** | **0** |
-| Footprints | ~243 |
-| Nets | ~145 |
+| Footprints | 187 (incl. 26 WL-SFCC LEDs: D1-D8 + 18 chain LEDs) |
+| Nets | ~180 |
 | Designer | **Daniel Tyukov · student no. 5714699 · ET4277 / ET4391** |
 
 Generated procedurally by `tools/generate_pcb_text.py` (fully reproducible).
@@ -34,7 +34,7 @@ Re-run any time to regenerate from scratch.
 | DoE BOND-PAD array | 17 – 43 | 6 × 6 isolated test pads at 3.5 mm pitch; plain → +4 minis → rounded; LEGEND box on right |
 | TLM LADDERS | 45 – 58 | 3 banks (W = 0.25 / 0.5 / 1.0 mm) × 7 fingers × spacings 5/10/20/50/100/200 µm |
 | VAN DER PAUW | 59 – 67 | 4 cloverleaves (W = 1.0 / 0.5 / 0.25 / 0.1 mm) |
-| DAISY CHAINS | 68 – 79 | N=6 + N=12 with IN/OUT probe pads |
+| LED DAISY CHAINS | 68 – 77.5 | N=6 + N=12 WL-SFCC LEDs in series via RED chain (A → K_R). 2N bonds tested per chain. K_G / K_B isolated per-LED (probe directly on pad). IN/OUT probe pads at each chain end. |
 | WL-SFCC LEDs | 79.5 – 86.7 | 8 × Würth 0404 super-flat RGB; A bus on B.Cu |
 | TIER-2 SOUTH header | 89 | **32 × 2.54 mm PTH pins, pre-wired to all 32 LED signals** |
 | mm ruler | 93.5 | 0–80 mm with major + minor ticks |
@@ -96,7 +96,7 @@ zero. Deferring to v3.1 (4-layer board with B.Cu fanout bus zone).
 | Min via | 0.45 / 0.20 mm |
 | Min hole | 0.20 mm |
 
-Matches Eurocircuits class-4 capability (and JLCPCB 1-2 oz default).
+Matches Aisler standard pool and Eurocircuits class-4 capability.
 
 ---
 
@@ -105,7 +105,7 @@ Matches Eurocircuits class-4 capability (and JLCPCB 1-2 oz default).
 | File | Purpose |
 |---|---|
 | `gerbers/` | Per-layer Gerber files (X2 format) + drill `.drl` + `.gbrjob` |
-| `tud-microled-v2-gerbers.zip` | **Upload this to Eurocircuits / JLCPCB** |
+| `tud-microled-v2-gerbers.zip` | Gerber bundle — Aisler accepts the native `.kicad_pcb` so this is only needed if falling back to Eurocircuits |
 | `tud-microled-v2.step` | 3D model for mechanical fit |
 | `tud-microled-v2-top.pdf` | Top-side review PDF (F.Cu + F.Mask + F.SilkS + Edge.Cuts) |
 | `tud-microled-v2-bot.pdf` | Bottom-side review PDF (mirrored, B.Cu + B.Mask + B.SilkS + Edge.Cuts) |
@@ -146,7 +146,8 @@ Every 4-pin block = 1 LED. Pin 1 of each block is anode (= common LED_VCC).
 | 16 (south routing v2) | 0 | South pre-wired D1–D7, north user-jumperable |
 | 19 (silkscreen polish) | 0 | TIER-2 SOUTH PINOUT box on back, all 8 LEDs documented |
 | 22-25 (north routing attempts) | 46–293 | Tried manual + freerouting; both hit fundamental geometric limits |
-| **27 (delivered)** | **0** | South to D1-D8 (32 pins), north user-jumperable, all silkscreen polished |
+| 27 | 0 | South to D1-D8 (32 pins), north user-jumperable, silkscreen polished |
+| **28 (delivered)** | **1 cosmetic warning** | Dummy-die daisy chains replaced with WL-SFCC LED chains (N=6 + N=12, R-series) — uses available LED inventory instead of unavailable Si dummy dies |
 
 ---
 
