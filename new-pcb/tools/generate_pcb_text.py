@@ -1273,9 +1273,10 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # and between roles the vertical drops at each pin's X / target's X
     # never cross another role's horizontal.
     # Lane Ys MUST sit between the south header pad keepout (y > 84.15) and
-    # the LED probe pad top (y < 81.635). 4 lanes at 0.4 mm spacing fit in
-    # the 2.5 mm gap with comfortable margin both ways.
-    role_to_lane_y = {"A": 83.6, "KG": 83.2, "KB": 82.8, "KR": 82.4}
+    # the LED probe pad top (y < 81.635). 4 lanes at 0.5 mm pitch give a
+    # 0.30 mm edge-to-edge gap (2× Aisler std-pool min of 0.15 mm), 0.30 mm
+    # to pin pad, 0.515 mm to probe pad — all comfortably above DRC min.
+    role_to_lane_y = {"A": 83.75, "KG": 83.25, "KB": 82.75, "KR": 82.25}
     for idx, label, net, tx, ty in south_assignments:
         px = pin_x(idx)
         py = ROW_SOUTH_HEADER

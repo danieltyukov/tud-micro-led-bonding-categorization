@@ -79,15 +79,10 @@ FOOTPRINT_TO_PART = {
 def read_pos():
     """Yield (ref, val, footprint, pos_x, pos_y, rot, side) per component."""
     with open(POS) as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            parts = line.split()
-            if len(parts) < 7:
-                continue
-            # KiCad pos format: Ref Val Package PosX PosY Rot Side
-            yield (parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6])
+        reader = csv.DictReader(f)
+        for row in reader:
+            yield (row["Ref"], row["Val"], row["Package"],
+                   row["PosX"], row["PosY"], row["Rot"], row["Side"])
 
 
 def main() -> int:
