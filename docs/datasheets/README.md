@@ -1,99 +1,80 @@
 # Component Datasheets — v4.0 PCB
 
-All components on the TUD micro-LED v4.0 PCB, with manufacturer datasheets.
-LEDs are bonded by the customer in cleanroom; **all other components are
+All 4 components on the TUD micro-LED v4.0 PCB, with manufacturer datasheets
+verified by inspecting file content (not just file name).
+
+**LEDs are bonded by the customer in cleanroom; all other components are
 pre-assembled by the fab house (Aisler / Eurocircuits).**
 
 ---
 
-## Files in this folder
+## Datasheets in this folder — VERIFIED
 
-| File | Component | Where on PCB | Qty per board |
-|---|---|---|---|
-| `Wurth-WL-SFCC-0404-RGB-LED-150044M155220.pdf` | Würth WL-SFCC 0404 superflat RGB LED, P/N 150044M155220 | D1-D8 + DCL6_L1..6 + DCL12_L1..12 | **26** (DNP — bonded in cleanroom) |
-| `Vishay-TNPV-Series-Precision-Thin-Film-Resistor-63080.pdf` | Vishay TNPV thin-film 0603 precision resistor series; use `TNPV0603100RBEEN` (100 Ω, ±0.1 %, 25 ppm/°C) | EIS_LOAD (between PP_EIS_LOAD_A and PP_EIS_LOAD_B) | **1** (pre-assembled) |
-| `Wurth-WR-PHD-2.54mm-PinHeader-61301021121.pdf` | Würth WR-PHD 1×40 male pin header, 2.54 mm pitch, vertical THT, P/N 61301021121 | H_N_1..32 + H_S_1..32 | **64** total (= 2 strips, 32 pins each, pre-assembled) |
-| `Murata-NCP15XH103J03RC-NTC.pdf` | **MANUAL DOWNLOAD REQUIRED** — see §"NTC datasheet" below | TH1, TH2, TH3, TH4 | **4** (pre-assembled) |
-
----
-
-## NTC datasheet — manual fetch instructions
-
-Murata's datasheet servers gate PDF downloads behind Cloudflare anti-bot.
-Auto-download from `curl` always returns an HTML challenge page. Pick **one**
-of these manual paths:
-
-### Option A — Mouser (recommended, no login)
-
-1. Open https://www.mouser.com/ProductDetail/81-NCP15XH103J03RC
-2. Click the "Datasheet" link near the part number → opens PDF in browser
-3. Save as `docs/datasheets/Murata-NCP15XH103J03RC-NTC.pdf`
-
-### Option B — LCSC (LCSC C5316)
-
-1. Open https://www.lcsc.com/product-detail/_C5316.html
-2. Click "Datasheet" tab → download
-3. Save to `docs/datasheets/Murata-NCP15XH103J03RC-NTC.pdf`
-
-### Option C — Murata directly (requires login)
-
-1. Open https://www.murata.com/en-eu/products/productdetail?partno=NCP15XH103J03RC
-2. Log in if prompted; click "Specifications PDF"
-
-### Option D — Use a browser-copy curl one-liner from this terminal
-
-Once you have a working download URL from your browser's network inspector,
-paste it here as:
-
-```bash
-! curl -L -o docs/datasheets/Murata-NCP15XH103J03RC-NTC.pdf '<PASTE URL HERE>'
-```
-
-The `!` prefix runs the command in this Claude session so the file lands in
-the right folder without context-switching.
+| File | Component | Where on PCB | Qty | Verified content |
+|---|---|---|---|---|
+| `Wurth-WL-SFCC-0404-RGB-LED-150044M155220.pdf` | Würth WL-SFCC 0404 superflat RGB LED, P/N 150044M155220 — **SMD 4-pad, 0.95×0.95 mm** | D1-D8 + DCL6_L1..6 + DCL12_L1..12 | **26** (DNP — bonded in cleanroom) | ✅ "WL-SFCC SMT Full-color Chip LED compact" — matches |
+| `Murata-NCP15XH103J03RC-NTC-R44E.pdf` | Murata NCP15 series NTC thermistor — **SMD 0402**, 10 kΩ ±5 %, B25/85 = 3380 K | TH1, TH2, TH3, TH4 | **4** (pre-assembled) | ✅ "NTC Thermistors" — R44E catalog covering NCP15 series |
+| `Vishay-Dale-TNPW0603-Thin-Film-Resistor-28758.pdf` | Vishay Dale TNPW0603 thin-film 0.1% precision resistor — use `TNPW0603100RBEEA` (100 Ω, ±0.1 %) — **SMD 0603** | EIS_LOAD (between PP_EIS_LOAD_A and PP_EIS_LOAD_B) | **1** (pre-assembled) | ✅ "TNPW e3 - High Stability Thin Film Flat Chip Resistors" — matches |
+| `Wurth-WR-PHD-2.54mm-PinHeader-61301021121.pdf` | Würth WR-PHD 1×40 male pin header, 2.54 mm pitch, vertical THT, P/N 61301021121 | H_N_1..32 + H_S_1..32 | **64** total (= 2 strips × 32 pins, pre-assembled) | ✅ matches |
 
 ---
 
-## Key NTC specs (for reference until PDF is on file)
+## Final BOM (pre-assembled by fab)
 
-| Parameter | Value |
-|---|---|
-| Manufacturer P/N | Murata `NCP15XH103J03RC` |
-| Package | 0402 SMD (1.0 × 0.5 × 0.5 mm) |
-| Resistance @ 25 °C | 10 kΩ ±5 % |
-| B25/85 constant | 3380 K ±1 % |
-| Operating range | −40 °C to +125 °C |
-| Temperature accuracy (with B-curve cal) | ±0.3 °C between 0–70 °C |
-| Power dissipation max | 100 mW (at 25 °C ambient) |
-| Beta material constant | 3380 K |
-| Recommended sense current | 100 µA (self-heating < 0.01 °C at I_sense × R = 1 V) |
+| Designator(s) | Qty | Manufacturer P/N | Distributor codes |
+|---|---:|---|---|
+| TH1–TH4 | 4 | Murata `NCP15XH103J03RC` | Mouser 81-NCP15XH103J03RC · LCSC C5316 · DigiKey 490-2436-1-ND |
+| EIS_LOAD | 1 | Vishay Dale `TNPW0603100RBEEA` | DigiKey 541-100ARTR-ND · Mouser 71-TNPW0603100RBEEA |
+| H_N_1..32 + H_S_1..32 | 64 | Würth `61301021121` (cut from 1×40 strips) | LCSC C124378 |
+| D1..D8 + DCL6_L1..6 + DCL12_L1..12 | 26 | Würth `150044M155220` | **DNP — bonded in cleanroom by customer** |
 
-### NTC R-T equation (for V_F-TSP calibration)
+---
+
+## Component summary
+
+### Würth WL-SFCC 0404 RGB LED — SMD
+- 0.95 × 0.95 × 0.25 mm body, 4 contact pads at corners
+- Common anode (pin 1) + 3 cathodes (R/G/B = pins 2/3/4)
+- V_F red ≈ 2.05 V, green/blue ≈ 3.05 V (at 10 mA)
+- Datasheet pp 1-10, fully covers electrical / optical / mechanical / reflow
+
+### Murata NCP15XH103J03RC NTC thermistor — SMD 0402
+- 1.0 × 0.5 mm body, 2 SMD pads at ±0.5 mm pitch
+- R(25°C) = 10 kΩ ±5 %, B25/85 = 3380 K ±1 %
+- Operating range −40 °C to +125 °C
+- ±0.3 °C accuracy with B-curve calibration (0–70 °C range)
+- Recommended sense current ≤ 100 µA (self-heating < 0.01 °C)
+- Datasheet is the full R44E catalog (25 pages, covers NCP15 series + larger)
+
+### Vishay TNPW0603100RBEEA precision resistor — SMD 0603
+- 1.6 × 0.8 mm body, thin-film
+- 100 Ω, ±0.1 % tolerance, 25 ppm/°C TCR
+- AEC-Q200 qualified, PFAS-free
+- |ΔR/R| < 0.1 % under 85 °C / 85 % RH / 1000 h moisture
+- TNPW series datasheet covers all values; the BEEA suffix specifies 100 Ω, ±0.1 %, BEE size code
+
+### Würth WR-PHD pin header — through-hole, 2.54 mm pitch
+- Single-row male, vertical THT
+- 1.0 mm drill, 1.7 mm pad
+- 1×40 strip — order 2 strips, fab cuts to 32 pins per row
+
+---
+
+## NTC R-T equation (for V_F-TSP calibration)
 
   T(K) = 1 / [ (1/T₀) + (1/B) · ln(R / R₀) ]
 
-with T₀ = 298.15 K, R₀ = 10 000 Ω, B = 3380 K.
-
-Tabulated R(T) values for typical room-temp range:
-
-| T (°C) | R (Ω) |
-|---:|---:|
-| 0 | 27 580 |
-| 25 | 10 000 |
-| 50 | 3 893 |
-| 75 | 1 615 |
-| 100 | 705 |
-
-For higher-precision applications use Murata's 5-parameter Steinhart-Hart fit
-(in the datasheet) — but the simple B-formula above is within ±0.5 °C for
-0–80 °C, plenty for bond thermal characterization.
+with T₀ = 298.15 K, R₀ = 10 000 Ω, B = 3380 K. See `VERIFICATION_v4.md` §6.2 for the full thermal-resistance test procedure.
 
 ---
 
-## Alternative parts (if anything is out of stock)
+## Alternative SMD parts (in case of stock issues)
 
-| Original | Equivalent | Notes |
+All drop-in compatible with the existing v4 footprints:
+
+| Slot | Original | Alternative |
 |---|---|---|
-| Murata NCP15XH103J03RC | Vishay NTCS0402E3103FXT, TDK B57441V2103H062 | All 10 kΩ ±1% 0402 NTCs with B≈3380 K |
-| Vishay TNPV0603100RBEEN | Susumu RR0816P-101-D, Yageo RT0603BRD07100RL | All 100 Ω ±0.1% 0603 thin-film |
-| Würth 61301021121 | Generic 1×40 male 2.54 mm THT strip (any brand) | Cut to 32 pins per row |
+| NTC 0402 | Murata NCP15XH103J03RC | TDK NTCG104EH103HT1 · TE/Panasonic ERTJ1VR103J |
+| Load R 0603 | Vishay TNPW0603100RBEEA | Yageo RT0603BRD07100RL · Susumu RR0816P-101-D · Bourns CRT0603-BY-1000ELF |
+| Header 2.54mm | Würth 61301021121 | Any single-row male 2.54 mm THT strip (CNC Tech, TE, Molex, etc.) |
+| RGB LED 0404 | Würth 150044M155220 | **Do not substitute** — your study is specifically on this device |

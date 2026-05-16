@@ -727,25 +727,32 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     north_x0 = (BOARD_W - north_total_w) / 2
     south_x0 = (BOARD_W - south_total_w) / 2
 
-    # ───── NORTH header pre-routing: 4 pins → LED-chain probe endpoints ─────
-    # Pre-create the chain nets here (before the chain footprints, which call
-    # nm.get() with the same names — NetManager dedupes by name) so we can
-    # assign them to specific north pins at pad creation. Pin selection chosen
-    # so that each pin's vertical path is collision-free below (DoE / TLM /
-    # VDP / chain LEDs), with the closest pin x to each chain probe:
+    # ───── NORTH header pre-routing — 8 pins total ─────
+    # 4 pins → LED-chain endpoints (F.Cu routed; see chain_routes below)
+    # 4 pins → NTC signal lines  (B.Cu routed; see ntc_routes below)
+    # The remaining 24 north pins are user-jumperable.
+    #
+    # NetManager dedupes by name, so pre-creating the chain + NTC nets here
+    # (before the DC chain and NTC sections which also call nm.get()) is safe.
     NORTH_CHAIN_PIN_NETS = {
          3: nm.get("DCL6_IN"),
         10: nm.get("DCL6_OUT"),
         19: nm.get("DCL12_IN"),
         32: nm.get("DCL12_OUT"),
     }
+    NORTH_NTC_PIN_NETS = {
+         5: nm.get("NTC1"),   # x=17.29 → PP_NTC1 at x=17.5 (jog 0.21 mm)
+        13: nm.get("NTC2"),   # x=37.61 → PP_NTC2 at x=37.5 (jog 0.11 mm)
+        21: nm.get("NTC3"),   # x=57.93 → PP_NTC3 at x=57.5 (jog 0.43 mm)
+        29: nm.get("NTC4"),   # x=78.25 → PP_NTC4 at x=77.5 (jog 0.75 mm)
+    }
+    NORTH_PIN_NETS = {**NORTH_CHAIN_PIN_NETS, **NORTH_NTC_PIN_NETS}
 
     for i in range(n_pins_north):
         xh = north_x0 + i * 2.54
         pin_idx = i + 1
-        # Pin 1, 10, 22, 30 are pre-wired to chain endpoints below; the other
-        # 26 stay user-jumperable (pad net = none).
-        pin_net = NORTH_CHAIN_PIN_NETS.get(pin_idx)
+        # Pins 3/10/19/32 and 5/13/21/29 are pre-wired; others jumperable.
+        pin_net = NORTH_PIN_NETS.get(pin_idx)
         fps.append(th_header_footprint(f"H_N_{pin_idx}", xh, ROW_NORTH_HEADER, net=pin_net))
     for i in range(n_pins_south):
         xh = south_x0 + i * 2.54
@@ -754,7 +761,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # Section labels
     # Single-line caption — fits in the 2.4mm strip between silk circle
     # bottoms (y=14.6) and DoE frame top (y=17).
-    drawings.append(emit_silk_text("NORTH 32-pin  -  O = pre-wired LED chain (others jumperable)",
+    drawings.append(emit_silk_text("NORTH 32-pin  -  O = pre-wired (4 LED chain + 4 NTC), others jumperable",
                                    BOARD_W/2, ROW_NORTH_HEADER + 2.2,
                                    size=0.5, justify="center"))
 
@@ -829,17 +836,19 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     #         precision 100 Ohm 0.1% 0603 (e.g., Vishay      reference
     #         TNPV0603100RBEEN) — see VERIFICATION doc.
     # =====================================================================
-    ecal_y0 = leg_y1 + 1.0                  # 1mm gap below LEGEND box
-    ecal_y1 = DOE_ORIGIN_Y + 5 * DOE_PITCH + 1.5
+    # Box height sized to match content (was 12mm with ~7mm dead space at the
+    # bottom; now 9mm, content vertically centred).
+    ecal_y0 = leg_y1 + 1.0
+    ecal_y1 = ecal_y0 + 9.0
     ecal_cx = leg_cx                        # share centre line with LEGEND
     drawings.append(emit_silk_rect(leg_x0, ecal_y0, leg_x1, ecal_y1, width=0.15))
-    drawings.append(emit_silk_text("EIS CAL", ecal_cx, ecal_y0 + 1.3,
-                                   size=0.85, justify="center", bold=True))
+    drawings.append(emit_silk_text("EIS CAL", ecal_cx, ecal_y0 + 1.4,
+                                   size=0.95, justify="center", bold=True))
     drawings.append(emit_silk_text(
         "calibrate LCR meter before EIS Nyquist sweep",
-        ecal_cx, ecal_y0 + 2.7, size=0.5, justify="center"))
+        ecal_cx, ecal_y0 + 2.8, size=0.55, justify="center"))
 
-    # Probe-pad row — centred horizontally within the cal box
+    # Probe-pad row — centred horizontally + vertically within the cal box
     cal_row_y = ecal_y0 + 5.0
     OPEN_PITCH  = 3.0
     SHORT_PITCH = 3.0
@@ -883,13 +892,13 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
                                    nm.get("EIS_LOAD_B")))
 
     # Labels just below the pads (between pad bottom edge and box bottom)
-    label_y = cal_row_y + 1.4
+    label_y = cal_row_y + 1.5
     drawings.append(emit_silk_text("OPEN",  (open_a_x  + open_b_x)  / 2, label_y,
-                                   size=0.55, justify="center"))
+                                   size=0.6, justify="center"))
     drawings.append(emit_silk_text("SHORT", (short_a_x + short_b_x) / 2, label_y,
-                                   size=0.55, justify="center"))
+                                   size=0.6, justify="center"))
     drawings.append(emit_silk_text("100R LOAD", (load_a_x + load_b_x) / 2, label_y,
-                                   size=0.55, justify="center"))
+                                   size=0.6, justify="center"))
 
     # --- DoE probe pads ------------------------------------------------
     # IMPORTANT: each DoE bond pad is 1×1 mm, large enough to probe DIRECTLY
@@ -1250,11 +1259,42 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
             segments.append(emit_track(pin_x_val, detour_y, tx, detour_y, net))
             segments.append(emit_track(tx, detour_y, tx, ty, net))
         # Silk circle around the pin pad — visual cue that this pin is
-        # pre-wired (vs the 28 user-jumperable neighbours). Radius 1.1mm
-        # sits 0.25mm outside the 1.7mm pad mask opening.
+        # pre-wired (vs the user-jumperable neighbours).
         drawings.append(emit_silk_circle(pin_x_val, ROW_NORTH_HEADER,
                                          radius=1.1, width=0.2))
         north_assignments.append((pin_idx, label, net, tx, ty))
+
+    # ------- NTC routing: 4 pins → 4 NTC probe pads on B.Cu --------------
+    # B.Cu chosen because:
+    #   (a) F.Cu vertical at NTC target X would cross chain inter-LED traces
+    #       at y=69.6 (e.g. x=17.5 hits LED2-LED3 of N=6 chain inter-LED)
+    #   (b) B.Cu has only the GND pour, which auto-clears around tracks
+    #   (c) Pin pads are THT so accessible from both layers — no extra via
+    #       needed at the pin end
+    # Each route: B.Cu vertical pin→y=75, via to F.Cu, F.Cu Manhattan jog
+    # to the PP_NTC pad at (target_x, 76.8).
+    ntc_routes = [
+        # (pin_idx, PP_NTC target_x, label for back-side silk)
+        ( 5, 17.5, "NTC1"),
+        (13, 37.5, "NTC2"),
+        (21, 57.5, "NTC3"),
+        (29, 77.5, "NTC4"),
+    ]
+    for pin_idx, target_x, label in ntc_routes:
+        pin_x_val = north_x0 + (pin_idx - 1) * pin_pitch
+        net = NORTH_NTC_PIN_NETS[pin_idx]
+        # B.Cu vertical from pin pad down to (pin_x, 75)
+        segments.append(emit_track(pin_x_val, ROW_NORTH_HEADER, pin_x_val, 75.0,
+                                   net, layer="B.Cu"))
+        # Via to F.Cu at (pin_x, 75)
+        segments.append(emit_via(pin_x_val, 75.0, net))
+        # F.Cu Manhattan jog to PP_NTC pad
+        segments.append(emit_track(pin_x_val, 75.0, target_x, 75.0, net))
+        segments.append(emit_track(target_x, 75.0, target_x, 76.8, net))
+        # Silk circle marker on north header (same style as chain pins)
+        drawings.append(emit_silk_circle(pin_x_val, ROW_NORTH_HEADER,
+                                         radius=1.1, width=0.2))
+        north_assignments.append((pin_idx, label, net, target_x, 76.8))
 
     # ------- Silkscreen pin numbers (every 5th pin + endpoints) ---------
     # 2.54 mm pitch is too tight for per-pin labels. Major labels only at
