@@ -973,9 +973,13 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # Scope clarification (LED-only study): VDP needs a sample bridging all 4
     # contacts to function as a sheet-R extractor. Without a sample, use as a
     # bare-ENIG 4-probe sheet-R QC per fab batch.
+    # Single combined line: use case + per-position identification. The
+    # cloverleaves at x = 15 / 38 / 62 / 83 have widths 1.0 / 0.5 / 0.25
+    # / 0.15 mm respectively — without this line the user cannot tell
+    # which cloverleaf is which from the board alone.
     drawings.append(emit_silk_text(
-        "use:  bare-ENIG sheet-R QC  (4-probe per cloverleaf, no LED bond)",
-        BOARD_W/2, vdp_box_y1 - 1.0, size=0.55, justify="center"))
+        "bare-ENIG QC  |  L→R sizes:  W=1.0 / 0.5 / 0.25 / 0.15 mm",
+        BOARD_W/2, vdp_box_y1 - 1.0, size=0.5, justify="center"))
     # v4.0.6 fix: smallest VDP changed from W=0.1 → W=0.15. Rationale:
     #   (a) 100 µm pads are below Aisler-ENIG reliable plating min (~150 µm)
     #   (b) at the original x=85, W=0.1 right contact (85.85) sat exactly at
