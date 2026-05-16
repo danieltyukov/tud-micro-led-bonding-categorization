@@ -23,14 +23,16 @@ B.V. and co-financed by the Netherlands Enterprise Agency (RVO).
 │   └── Electrical test + LED-no solder.kicad_*
 └── new-pcb/                   ← v2 board, in development
     ├── README.md
-    ├── PCB_DESIGN_PLAN.md     ← the detailed plan
-    └── library/               ← vendored Würth WL-SFCC symbol/footprint/3D
+    ├── PCB_DESIGN_PLAN.md          ← the detailed plan (geometry / fab / BOM)
+    ├── ELECTRICAL_CHARACTERIZATION.md  ← measurements, ports, lab tools, workflow
+    └── library/                    ← vendored Würth WL-SFCC symbol/footprint/3D
 ```
 
 ## Where to start, by role
 
 - **PCB designer** → `new-pcb/PCB_DESIGN_PLAN.md`
 - **Process / clean-room** → `new-pcb/PCB_DESIGN_PLAN.md` §7 and §9
+- **Electrical characterization / lab planning** → `new-pcb/ELECTRICAL_CHARACTERIZATION.md`
 - **Catching up on the project** → `PROJECT_DETAILS.md` then
   `docs/ECTC-2025-published Ahmed Abdelwahab.pdf`
 - **Recreating the original results** → `old-pcb/` + `PROJECT_DETAILS.md` §2

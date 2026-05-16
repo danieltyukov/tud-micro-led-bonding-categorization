@@ -2,7 +2,7 @@
 
 **Status:** Draft. Owner: Daniel (PCB) + Ahmed (process). Target tape-out: TBD.
 **Predecessor:** `old-pcb/Electrical test + LED-no solder.kicad_pcb` (ECTC 2025).
-**Companion docs:** `../PROJECT_DETAILS.md`, `docs/ECTC-2025-published Ahmed Abdelwahab.pdf`.
+**Companion docs:** `../PROJECT_DETAILS.md`, `ELECTRICAL_CHARACTERIZATION.md` (measurements + ports + lab tools), `../docs/ECTC-2025-published Ahmed Abdelwahab.pdf`.
 
 ---
 
@@ -122,7 +122,18 @@ do 4-wire die-shear-and-resistance after bonding.
   light. Useful go/no-go.
 - ID: `LED-R1C1` … `LED-R1C8`.
 
-### 4.6 Calibration / metrology assists
+### 4.6 Connectors / probe access (3-tier strategy)
+
+See `ELECTRICAL_CHARACTERIZATION.md` §4 for the full rationale. Summary:
+
+- **Tier 1 — 1.27 mm probe pads**: on every structure, 4-wire where it
+  matters (silkscreened FH/SH/SL/FL). Manual probe station.
+- **Tier 2 — 2.54 mm pin-header rows**: two 40-pin rows along N/S edges,
+  for soldering 0.1" headers when running repeated / lifetime tests.
+- **Tier 3 — Edge / FFC connector**: optional 30-pin connector for
+  hot-swap into a benchtop SMU fixture.
+
+### 4.7 Calibration / metrology assists
 
 - 4 × **1.0 mm copper fiducials** (filled circles, 2 mm solder-mask opening)
   near the corners — for the stencil printer and the bonder.
