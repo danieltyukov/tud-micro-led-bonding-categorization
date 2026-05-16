@@ -1081,20 +1081,33 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # =====================================================================
     gnd = nm.get("GND")
     ntc_y = 76.8           # inside LED frame top (y0=76.0), above LEDs at 78.0
-    ntc_xs = [20.0, 40.0, 60.0, 80.0]
+    # NTC body x positions: chosen so the WHOLE structure (probe pad left of
+    # NTC body + NTC body + GND via right of NTC body) is visually centred
+    # between the adjacent LED pair. Math:
+    #   - probe pad left edge: nx - 2.5 - 0.635 = nx - 3.135
+    #   - NTC right pad right edge: nx + 0.5 + 0.25 = nx + 0.75
+    #   - structure centre: nx + (-3.135 + 0.75)/2 = nx - 1.1925
+    # For structure centre = LED midpoint:
+    #   - D1-D2 midpoint = 16.5  →  nx = 17.7
+    #   - D3-D4 midpoint = 36.5  →  nx = 37.7
+    #   - D5-D6 midpoint = 56.5  →  nx = 57.7
+    #   - D7-D8 midpoint = 76.5  →  nx = 77.7
+    # Gives ~2.6 mm gap from probe pad to left LED AND from NTC right pad to
+    # right LED — visually symmetric.
+    ntc_xs = [17.7, 37.7, 57.7, 77.7]
     for i, nx in enumerate(ntc_xs, 1):
         ntc_net = nm.get(f"NTC{i}")
         fps.append(ntc_footprint(f"TH{i}", nx, ntc_y, ntc_net, gnd))
-        # Probe pad to the LEFT (signal pin)
+        # Probe pad to the LEFT (signal pin) — restored
         ppx = nx - 2.5
         fps.append(probe_pad_footprint(f"PP_NTC{i}", ppx, ntc_y, ntc_net))
         segments.append(emit_track(nx - 0.5, ntc_y, ppx, ntc_y, ntc_net))
         # Via at GND pin (RIGHT side) → B.Cu GND pour
         segments.append(emit_via(nx + 0.5, ntc_y, gnd))
-        # TH<i> label in the 2mm gap ABOVE the LED frame top (between DC frame
-        # bottom y=74.0 and LED frame top y=76.0), directly above the NTC X.
-        # Size 0.5 with 0.7mm clearance to both silk frame lines.
-        drawings.append(emit_silk_text(f"TH{i}", nx, 75.0,
+        # TH<i> label at the VISUAL structure centre (LED midpoint), not over
+        # the NTC body — so the label sits between the LED pair as a user
+        # would expect.
+        drawings.append(emit_silk_text(f"TH{i}", nx - 1.2, 75.0,
                                        size=0.5, justify="center", bold=True))
 
     # =====================================================================
@@ -1277,11 +1290,11 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # Each route: B.Cu vertical pin→y=75, via to F.Cu, F.Cu Manhattan jog
     # to the PP_NTC pad at (target_x, 76.8).
     ntc_routes = [
-        # (pin_idx, PP_NTC target_x, label for back-side silk)
-        ( 5, 17.5, "NTC1"),
-        (13, 37.5, "NTC2"),
-        (21, 57.5, "NTC3"),
-        (29, 77.5, "NTC4"),
+        # (pin_idx, target_x = PP_NTC at ntc_x - 2.5, label)
+        ( 5, 15.2, "NTC1"),
+        (13, 35.2, "NTC2"),
+        (21, 55.2, "NTC3"),
+        (29, 75.2, "NTC4"),
     ]
     for pin_idx, target_x, label in ntc_routes:
         pin_x_val = north_x0 + (pin_idx - 1) * pin_pitch
