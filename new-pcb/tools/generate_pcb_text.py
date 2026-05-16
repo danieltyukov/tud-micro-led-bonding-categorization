@@ -34,8 +34,8 @@ PRO_PATH = REPO / "new-pcb" / "tud-microled-v2.kicad_pro"
 # Geometry (all coordinates in mm)
 # ---------------------------------------------------------------------------
 
-BOARD_W = 100.0
-BOARD_H = 100.0
+BOARD_W = 95.0
+BOARD_H = 95.0
 EDGE_MARGIN = 2.5
 
 # DoE bond-pad array
@@ -49,17 +49,20 @@ PROBE_PAD = 1.27
 DOE_NORTH_PROBE_Y = [13.0, 15.0, 17.0]       # unused in v3 (DoE probed directly)
 DOE_SOUTH_PROBE_Y = [42.0, 44.0, 46.0]       # unused in v3
 
-# Test-structure row Y positions (re-spaced for BOARD_H = 100mm with frames)
+# Test-structure row Y positions (re-spaced for BOARD_H = 95mm — fits Tresky
+# die-bonder envelope (≤95×95mm)). Sections from VDP downward are compressed
+# vs the original 100mm layout; the DoE grid (21–43) is unchanged so the
+# scientific bond-pad geometry stays bit-identical.
 ROW_TITLE_Y       = 3.0
 ROW_NORTH_HEADER  = 13.5
-ROW_TLM           = 51.5
-ROW_VDP           = 62.0
-ROW_DAISY         = 73.0
-ROW_DAISY_PROBES  = 76.5
-ROW_LED           = 82.5
-ROW_LED_PROBES    = 85.5
-ROW_SOUTH_HEADER  = 89.0
-ROW_RULER_Y       = 93.5
+ROW_TLM           = 50.5      # was 51.5
+ROW_VDP           = 61.5      # was 62.0
+ROW_DAISY         = 70.0      # was 73.0
+ROW_DAISY_PROBES  = 72.5      # was 76.5 — chain probe = DAISY + 2.5
+ROW_LED           = 78.0      # was 82.5
+ROW_LED_PROBES    = 81.0      # was 85.5 — LED probe = LED + 3.0
+ROW_SOUTH_HEADER  = 85.0      # was 89.0
+# Ruler removed in the 95mm spin — header label moves up to take its place.
 
 # Bond pad geometry
 BOND_PAD = 1.0
@@ -683,20 +686,22 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     title_box_y1 = 11.0
     title_cy = (title_box_y0 + title_box_y1) / 2
     drawings.append(emit_silk_rect(6.0, title_box_y0, BOARD_W - 6.0, title_box_y1, width=0.25))
-    # Zone dividers
-    zone_l = 23.0   # left of project zone
-    zone_r = 75.0   # right of project zone
+    # Zone dividers — shifted left for 95mm board so author zone keeps its 19mm
+    # width (was zone_l=23, zone_r=75 on the 100mm board).
+    zone_l = 18.0   # left of project zone
+    zone_r = 70.0   # right of project zone
     drawings.append(emit_silk_line(zone_l, title_box_y0, zone_l, title_box_y1, width=0.2))
     drawings.append(emit_silk_line(zone_r, title_box_y0, zone_r, title_box_y1, width=0.2))
-    # Zone 1: TUDelft mark (centered in its zone)
-    drawings.append(emit_tudelft_mark((6.0 + zone_l) / 2, title_cy, scale=1.0))
+    # Zone 1: TUDelft mark (centered in its zone). Scaled down vs the 100mm
+    # layout because the zone shrank from 17mm to 12mm wide.
+    drawings.append(emit_tudelft_mark((6.0 + zone_l) / 2, title_cy, scale=0.85))
     # Zone 2: project name + sub
     proj_cx = (zone_l + zone_r) / 2
     drawings.append(emit_silk_text("MICRO-LED BOND CHARACTERIZATION", proj_cx, title_cy - 1.5,
                                    size=1.4, justify="center", bold=True))
     drawings.append(emit_silk_text("PCB v2.0   /   ECTM + ITEC   /   2026", proj_cx, title_cy + 0.8,
                                    size=0.95, justify="center"))
-    drawings.append(emit_silk_text("100 x 100 mm  -  2-layer FR-4  -  ENIG (all pads gold)", proj_cx, title_cy + 2.5,
+    drawings.append(emit_silk_text("95 x 95 mm  -  2-layer FR-4  -  ENIG (all pads gold)", proj_cx, title_cy + 2.5,
                                    size=0.8, justify="center"))
     # Zone 3: author info
     info_cx = (zone_r + BOARD_W - 6.0) / 2
@@ -718,17 +723,34 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     south_total_w = (n_pins_south - 1) * 2.54
     north_x0 = (BOARD_W - north_total_w) / 2
     south_x0 = (BOARD_W - south_total_w) / 2
+
+    # ───── NORTH header pre-routing: 4 pins → LED-chain probe endpoints ─────
+    # Pre-create the chain nets here (before the chain footprints, which call
+    # nm.get() with the same names — NetManager dedupes by name) so we can
+    # assign them to specific north pins at pad creation. Pin selection chosen
+    # by what's collision-free below each pin (DoE / TLM / VDP / chain LEDs):
+    NORTH_CHAIN_PIN_NETS = {
+         1: nm.get("DCL6_IN"),
+        10: nm.get("DCL6_OUT"),
+        22: nm.get("DCL12_IN"),
+        30: nm.get("DCL12_OUT"),
+    }
+
     for i in range(n_pins_north):
         xh = north_x0 + i * 2.54
-        fps.append(th_header_footprint(f"H_N_{i+1}", xh, ROW_NORTH_HEADER))  # net assigned later
+        pin_idx = i + 1
+        # Pin 1, 10, 22, 30 are pre-wired to chain endpoints below; the other
+        # 26 stay user-jumperable (pad net = none).
+        pin_net = NORTH_CHAIN_PIN_NETS.get(pin_idx)
+        fps.append(th_header_footprint(f"H_N_{pin_idx}", xh, ROW_NORTH_HEADER, net=pin_net))
     for i in range(n_pins_south):
         xh = south_x0 + i * 2.54
         south_net = south_pin_net(i + 1, nm)
         fps.append(th_header_footprint(f"H_S_{i+1}", xh, ROW_SOUTH_HEADER, net=south_net))
     # Section labels
-    drawings.append(emit_silk_text("TIER-2 NORTH  -  user-jumperable  -  30 pins @ 2.54 mm",
+    drawings.append(emit_silk_text("TIER-2 NORTH  -  pins 1,10,22,30 -> LED chains; others jumperable",
                                    BOARD_W/2, ROW_NORTH_HEADER + 1.7,
-                                   size=0.85, justify="center"))
+                                   size=0.75, justify="center"))
 
     # =====================================================================
     # DoE BOND-PAD ARRAY (6×6) — concise framed section.
@@ -807,8 +829,8 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # =====================================================================
     # TLM LADDERS — contact resistivity, sub-µm spacings
     # =====================================================================
-    tlm_box_y0 = 45.0
-    tlm_box_y1 = 58.0
+    tlm_box_y0 = 44.5
+    tlm_box_y1 = 56.5
     drawings.append(emit_silk_rect(3.5, tlm_box_y0, BOARD_W - 3.5, tlm_box_y1, width=0.15))
     drawings.append(emit_silk_text("TLM LADDERS",
                                    BOARD_W/2, tlm_box_y0 + 1.6,
@@ -832,8 +854,8 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # =====================================================================
     # VDP CLOVERLEAVES — sheet resistance
     # =====================================================================
-    vdp_box_y0 = 59.0
-    vdp_box_y1 = 67.0
+    vdp_box_y0 = 57.5
+    vdp_box_y1 = 65.5
     drawings.append(emit_silk_rect(3.5, vdp_box_y0, BOARD_W - 3.5, vdp_box_y1, width=0.15))
     drawings.append(emit_silk_text("VAN DER PAUW",
                                    BOARD_W/2, vdp_box_y0 + 1.5,
@@ -843,8 +865,11 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     for x_c, w in zip(vdp_x_centres, vdp_widths):
         fp_str, nets = vdp_footprint(f"VDP_W{w}", x_c, ROW_VDP, w, nm)
         fps.append(fp_str)
-        drawings.append(emit_silk_text(f"VDP  W = {w} mm", x_c, ROW_VDP + 2.5,
-                                       size=0.9, justify="center", bold=True))
+        # Label ABOVE the cloverleaf — W=1.0 has 1.4mm arm_len which extends
+        # the pad mask down to y=63.4, leaving no room for a label below
+        # before the TC pad at y=64.5.
+        drawings.append(emit_silk_text(f"W={w}", x_c, ROW_VDP - 3.0,
+                                       size=0.7, justify="center", bold=True))
         # Register all 4 cloverleaf contacts. `nets` is (dx, dy, net) per contact.
         for i, (dx, dy, net) in enumerate(nets, 1):
             vdp_targets.append((f"VDP_W{w}_{i}", net, x_c + dx, ROW_VDP + dy))
@@ -856,8 +881,8 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # opens the chain. K_G / K_B pads are bonded but isolated per-LED,
     # accessible via manual probing on the LED pad.
     # =====================================================================
-    dc_box_y0 = 68.0
-    dc_box_y1 = 77.5
+    dc_box_y0 = 66.5
+    dc_box_y1 = 74.5
     drawings.append(emit_silk_rect(3.5, dc_box_y0, BOARD_W - 3.5, dc_box_y1, width=0.15))
     drawings.append(emit_silk_text("LED DAISY CHAINS",
                                    BOARD_W/2, dc_box_y0 + 1.5,
@@ -903,14 +928,13 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     #   y = 84.0 D-tags
     #   y = 85.5 probes
     # =====================================================================
-    led_box_y0 = 79.0
-    led_box_y1 = 86.7
+    led_box_y0 = 75.5
+    led_box_y1 = 82.5
     drawings.append(emit_silk_rect(3.5, led_box_y0, BOARD_W - 3.5, led_box_y1, width=0.15))
-    # Section title sits in the gap between DC frame end (y=77.5) and LED frame start (y=79.0)
-    # Centred at y=78.25 with size 0.85 → text spans y=77.83-78.68. Clear of both frames.
-    drawings.append(emit_silk_text("WL-SFCC 0404 RGB LEDs",
-                                   BOARD_W/2, 78.25,
-                                   size=0.85, justify="center", bold=True))
+    # (WL-SFCC section title removed in the 95mm spin — there is not enough
+    # vertical space for a legible title in the 1mm gap between DC frame end
+    # (74.5) and LED frame start (75.5). The LED row is self-evident from
+    # context, and the back-side silkscreen still names the part.)
 
     led_pitch = 10.0
     led_x0 = (BOARD_W - 7 * led_pitch) / 2
@@ -972,7 +996,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # aging temp monitoring. Signal pin → per-NTC probe pad; common pin → GND.
     # =====================================================================
     gnd = nm.get("GND")
-    ntc_y = 79.6           # inside LED frame top, above LEDs at 82.5
+    ntc_y = 76.5           # inside LED frame top, above LEDs at 78.0
     ntc_xs = [20.0, 40.0, 60.0, 80.0]
     for i, nx in enumerate(ntc_xs, 1):
         ntc_net = nm.get(f"NTC{i}")
@@ -984,7 +1008,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         # Via at GND pin (RIGHT side) → B.Cu GND pour
         segments.append(emit_via(nx + 0.5, ntc_y, gnd))
         # Label TH<i> CENTERED below the NTC, in the gap between NTC and LED row
-        drawings.append(emit_silk_text(f"TH{i}", nx, 81.0,
+        drawings.append(emit_silk_text(f"TH{i}", nx, 77.4,
                                        size=0.6, justify="center", bold=True))
 
     # =====================================================================
@@ -996,9 +1020,11 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # =====================================================================
     # TC pads placed inside section frames at the LEFT/RIGHT extremities
     # (clear of TLM/VDP/DC structures which all sit between x=10 and x=90).
+    # Placed inside the TLM / VDP section frame extremities (clear of all
+    # structures which sit between x=10 and x=85).
     for i, (tx, ty) in enumerate([
-        (6.5, 51.5), (6.5, 65.5),   # left: inside TLM/VDP frames
-        (93.5, 51.5), (93.5, 65.5),
+        (6.5, 50.5), (6.5, 64.5),                        # left: inside TLM / VDP frames
+        (BOARD_W - 6.5, 50.5), (BOARD_W - 6.5, 64.5),    # right: inside TLM / VDP frames
     ], 1):
         fps.append(tc_pad_footprint(f"TC{i}", tx, ty))
 
@@ -1007,8 +1033,8 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # The pour ties all GND points together and gives a clean low-impedance
     # return for AC impedance / EIS / pulsed-IV measurements.
     # =====================================================================
-    for i, (gx, gy) in enumerate([(7.0, 14.5), (BOARD_W - 7.0, 14.5),
-                                   (7.0, 92.5), (BOARD_W - 7.0, 92.5)], 1):
+    for i, (gx, gy) in enumerate([(7.0, 16.0), (BOARD_W - 7.0, 16.0),
+                                   (7.0, 89.5), (BOARD_W - 7.0, 89.5)], 1):
         fps.append(probe_pad_footprint(f"PP_GND{i}", gx, gy, gnd))
         # Via to B.Cu GND pour
         segments.append(emit_via(gx, gy, gnd))
@@ -1025,24 +1051,13 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     ))
 
     # =====================================================================
-    # SOUTH-HEADER LABEL + mm RULER
+    # SOUTH-HEADER LABEL
     # =====================================================================
-    drawings.append(emit_silk_text("TIER-2 SOUTH  -  pre-wired to LEDs D1..D7  -  30 pins @ 2.54 mm",
-                                   BOARD_W/2, ROW_SOUTH_HEADER + 3.6,
-                                   size=0.8, justify="center"))
-
-    # mm ruler: horizontal line with tick marks every 5mm and labels every 10mm
-    ruler_x0 = (BOARD_W - 80) / 2
-    ruler_x1 = ruler_x0 + 80
-    ruler_y = ROW_RULER_Y
-    drawings.append(emit_silk_line(ruler_x0, ruler_y, ruler_x1, ruler_y, width=0.18))
-    for mm_val in range(0, 81, 5):
-        x = ruler_x0 + mm_val
-        tick = 1.0 if mm_val % 10 == 0 else 0.6
-        drawings.append(emit_silk_line(x, ruler_y, x, ruler_y + tick, width=0.18))
-        if mm_val % 10 == 0:
-            drawings.append(emit_silk_text(str(mm_val), x, ruler_y + 1.8,
-                                           size=0.85, justify="center"))
+    # (mm ruler removed in 95×95 spin to free space — board edge already gives
+    # 95 mm reference, and Tresky chuck has its own coordinate system.)
+    drawings.append(emit_silk_text("TIER-2 SOUTH  -  pre-wired to LEDs D1..D8  -  32 pins @ 2.54 mm",
+                                   BOARD_W/2, ROW_SOUTH_HEADER + 2.5,
+                                   size=0.7, justify="center"))
 
     # =====================================================================
     # TIER-2 HEADER PRE-WIRING (the heart of the v3 routing)
@@ -1095,10 +1110,10 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # role-lane the horizontals are at unique X bands (10 mm LED pitch),
     # and between roles the vertical drops at each pin's X / target's X
     # never cross another role's horizontal.
-    # Lane Ys MUST sit between the south header pad keepout (y > 88.15) and
-    # the LED probe pad top (y < 86.135). 4 lanes at 0.4 mm spacing fits in
-    # the 2 mm gap with comfortable margin both ways.
-    role_to_lane_y = {"A": 87.7, "KG": 87.3, "KB": 86.9, "KR": 86.5}
+    # Lane Ys MUST sit between the south header pad keepout (y > 84.15) and
+    # the LED probe pad top (y < 81.635). 4 lanes at 0.4 mm spacing fit in
+    # the 2.5 mm gap with comfortable margin both ways.
+    role_to_lane_y = {"A": 83.6, "KG": 83.2, "KB": 82.8, "KR": 82.4}
     for idx, label, net, tx, ty in south_assignments:
         px = pin_x(idx)
         py = ROW_SOUTH_HEADER
@@ -1108,17 +1123,41 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         jy = role_to_lane_y[role]
         segments.extend(route_short(px, py, tx, ty, jy, net))
 
-    # ------- NORTH: user-jumperable (no routing). Net assignment ONLY,
-    # so the user can solder a 30-pin header and wire pins by hand to
-    # the Tier-1 probe pads. The 26 target-net assignments are documented
-    # on the back-side silkscreen.
-    # Why not pre-route: routing 26 long B.Cu traces from 2.54mm-pitch pins
-    # to scattered VDP/DC/TLM contacts (some at sub-mm spacing per VDP)
-    # requires per-pin fanout Y with 0.6mm+ steps, which doesn't fit in
-    # available F.Cu-clear bands. Freerouting got 24 of 26 in one run but
-    # was inconsistent across runs. Cleanest deliverable: pre-routed south,
-    # user-jumperable north + clear pinout silkscreen.
+    # ------- NORTH: 4 of 30 pins pre-wired to LED-chain endpoints; the
+    # other 26 stay user-jumperable. Routing the 4 chain pins is tractable
+    # (vs the abandoned 26-target v3 attempt) because chain endpoints are
+    # large 1.27mm probe pads with whole-board F.Cu headroom around them.
+    #
+    # Each route: vertical down from header pin to the gap above the chain
+    # row (y=68 for chain pins 1/10/22; y=17→jog for pin 30 which has to
+    # detour around VDP W=0.1 at x=85), horizontal jog to the chain probe X,
+    # then vertical down to the probe pad. All on F.Cu.
+    chain_routes = [
+        # (pin_idx, pin_x, target_x, target_y, route_y, label)
+        ( 1, north_x0 +  0 * pin_pitch, 13.35, ROW_DAISY_PROBES, 68.0, "DCL6_IN"),
+        (10, north_x0 +  9 * pin_pitch, 30.65, ROW_DAISY_PROBES, 68.0, "DCL6_OUT"),
+        (22, north_x0 + 21 * pin_pitch, 53.85, ROW_DAISY_PROBES, 68.0, "DCL12_IN"),
+        # Pin 30 has to detour: a straight vertical at pin 30's X collides
+        # with VDP_W=0.1's left contact at (84.2, 61.5). Route jogs right
+        # to x=86.15 just below the north header keepout, then drops straight
+        # down to the chain probe.
+        (30, north_x0 + 29 * pin_pitch, 86.15, ROW_DAISY_PROBES, None, "DCL12_OUT"),
+    ]
     north_assignments = []
+    for pin_idx, pin_x_val, tx, ty, jog_y, label in chain_routes:
+        net = NORTH_CHAIN_PIN_NETS[pin_idx]
+        if jog_y is not None:
+            # 3-segment Manhattan route via mid-board horizontal jog at jog_y.
+            segments.append(emit_track(pin_x_val, ROW_NORTH_HEADER, pin_x_val, jog_y, net))
+            segments.append(emit_track(pin_x_val, jog_y, tx, jog_y, net))
+            segments.append(emit_track(tx, jog_y, tx, ty, net))
+        else:
+            # Pin 30: detour via y=17 to clear VDP W=0.1 at (84.2, 61.5).
+            detour_y = 17.0
+            segments.append(emit_track(pin_x_val, ROW_NORTH_HEADER, pin_x_val, detour_y, net))
+            segments.append(emit_track(pin_x_val, detour_y, tx, detour_y, net))
+            segments.append(emit_track(tx, detour_y, tx, ty, net))
+        north_assignments.append((pin_idx, label, net, tx, ty))
 
     # ------- Silkscreen pin numbers (every 5th pin + endpoints) ---------
     # 2.54 mm pitch is too tight for per-pin labels. Major labels only at
@@ -1212,9 +1251,9 @@ def _emit_back_side_silk(drawings: list, south_assignments=None, north_assignmen
 
     # ── PINOUT ────────────────────────────────────────────────────────
     # Two-column table: pin index → net assignment.
-    # Box bottom must clear south-header through-holes at y=89.
+    # Box bottom must clear south-header through-holes at y=85 (95×95 board).
     key_y0 = 73.5
-    key_y1 = 86.0
+    key_y1 = 83.0
     drawings.append(emit_silk_rect(3.5, key_y0, BOARD_W - 3.5, key_y1, layer=L, width=0.15))
     drawings.append(emit_silk_text("TIER-2 SOUTH PINOUT", cx, key_y0 + 1.3,
                                    size=1.0, justify="center", bold=True, layer=L))
