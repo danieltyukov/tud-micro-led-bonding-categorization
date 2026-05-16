@@ -47,9 +47,9 @@ FOOTPRINT_TO_PART = {
         "No",
     ),
     "Header_2.54mm": (
-        "Pin 2.54mm THT",
+        "Pin 2.54mm THT 1x40 single-row male",
         "Wurth",
-        "61301021121",
+        "61304011121",
         "LCSC",
         "C124378",
         "No",

@@ -44,7 +44,7 @@
 |---|---:|---|---|---|
 | **TH1, TH2, TH3, TH4** | 4 | 0402 SMD (NTC_0402 in board lib) | **Murata `NCP15XH103J03RC`** (10 kΩ ±5 %, B25/85 = 3380 K) — LCSC C5316 | For V_F-TSP thermal sensing — see `docs/datasheets/README.md` |
 | **EIS_LOAD** (across PP_EIS_LOAD_A & PP_EIS_LOAD_B) | 1 | 0603 SMD thin-film | **Vishay Dale `TNPW0603100RBEEA`** (100 Ω, ±0.1 %, 25 ppm/°C, thin-film) — DigiKey 541-1830-1-ND | Reference resistor for LCR meter calibration |
-| **H_N_1 .. H_N_32** | 32 | Pin header 2.54 mm, THT, vertical, single row | **Würth `61301021121`** (WR-PHD 1×40 male, cut to 32 pins) — LCSC C124378 | North header |
+| **H_N_1 .. H_N_32** | 32 | Pin header 2.54 mm, THT, vertical, single row | **Würth `61304011121`** (WR-PHD 1×40 single-row male, cut to 32 pins) — LCSC C124378 · Newark 20X1009 | North header |
 | **H_S_1 .. H_S_32** | 32 | Pin header 2.54 mm, THT, vertical, single row | Same as above (cut from second 1×40 strip) | South header |
 
 ### Do Not Assemble (DNP) — customer bonds in cleanroom
