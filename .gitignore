@@ -1,0 +1,29 @@
+# KiCad junk
+*-backups/
+*.bak
+*.kicad_pcb-bak
+*.sch-bak
+*.kicad_prl.lck
+~*.lck
+fp-info-cache
+*.kicad_sch.bak
+*.kicad_pcb.bak
+_autosave-*
+
+# Build / fab outputs (regeneratable)
+**/fab/*.zip
+**/gerbers/
+**/plot/
+
+# Python / tools
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
