@@ -58,7 +58,7 @@ ROW_NORTH_HEADER  = 13.5
 ROW_TLM           = 50.5
 ROW_VDP           = 61.5
 ROW_DAISY         = 70.0
-ROW_DAISY_PROBES  = 72.5      # chain probe = DAISY + 2.5
+ROW_DAISY_PROBES  = 72.0      # chain probe = DAISY + 2.0 (tighter to free vertical room for TH labels above LED frame)
 ROW_LED           = 78.0
 ROW_LED_PROBES    = 81.0      # LED probe = LED + 3.0
 ROW_SOUTH_HEADER  = 85.0
@@ -686,15 +686,14 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     title_box_y1 = 11.0
     title_cy = (title_box_y0 + title_box_y1) / 2
     drawings.append(emit_silk_rect(6.0, title_box_y0, BOARD_W - 6.0, title_box_y1, width=0.25))
-    # Zone dividers — shifted left for 95mm board so author zone keeps its 19mm
-    # width (was zone_l=23, zone_r=75 on the 100mm board).
-    zone_l = 18.0   # left of project zone
-    zone_r = 70.0   # right of project zone
+    # Zone dividers. zone_l widened to give the TUDelft mark (wordmark right
+    # edge ≈ cx + 4.85mm at scale 0.85) clearance from the divider line.
+    zone_l = 21.0   # left of project zone
+    zone_r = 73.0   # right of project zone
     drawings.append(emit_silk_line(zone_l, title_box_y0, zone_l, title_box_y1, width=0.2))
     drawings.append(emit_silk_line(zone_r, title_box_y0, zone_r, title_box_y1, width=0.2))
-    # Zone 1: TUDelft mark (centered in its zone). Scaled down vs the 100mm
-    # layout because the zone shrank from 17mm to 12mm wide.
-    drawings.append(emit_tudelft_mark((6.0 + zone_l) / 2, title_cy, scale=0.85))
+    # Zone 1: TUDelft mark (centered in its zone, scale 0.8 for clean fit).
+    drawings.append(emit_tudelft_mark((6.0 + zone_l) / 2, title_cy, scale=0.8))
     # Zone 2: project name + sub
     proj_cx = (zone_l + zone_r) / 2
     drawings.append(emit_silk_text("MICRO-LED BOND CHARACTERIZATION", proj_cx, title_cy - 1.5,
@@ -703,14 +702,16 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
                                    size=0.95, justify="center"))
     drawings.append(emit_silk_text("93 x 93 mm  -  2-layer FR-4  -  ENIG (all pads gold)", proj_cx, title_cy + 2.5,
                                    size=0.8, justify="center"))
-    # Zone 3: author info
+    # Zone 3: author info. Sizes reduced from the 100mm-board defaults so the
+    # text fits inside the 14mm-wide zone (zone_r=73 to BOARD_W-6=87) with
+    # ≥0.4mm clearance to both dividers.
     info_cx = (zone_r + BOARD_W - 6.0) / 2
     drawings.append(emit_silk_text("Daniel Tyukov", info_cx, title_cy - 1.8,
-                                   size=1.1, justify="center", bold=True))
-    drawings.append(emit_silk_text("student no.  5714699", info_cx, title_cy + 0.2,
-                                   size=0.9, justify="center"))
-    drawings.append(emit_silk_text("ET4277  +  ET4391", info_cx, title_cy + 2.0,
-                                   size=0.9, justify="center"))
+                                   size=0.95, justify="center", bold=True))
+    drawings.append(emit_silk_text("student no.  5714699", info_cx, title_cy + 0.0,
+                                   size=0.75, justify="center"))
+    drawings.append(emit_silk_text("ET4277  +  ET4391", info_cx, title_cy + 1.8,
+                                   size=0.75, justify="center"))
 
     # =====================================================================
     # 2.54 mm pin-header rows (Tier-2) — physical pins.
@@ -885,7 +886,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # accessible via manual probing on the LED pad.
     # =====================================================================
     dc_box_y0 = 66.5
-    dc_box_y1 = 74.5
+    dc_box_y1 = 74.0      # shrunk by 0.5mm to widen the gap to LED frame for TH labels
     drawings.append(emit_silk_rect(3.5, dc_box_y0, BOARD_W - 3.5, dc_box_y1, width=0.15))
     drawings.append(emit_silk_text("LED DAISY CHAINS",
                                    BOARD_W/2, dc_box_y0 + 1.5,
@@ -905,7 +906,9 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         # honouring board-edge margins.
         in_x = max(EDGE_MARGIN + PROBE_PAD/2 + 0.5, chain_left_x - 2.0)
         out_x = min(BOARD_W - EDGE_MARGIN - PROBE_PAD/2 - 0.5, chain_right_x + 2.0)
-        probe_y = y_c + 3.5
+        # Probe Y from the constant so a single edit at the top of the file
+        # moves the probes consistently with all north-route targets.
+        probe_y = ROW_DAISY_PROBES
         fps.append(probe_pad_footprint(f"PP_DCL{n}_IN", in_x, probe_y, in_net))
         fps.append(probe_pad_footprint(f"PP_DCL{n}_OUT", out_x, probe_y, out_net))
         # IN/OUT labels above the probe pads (below would clash with DC frame)
@@ -931,7 +934,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     #   y = 84.0 D-tags
     #   y = 85.5 probes
     # =====================================================================
-    led_box_y0 = 75.5
+    led_box_y0 = 76.0      # widened by 0.5mm gap to DC frame (was 75.5)
     led_box_y1 = 82.5
     drawings.append(emit_silk_rect(3.5, led_box_y0, BOARD_W - 3.5, led_box_y1, width=0.15))
     # (WL-SFCC section title removed in the 95mm spin — there is not enough
@@ -999,7 +1002,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # aging temp monitoring. Signal pin → per-NTC probe pad; common pin → GND.
     # =====================================================================
     gnd = nm.get("GND")
-    ntc_y = 76.5           # inside LED frame top, above LEDs at 78.0
+    ntc_y = 76.8           # inside LED frame top (y0=76.0), above LEDs at 78.0
     ntc_xs = [20.0, 40.0, 60.0, 80.0]
     for i, nx in enumerate(ntc_xs, 1):
         ntc_net = nm.get(f"NTC{i}")
@@ -1010,10 +1013,11 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         segments.append(emit_track(nx - 0.5, ntc_y, ppx, ntc_y, ntc_net))
         # Via at GND pin (RIGHT side) → B.Cu GND pour
         segments.append(emit_via(nx + 0.5, ntc_y, gnd))
-        # TH labels removed in 93mm spin — the NTC-to-LED gap is too tight
-        # to fit a legible label without clipping the LED top-pad mask.
-        # NTCs are visually identifiable as the only 0402 SMD components on
-        # the board; back-side silkscreen names them for completeness.
+        # TH<i> label in the 2mm gap ABOVE the LED frame top (between DC frame
+        # bottom y=74.0 and LED frame top y=76.0), directly above the NTC X.
+        # Size 0.5 with 0.7mm clearance to both silk frame lines.
+        drawings.append(emit_silk_text(f"TH{i}", nx, 75.0,
+                                       size=0.5, justify="center", bold=True))
 
     # =====================================================================
     # REFLOW TC PADS — 4 × 1 mm gold pads for soldering a fine-wire
@@ -1061,9 +1065,11 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     # =====================================================================
     # SOUTH-HEADER LABEL + mm RULER
     # =====================================================================
+    # Caption sits 3mm below the header to leave a 0.85mm clear gap to the
+    # pin-number labels at y=86.5 (which were getting visually crowded).
     drawings.append(emit_silk_text("TIER-2 SOUTH  -  pre-wired to LEDs D1..D8  -  32 pins @ 2.54 mm",
-                                   BOARD_W/2, ROW_SOUTH_HEADER + 2.5,
-                                   size=0.65, justify="center"))
+                                   BOARD_W/2, ROW_SOUTH_HEADER + 3.0,
+                                   size=0.6, justify="center"))
 
     # mm ruler: horizontal line with tick marks every 5mm and labels every 10mm.
     # Restored in the 93×93 spin (fits in the south header → bottom GND gap).
