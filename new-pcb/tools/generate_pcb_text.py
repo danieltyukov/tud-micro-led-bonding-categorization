@@ -1319,7 +1319,10 @@ def _emit_back_side_silk(drawings: list, south_assignments=None, north_assignmen
         for i in range(0, len(compact), 4):
             lines.append("   ".join(compact[i:i+4]))
         lines.append("each group: A, KG, KB, KR  (A = LED_VCC)")
-        lines.append("NORTH row: user-jumperable")
+        # Single compact NORTH line — avoids the "(marked O)" string which
+        # renders ambiguously as "U" in the stroke font, and fits inside
+        # key_y1 without truncation.
+        lines.append("NORTH 3,10,19,32 = pre-wired chain (others jumperable)")
         for i, ln in enumerate(lines):
             y = key_y0 + 3.5 + i * 1.5
             if y > key_y1 - 1.0:
