@@ -12,7 +12,6 @@ _autosave-*
 
 # Build / fab outputs (regeneratable)
 **/fab/*.zip
-**/gerbers/
 **/plot/
 
 # Python / tools
