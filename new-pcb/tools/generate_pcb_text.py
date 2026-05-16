@@ -503,10 +503,10 @@ def tlm_footprint(ref: str, cx: float, cy: float, finger_w: float, spacings_um: 
         net = nm.get(f"{ref}_F{i}")
         local_x = x0 + c
         nets.append((local_x, 0.0, net))
-        # local_clearance=0.002 (2 µm) → smaller than any TLM spacing
+        # No local_clearance override needed — v4.0.4 spacings are all
+        # ≥ 150 µm = board clearance rule, so default DRC handles it.
         pads.append(emit_pad(
             str(i), "rect", local_x, 0, finger_w, finger_len, net=net,
-            local_clearance=0.002,
         ))
     return emit_footprint(ref, cx, cy, pads, library_id="TLM"), nets
 
@@ -811,21 +811,29 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
                                        size=0.85, justify="center"))
 
     # Compact LEGEND — top half of the right-of-DoE area. Two-line format frees
-    # the bottom half for the EIS CAL subsection introduced in v4.
-    leg_x0 = array_x1 + 5.0
-    leg_x1 = BOARD_W - 5.5
-    leg_y0 = DOE_ORIGIN_Y - 1.5
-    leg_y1 = DOE_ORIGIN_Y + 5.5             # was DOE_ORIGIN_Y + 5*DOE_PITCH + 1.5
+    # the bottom half for the EIS CAL subsection. Box horizontally CENTRED
+    # in the available right-side strip (x=array_x1 to BOARD_W-3.5) with equal
+    # 3.5mm gaps to the DoE array and the DoE frame right edge. Content
+    # vertically CENTRED inside the box (0.65mm shift from previous top-biased
+    # layout — balances top/bottom margins).
+    leg_x0 = array_x1 + 3.5
+    leg_x1 = BOARD_W - 7.0
+    # Combined LEGEND + EIS CAL block (7 + 1 + 9 = 17mm tall) vertically
+    # CENTRED inside the DoE parent frame (y=17 to 43.5 → centre y=30.25).
+    # Block extent: y=21.75 to 38.75, leaving symmetric 4.675mm margins to
+    # frame top and bottom.
+    leg_y0 = DOE_ORIGIN_Y + 0.75
+    leg_y1 = leg_y0 + 7.0
     leg_cx = (leg_x0 + leg_x1) / 2
     drawings.append(emit_silk_rect(leg_x0, leg_y0, leg_x1, leg_y1, width=0.15))
-    drawings.append(emit_silk_text("DoE LEGEND", leg_cx, leg_y0 + 1.3,
+    drawings.append(emit_silk_text("DoE LEGEND", leg_cx, leg_y0 + 1.95,
                                    size=0.8, justify="center", bold=True))
     drawings.append(emit_silk_text(
         "R1-2: plain     R3-4: +4 mini     R5-6: rounded+mini",
-        leg_cx, leg_y0 + 3.0, size=0.6, justify="center"))
+        leg_cx, leg_y0 + 3.65, size=0.6, justify="center"))
     drawings.append(emit_silk_text(
         "C1,4: R=50um     C2,5: R=100um     C3,6: R=200um",
-        leg_cx, leg_y0 + 4.5, size=0.6, justify="center"))
+        leg_cx, leg_y0 + 5.15, size=0.6, justify="center"))
 
     # =====================================================================
     # EIS CALIBRATION subsection (v4) — OPEN / SHORT / LOAD references for
@@ -838,24 +846,25 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     #         precision 100 Ohm 0.1% 0603 (e.g., Vishay      reference
     #         TNPV0603100RBEEN) — see VERIFICATION doc.
     # =====================================================================
-    # Box height sized to match content (was 12mm with ~7mm dead space at the
-    # bottom; now 9mm, content vertically centred).
+    # EIS CAL box: same horizontal alignment as LEGEND, content vertically
+    # CENTRED (0.64mm shift balances top/bottom margins around all 4 content
+    # rows: title + subtitle + pads + labels).
     ecal_y0 = leg_y1 + 1.0
     ecal_y1 = ecal_y0 + 9.0
     ecal_cx = leg_cx                        # share centre line with LEGEND
     drawings.append(emit_silk_rect(leg_x0, ecal_y0, leg_x1, ecal_y1, width=0.15))
-    drawings.append(emit_silk_text("EIS CAL", ecal_cx, ecal_y0 + 1.4,
+    drawings.append(emit_silk_text("EIS CAL", ecal_cx, ecal_y0 + 2.04,
                                    size=0.95, justify="center", bold=True))
     drawings.append(emit_silk_text(
         "calibrate LCR meter before EIS Nyquist sweep",
-        ecal_cx, ecal_y0 + 2.8, size=0.55, justify="center"))
+        ecal_cx, ecal_y0 + 3.44, size=0.55, justify="center"))
 
     # Probe-pad row — centred horizontally + vertically within the cal box
-    cal_row_y = ecal_y0 + 5.0
+    cal_row_y = ecal_y0 + 5.64
     OPEN_PITCH  = 3.0
     SHORT_PITCH = 3.0
     LOAD_PITCH  = 2.0                       # standard 0603 land pitch
-    GROUP_GAP   = 7.0                       # horizontal gap between groups
+    GROUP_GAP   = 12.0                      # wider spread for visual balance
 
     total_w = OPEN_PITCH + GROUP_GAP + SHORT_PITCH + GROUP_GAP + LOAD_PITCH
     group_start_x = ecal_cx - total_w / 2
@@ -921,23 +930,27 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     drawings.append(emit_silk_text("TLM LADDERS",
                                    BOARD_W/2, tlm_box_y0 + 1.6,
                                    size=1.2, justify="center", bold=True))
-    drawings.append(emit_silk_text("spacings:  100  /  150  /  250  /  500  /  1000  /  2000 um",
+    drawings.append(emit_silk_text("spacings:  200  /  300  /  500  /  1000  /  2000  /  4000 um",
                                    BOARD_W/2, tlm_box_y0 + 3.3,
                                    size=0.8, justify="center"))
-    # Spacings updated v4.0.3: original [5/10/20/50/100/200 µm] from the ECTC
-    # paper required semiconductor-grade photolithography. Standard PCB fabs
-    # (Aisler / Eurocircuits) cannot manufacture sub-100 µm features — those
-    # would merge into solid copper. New range [100…2000 µm]:
-    #   - 100 µm: Aisler "Beagle" min, Eurocircuits Class 8 min (75 µm) → fab-clean
-    #   - 200…2000 µm: all standard-pool manufacturable with margin
-    #   - 20× dynamic range → good linear-fit leverage for R_c extraction
-    spacings = [100, 150, 250, 500, 1000, 2000]   # µm
+    # Scope clarification: TLM measures sheet resistance of a CONDUCTOR
+    # bridging the fingers. With LEDs only, the user deposits/reflows a
+    # conductive sample (solder paste, conductive epoxy, evaporated film)
+    # across multiple fingers. Without a bridging sample the structure
+    # serves as bare-ENIG sheet-R / fab-batch QC only.
+    drawings.append(emit_silk_text(
+        "use:  bare-ENIG QC  /  solder-paste sheet-R after reflow",
+        BOARD_W/2, tlm_box_y1 - 1.4, size=0.55, justify="center"))
+    # Spacings updated v4.0.5: every value ≥ 200 µm so both (a) Aisler STANDARD
+    # pool (150 µm min) has 33%+ fab margin AND (b) KiCad default DRC clearance
+    # (200 µm) passes natively — no per-pad clearance override needed.
+    # 20× dynamic range still gives strong linear-fit leverage for R_c + R_sh.
+    spacings = [200, 300, 500, 1000, 2000, 4000]   # µm
     widths = [0.25, 0.5, 1.0]              # mm
-    # TLM W=0.5 shifted from x=50 to x=48 — with the wider 100-2000 µm spacings
-    # F7 of W=0.5 is now at +6.75 mm from centre. At x=50 this puts F7 at x=53,
-    # which collides with the DCL12_IN north route trace at x=52.85. Moving the
-    # whole ladder to x=48 gives F7 at x=51.0, 1.85 mm clear of the trace.
-    tlm_x_centres = [22.0, 48.0, 78.0]
+    # With the v4.0.4 spacings [150..4000 µm] F7 of W=0.5 moves further out
+    # (x=54.95), which is 1.75 mm clear of the DCL12_IN trace at x=52.85 —
+    # so we keep the original visually-symmetric positions x=22/50/78.
+    tlm_x_centres = [22.0, 50.0, 78.0]
     for x_c, w in zip(tlm_x_centres, widths):
         fp_str, nets = tlm_footprint(f"TLM_W{w}", x_c, ROW_TLM, w, spacings, nm)
         fps.append(fp_str)

@@ -1,4 +1,4 @@
-### Footprint positions - created on 2026-05-16T22:27:08+0200 ###
+### Footprint positions - created on 2026-05-16T23:14:07+0200 ###
 ### Printed by KiCad version 9.0.8-9.0.8~ubuntu24.04.1
 ## Unit = mm, Angle = deg.
 ## Side : All
@@ -169,17 +169,17 @@ PP_DCL6_IN      PP_DCL6_IN      Probe_1.27mm        13.3500   -72.0000    0.0000
 PP_DCL6_OUT     PP_DCL6_OUT     Probe_1.27mm        30.6500   -72.0000    0.0000  top
 PP_DCL12_IN     PP_DCL12_IN     Probe_1.27mm        53.8500   -72.0000    0.0000  top
 PP_DCL12_OUT    PP_DCL12_OUT    Probe_1.27mm        86.1500   -72.0000    0.0000  top
-PP_EIS_OPEN_A   PP_EIS_OPEN_A   Probe_1.27mm        51.0000   -32.5000    0.0000  top
-PP_EIS_OPEN_B   PP_EIS_OPEN_B   Probe_1.27mm        54.0000   -32.5000    0.0000  top
-PP_EIS_SHORT_A  PP_EIS_SHORT_A  Probe_1.27mm        61.0000   -32.5000    0.0000  top
-PP_EIS_SHORT_B  PP_EIS_SHORT_B  Probe_1.27mm        64.0000   -32.5000    0.0000  top
+PP_EIS_OPEN_A   PP_EIS_OPEN_A   Probe_1.27mm        44.5000   -35.3900    0.0000  top
+PP_EIS_OPEN_B   PP_EIS_OPEN_B   Probe_1.27mm        47.5000   -35.3900    0.0000  top
+PP_EIS_SHORT_A  PP_EIS_SHORT_A  Probe_1.27mm        59.5000   -35.3900    0.0000  top
+PP_EIS_SHORT_B  PP_EIS_SHORT_B  Probe_1.27mm        62.5000   -35.3900    0.0000  top
 PP_GND1         PP_GND1         Probe_1.27mm         4.0000   -16.0000    0.0000  top
 PP_GND2         PP_GND2         Probe_1.27mm        88.0000   -16.0000    0.0000  top
 PP_NTC1         PP_NTC1         Probe_1.27mm        15.2000   -76.8000    0.0000  top
 PP_NTC2         PP_NTC2         Probe_1.27mm        35.2000   -76.8000    0.0000  top
 PP_NTC3         PP_NTC3         Probe_1.27mm        55.2000   -76.8000    0.0000  top
 PP_NTC4         PP_NTC4         Probe_1.27mm        75.2000   -76.8000    0.0000  top
-R_EIS_LOAD      R_EIS_LOAD      EIS_Load_0603       72.0000   -32.5000    0.0000  top
+R_EIS_LOAD      R_EIS_LOAD      EIS_Load_0603       75.5000   -35.3900    0.0000  top
 TC1             TC1             TC_Pad_1mm           2.5000   -50.5000    0.0000  top
 TC2             TC2             TC_Pad_1mm           2.5000   -64.5000    0.0000  top
 TC3             TC3             TC_Pad_1mm          90.5000   -50.5000    0.0000  top
@@ -188,7 +188,7 @@ TH1             TH1             NTC_0402            17.7000   -76.8000    0.0000
 TH2             TH2             NTC_0402            37.7000   -76.8000    0.0000  top
 TH3             TH3             NTC_0402            57.7000   -76.8000    0.0000  top
 TH4             TH4             NTC_0402            77.7000   -76.8000    0.0000  top
-TLM_W0.5        TLM_W0.5        TLM                 48.0000   -50.5000    0.0000  top
+TLM_W0.5        TLM_W0.5        TLM                 50.0000   -50.5000    0.0000  top
 TLM_W0.25       TLM_W0.25       TLM                 22.0000   -50.5000    0.0000  top
 TLM_W1.0        TLM_W1.0        TLM                 78.0000   -50.5000    0.0000  top
 VDP_W0.1        VDP_W0.1        VDP                 85.0000   -61.5000    0.0000  top
