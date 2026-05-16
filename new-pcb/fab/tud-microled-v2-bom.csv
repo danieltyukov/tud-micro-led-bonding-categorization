@@ -1,0 +1,5 @@
+"Reference","Qty","Value","Manufacturer","Manufacturer P/N","Footprint","Notes"
+"D1-D8","8","WL-SFCC RGB","Würth Elektronik","150044M155220","D_Wurth_WL-SFCC-0404superflat","Super-flat 0404, common anode, V_F R=2.0V G=3.0V B=3.0V"
+"FID1-FID4","4","Fiducial","-","-","Fiducial_1mm","1mm copper, 2mm mask opening"
+"H_N_1..30","30","Header pin","-","2.54mm pitch","Header_2.54mm","Solder once for repeated bench testing"
+"H_S_1..30","30","Header pin","-","2.54mm pitch","Header_2.54mm","Solder once for repeated bench testing"
