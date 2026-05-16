@@ -1031,9 +1031,12 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
         probe_y = ROW_DAISY_PROBES
         fps.append(probe_pad_footprint(f"PP_DCL{n}_IN", in_x, probe_y, in_net))
         fps.append(probe_pad_footprint(f"PP_DCL{n}_OUT", out_x, probe_y, out_net))
-        # IN/OUT labels above the probe pads (below would clash with DC frame)
-        drawings.append(emit_silk_text("IN", in_x, probe_y - 1.1, size=0.7, justify="center"))
-        drawings.append(emit_silk_text("OUT", out_x, probe_y - 1.1, size=0.7, justify="center"))
+        # IN/OUT labels above the probe pads (below would clash with DC frame).
+        # Size 0.5 (was 0.7) — the label sits in a ~0.9mm strip between the
+        # chain LED body (bottom edge y=70.45) and the probe pad mask
+        # (top edge y=71.365). Size 0.5 gives ≥0.2mm clearance to both.
+        drawings.append(emit_silk_text("IN", in_x, probe_y - 1.1, size=0.5, justify="center"))
+        drawings.append(emit_silk_text("OUT", out_x, probe_y - 1.1, size=0.5, justify="center"))
         dc_targets.append((f"DCL{n}_IN", in_net, in_x, probe_y))
         dc_targets.append((f"DCL{n}_OUT", out_net, out_x, probe_y))
         # Route IN probe → LED_1.A pad. The chain trace row is at y_c - 0.4
