@@ -12,10 +12,12 @@ What's actually shipped in `tud-microled-v2.kicad_pcb`. Companion to
 | KiCad version | 9.0.8 (file format 20241229) |
 | Board | **100 × 100 mm**, 2-layer FR-4, 1.6 mm |
 | Surface finish | ENIG (Ni 4 µm / Au 0.075 µm) |
-| **DRC violations** | **1 silk-over-copper warning** (pre-existing, LED frame top edge vs adjacent text bbox — cosmetic only, no fab impact) |
+| Board size | **93 × 93 mm** (under Tresky T-3000-PRO envelope of 95 × 95 mm) |
+| **DRC violations** | **0** |
 | **Unconnected pads** | **0** |
-| Footprints | 187 (incl. 26 WL-SFCC LEDs: D1-D8 + 18 chain LEDs) |
-| Nets | ~180 |
+| Footprints | 194 (incl. 26 WL-SFCC LEDs, 4 NTCs, 1 EIS load R, 64 header pins) |
+| Headers | 32 + 32 = 64 pins, both rows aligned to same X grid for breadboard mating |
+| Calibration | EIS CAL pads added in v4.0 (OPEN / SHORT / 100Ω LOAD) for full Nyquist calibration |
 | Designer | **Daniel Tyukov · student no. 5714699 · ET4277 / ET4391** |
 
 Generated procedurally by `tools/generate_pcb_text.py` (fully reproducible).
@@ -147,7 +149,12 @@ Every 4-pin block = 1 LED. Pin 1 of each block is anode (= common LED_VCC).
 | 19 (silkscreen polish) | 0 | TIER-2 SOUTH PINOUT box on back, all 8 LEDs documented |
 | 22-25 (north routing attempts) | 46–293 | Tried manual + freerouting; both hit fundamental geometric limits |
 | 27 | 0 | South to D1-D8 (32 pins), north user-jumperable, silkscreen polished |
-| **28 (delivered)** | **1 cosmetic warning** | Dummy-die daisy chains replaced with WL-SFCC LED chains (N=6 + N=12, R-series) — uses available LED inventory instead of unavailable Si dummy dies |
+| 28 (v3.6) | 1 cosmetic | Dummy-die DC replaced with WL-SFCC LED chains (N=6 + N=12, R-series) |
+| 29 (v3.7) | 0 | Compressed to 95×95 mm, 4 north pins (1/10/22/30) routed to chain endpoints |
+| 30 (v3.8) | 0 | 32-pin north header aligned with south, silk circles on routed pins (pins 3/10/19/32) |
+| 31 (v3.9) | 0 | Compressed to 93×93 mm with breathing room, ruler restored, TH1-4 labels relocated |
+| 32 (v3.9.1) | 0 | Back-side PINOUT compacted to single line (no truncation, no ambiguous O→U) |
+| **33 (v4.0 — delivered)** | **0** | **EIS CAL section added (OPEN/SHORT/100Ω LOAD) — full Nyquist calibration capability for impedance spectroscopy of bonded LEDs** |
 
 ---
 

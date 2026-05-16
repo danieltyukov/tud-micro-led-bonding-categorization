@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "9.0.8-9.0.8~ubuntu24.04.1"
     },
-    "CreationDate": "2026-05-16T17:43:23+02:00"
+    "CreationDate": "2026-05-16T20:43:18+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "tud-microled-v2",
       "GUID": "7475642d-6d69-4637-926f-6c65642d7632",
-      "Revision": "v2.0"
+      "Revision": "v4.0"
     },
     "Size": {
       "X": 93.05,

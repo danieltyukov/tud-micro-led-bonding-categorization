@@ -698,7 +698,7 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     proj_cx = (zone_l + zone_r) / 2
     drawings.append(emit_silk_text("MICRO-LED BOND CHARACTERIZATION", proj_cx, title_cy - 1.5,
                                    size=1.4, justify="center", bold=True))
-    drawings.append(emit_silk_text("PCB v2.0   /   ECTM + ITEC   /   2026", proj_cx, title_cy + 0.8,
+    drawings.append(emit_silk_text("PCB v4.0   /   ECTM + ITEC   /   2026", proj_cx, title_cy + 0.8,
                                    size=0.95, justify="center"))
     drawings.append(emit_silk_text("93 x 93 mm  -  2-layer FR-4  -  ENIG (all pads gold)", proj_cx, title_cy + 2.5,
                                    size=0.8, justify="center"))
@@ -801,29 +801,95 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
                                        DOE_ORIGIN_Y + 5 * DOE_PITCH + 2.0,
                                        size=0.85, justify="center"))
 
-    # Compact LEGEND on the right
+    # Compact LEGEND — top half of the right-of-DoE area. Two-line format frees
+    # the bottom half for the EIS CAL subsection introduced in v4.
     leg_x0 = array_x1 + 5.0
     leg_x1 = BOARD_W - 5.5
     leg_y0 = DOE_ORIGIN_Y - 1.5
-    leg_y1 = DOE_ORIGIN_Y + 5 * DOE_PITCH + 1.5
+    leg_y1 = DOE_ORIGIN_Y + 5.5             # was DOE_ORIGIN_Y + 5*DOE_PITCH + 1.5
     leg_cx = (leg_x0 + leg_x1) / 2
     drawings.append(emit_silk_rect(leg_x0, leg_y0, leg_x1, leg_y1, width=0.15))
-    drawings.append(emit_silk_text("LEGEND", leg_cx, leg_y0 + 1.5,
-                                   size=0.95, justify="center", bold=True))
-    legend_lines = [
-        "R1, R2  :  plain",
-        "R3, R4  :  + 4 minis",
-        "R5, R6  :  rounded + minis",
-        "",
-        "C1, C4  :  R = 50 um",
-        "C2, C5  :  R = 100 um",
-        "C3, C6  :  R = 200 um",
-    ]
-    for i, ln in enumerate(legend_lines):
-        if not ln:
-            continue
-        drawings.append(emit_silk_text(ln, leg_cx, leg_y0 + 3.5 + i * 2.2,
-                                       size=0.8, justify="center"))
+    drawings.append(emit_silk_text("DoE LEGEND", leg_cx, leg_y0 + 1.3,
+                                   size=0.8, justify="center", bold=True))
+    drawings.append(emit_silk_text(
+        "R1-2: plain     R3-4: +4 mini     R5-6: rounded+mini",
+        leg_cx, leg_y0 + 3.0, size=0.6, justify="center"))
+    drawings.append(emit_silk_text(
+        "C1,4: R=50um     C2,5: R=100um     C3,6: R=200um",
+        leg_cx, leg_y0 + 4.5, size=0.6, justify="center"))
+
+    # =====================================================================
+    # EIS CALIBRATION subsection (v4) — OPEN / SHORT / LOAD references for
+    # impedance-spectroscopy calibration. Placed in the bottom half of the
+    # right-of-DoE area freed by the compact LEGEND.
+    #
+    # OPEN  = 2 isolated gold pads (no copper connection) -> stray-C cal
+    # SHORT = 2 gold pads tied by a short F.Cu trace      -> stray-L + contact-R cal
+    # LOAD  = 2 gold pads at 0603 pitch; user solders a   -> magnitude/phase
+    #         precision 100 Ohm 0.1% 0603 (e.g., Vishay      reference
+    #         TNPV0603100RBEEN) — see VERIFICATION doc.
+    # =====================================================================
+    ecal_y0 = leg_y1 + 1.0                  # 1mm gap below LEGEND box
+    ecal_y1 = DOE_ORIGIN_Y + 5 * DOE_PITCH + 1.5
+    ecal_cx = leg_cx                        # share centre line with LEGEND
+    drawings.append(emit_silk_rect(leg_x0, ecal_y0, leg_x1, ecal_y1, width=0.15))
+    drawings.append(emit_silk_text("EIS CAL", ecal_cx, ecal_y0 + 1.3,
+                                   size=0.85, justify="center", bold=True))
+    drawings.append(emit_silk_text(
+        "calibrate LCR meter before EIS Nyquist sweep",
+        ecal_cx, ecal_y0 + 2.7, size=0.5, justify="center"))
+
+    # Probe-pad row — centred horizontally within the cal box
+    cal_row_y = ecal_y0 + 5.0
+    OPEN_PITCH  = 3.0
+    SHORT_PITCH = 3.0
+    LOAD_PITCH  = 2.0                       # standard 0603 land pitch
+    GROUP_GAP   = 7.0                       # horizontal gap between groups
+
+    total_w = OPEN_PITCH + GROUP_GAP + SHORT_PITCH + GROUP_GAP + LOAD_PITCH
+    group_start_x = ecal_cx - total_w / 2
+
+    open_a_x = group_start_x
+    open_b_x = open_a_x + OPEN_PITCH
+    short_a_x = open_b_x + GROUP_GAP
+    short_b_x = short_a_x + SHORT_PITCH
+    load_a_x  = short_b_x + GROUP_GAP
+    load_b_x  = load_a_x + LOAD_PITCH
+
+    # OPEN — 2 isolated probe pads (each on its own 1-pad net so DRC sees them
+    # as "intentional floats" rather than unconnected pads).
+    fps.append(probe_pad_footprint("PP_EIS_OPEN_A", open_a_x, cal_row_y,
+                                   nm.get("EIS_OPEN_A")))
+    fps.append(probe_pad_footprint("PP_EIS_OPEN_B", open_b_x, cal_row_y,
+                                   nm.get("EIS_OPEN_B")))
+
+    # SHORT — 2 probe pads tied by a short F.Cu trace. Same net so the LCR
+    # meter sees only the stray L + contact R between the probe tips.
+    short_net = nm.get("EIS_SHORT")
+    fps.append(probe_pad_footprint("PP_EIS_SHORT_A", short_a_x, cal_row_y,
+                                   short_net))
+    fps.append(probe_pad_footprint("PP_EIS_SHORT_B", short_b_x, cal_row_y,
+                                   short_net))
+    segments.append(emit_track(short_a_x, cal_row_y, short_b_x, cal_row_y,
+                               short_net, width=0.4))
+
+    # LOAD — 2 probe pads at 0603 pitch. User solders a 100R 0.1% 0603 part
+    # across them post-fab (no through-hole component preinstalled). The pad
+    # size (1.27mm) is wider than the 0603 end-cap (0.65mm) so probe tips can
+    # land on the exposed outer edge while the resistor sits on the inner.
+    fps.append(probe_pad_footprint("PP_EIS_LOAD_A", load_a_x, cal_row_y,
+                                   nm.get("EIS_LOAD_A")))
+    fps.append(probe_pad_footprint("PP_EIS_LOAD_B", load_b_x, cal_row_y,
+                                   nm.get("EIS_LOAD_B")))
+
+    # Labels just below the pads (between pad bottom edge and box bottom)
+    label_y = cal_row_y + 1.4
+    drawings.append(emit_silk_text("OPEN",  (open_a_x  + open_b_x)  / 2, label_y,
+                                   size=0.55, justify="center"))
+    drawings.append(emit_silk_text("SHORT", (short_a_x + short_b_x) / 2, label_y,
+                                   size=0.55, justify="center"))
+    drawings.append(emit_silk_text("100R LOAD", (load_a_x + load_b_x) / 2, label_y,
+                                   size=0.55, justify="center"))
 
     # --- DoE probe pads ------------------------------------------------
     # IMPORTANT: each DoE bond pad is 1×1 mm, large enough to probe DIRECTLY
@@ -1358,7 +1424,7 @@ PCB_HEADER = """(kicad_pcb
 \t(title_block
 \t\t(title "TUD micro-LED bond characterization v2")
 \t\t(date "2026-05-16")
-\t\t(rev "v2.0")
+\t\t(rev "v4.0")
 \t\t(comment 1 "Generator: new-pcb/tools/generate_pcb_text.py")
 \t\t(comment 2 "Authors: ECTM TU Delft + ITEC")
 \t)
