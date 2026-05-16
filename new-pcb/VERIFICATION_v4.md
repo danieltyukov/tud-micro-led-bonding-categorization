@@ -208,6 +208,6 @@ See **`docs/datasheets/README.md`** for the full index. Currently in folder:
 | Datasheet | File | Status |
 |---|---|---|
 | Würth WL-SFCC 0404 RGB LED | `Wurth-WL-SFCC-0404-RGB-LED-150044M155220.pdf` | ✅ in repo |
-| Vishay TNPV 0603 thin-film series | `Vishay-TNPV-Series-Precision-Thin-Film-Resistor-63080.pdf` | ✅ in repo |
-| Würth WR-PHD 2.54 mm pin header | `Wurth-WR-PHD-2.54mm-PinHeader-61301021121.pdf` | ✅ in repo |
-| Murata NCP15XH103J03RC NTC | `Murata-NCP15XH103J03RC-NTC.pdf` | ❌ **MANUAL DOWNLOAD** — Cloudflare-blocked. See `docs/datasheets/README.md` §"NTC datasheet" for instructions |
+| Vishay TNPW 0603 thin-film series | `Vishay-Dale-TNPW0603-Thin-Film-Resistor-28758.pdf` | ✅ in repo |
+| Würth WR-PHD 2.54 mm pin header (1×40 single-row) | `Wurth-WR-PHD-1x40-2.54mm-PinHeader-61304011121.pdf` | ✅ in repo |
+| Murata NCP15XH103J03RC NTC | `Murata-NCP15XH103J03RC-NTC-R44E.pdf` | ✅ in repo (downloaded via Mouser CDN) |

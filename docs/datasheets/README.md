@@ -81,5 +81,5 @@ All drop-in compatible with the existing v4 footprints:
 |---|---|---|
 | NTC 0402 | Murata NCP15XH103J03RC | TDK NTCG104EH103HT1 · TE/Panasonic ERTJ1VR103J |
 | Load R 0603 | Vishay TNPW0603100RBEEA | Yageo RT0603BRD07100RL · Susumu RR0816P-101-D · Bourns CRT0603-BY-1000ELF |
-| Header 2.54mm | Würth 61301021121 | Any single-row male 2.54 mm THT strip (CNC Tech, TE, Molex, etc.) |
+| Header 2.54mm | Würth 61304011121 (1×40 single-row) | Any single-row male 2.54 mm THT strip (CNC Tech, TE, Molex, etc.) |
 | RGB LED 0404 | Würth 150044M155220 | **Do not substitute** — your study is specifically on this device |

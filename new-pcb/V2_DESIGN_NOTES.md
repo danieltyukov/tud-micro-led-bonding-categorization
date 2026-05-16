@@ -161,5 +161,15 @@ Every 4-pin block = 1 LED. Pin 1 of each block is anode (= common LED_VCC).
 ## What's NOT in this build
 
 - North header pre-routed traces — see "Routing summary" above
-- Schematic — research test boards traditionally ship PCB-only; can be
-  added in a future iteration by reverse-engineering the placement script
+~~- Schematic — research test boards traditionally ship PCB-only; can be
+  added in a future iteration by reverse-engineering the placement script~~
+
+**Update (v4.0.7):** Single-sheet A2 schematic added — see
+`tud-microled-v2.kicad_sch` and `fab/tud-microled-v2-schematic.pdf`.
+Generated via KiCad MCP tools, linked to the PCB by matching component
+references and footprint paths. 36 components placed (26 LEDs + 4 NTCs +
+1 resistor + 3 test points + 2 × 32-pin connectors), 129 net labels
+snap-connected to pin endpoints, 24 NC markers on user-jumperable north
+pins. ERC residual: 21 expected "single-pin net" warnings on EIS probe
+test points and LEDn_{KG,KB} south-header labels (by design — these nets
+go to PCB probe pads only, not other components).
