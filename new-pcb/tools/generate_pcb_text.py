@@ -882,14 +882,17 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     segments.append(emit_track(short_a_x, cal_row_y, short_b_x, cal_row_y,
                                short_net, width=0.4))
 
-    # LOAD — 2 probe pads at 0603 pitch. User solders a 100R 0.1% 0603 part
-    # across them post-fab (no through-hole component preinstalled). The pad
-    # size (1.27mm) is wider than the 0603 end-cap (0.65mm) so probe tips can
-    # land on the exposed outer edge while the resistor sits on the inner.
-    fps.append(probe_pad_footprint("PP_EIS_LOAD_A", load_a_x, cal_row_y,
-                                   nm.get("EIS_LOAD_A")))
-    fps.append(probe_pad_footprint("PP_EIS_LOAD_B", load_b_x, cal_row_y,
-                                   nm.get("EIS_LOAD_B")))
+    # LOAD — single component footprint "R_EIS_LOAD" combining a 0603 SMD
+    # land pattern with oversized 1.27mm pads (so probe tips land on the
+    # exposed outer edges while the resistor sits on the inner). Aisler
+    # treats this as ONE component to assemble (Vishay TNPW0603100RBEEA).
+    load_cx = (load_a_x + load_b_x) / 2
+    eis_load_pads = [
+        emit_pad("1", "rect", -LOAD_PITCH/2, 0, 1.27, 1.27, net=nm.get("EIS_LOAD_A")),
+        emit_pad("2", "rect",  LOAD_PITCH/2, 0, 1.27, 1.27, net=nm.get("EIS_LOAD_B")),
+    ]
+    fps.append(emit_footprint("R_EIS_LOAD", load_cx, cal_row_y, eis_load_pads,
+                              library_id="EIS_Load_0603"))
 
     # Labels just below the pads (between pad bottom edge and box bottom)
     label_y = cal_row_y + 1.5
