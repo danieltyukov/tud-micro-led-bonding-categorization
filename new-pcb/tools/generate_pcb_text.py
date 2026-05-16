@@ -970,8 +970,20 @@ def build_board() -> tuple[list[str], list[str], list[str], NetManager]:
     drawings.append(emit_silk_text("VAN DER PAUW",
                                    BOARD_W/2, vdp_box_y0 + 1.5,
                                    size=1.2, justify="center", bold=True))
-    vdp_widths = [1.0, 0.5, 0.25, 0.1]
-    vdp_x_centres = [15.0, 38.0, 62.0, 85.0]
+    # Scope clarification (LED-only study): VDP needs a sample bridging all 4
+    # contacts to function as a sheet-R extractor. Without a sample, use as a
+    # bare-ENIG 4-probe sheet-R QC per fab batch.
+    drawings.append(emit_silk_text(
+        "use:  bare-ENIG sheet-R QC  (4-probe per cloverleaf, no LED bond)",
+        BOARD_W/2, vdp_box_y1 - 1.0, size=0.55, justify="center"))
+    # v4.0.6 fix: smallest VDP changed from W=0.1 → W=0.15. Rationale:
+    #   (a) 100 µm pads are below Aisler-ENIG reliable plating min (~150 µm)
+    #   (b) at the original x=85, W=0.1 right contact (85.85) sat exactly at
+    #       0.20 mm = DRC clearance from the DCL12_OUT trace at x=86.15.
+    # New W=0.15 footprint moved to x=83 → right contact at 83.875, gap to
+    # DCL12_OUT trace = 2.175 mm (10× margin).
+    vdp_widths = [1.0, 0.5, 0.25, 0.15]
+    vdp_x_centres = [15.0, 38.0, 62.0, 83.0]
     for x_c, w in zip(vdp_x_centres, vdp_widths):
         fp_str, nets = vdp_footprint(f"VDP_W{w}", x_c, ROW_VDP, w, nm)
         fps.append(fp_str)
