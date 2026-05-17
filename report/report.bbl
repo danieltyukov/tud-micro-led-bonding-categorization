@@ -48,22 +48,22 @@ A.~Abdelwahab, H.~{van Zeijl}, M.~Mastrangeli, R.~{van Hoorn}, and H.~Kuipers,
   Technology Conference (ECTC)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE,
   2025, prior {TU} Delft v1 board this work extends.
 
-\bibitem{roscamabbing2011led}
-F.~D. Roscam~Abbing and M.~A.~P. Pertijs, ``Light-emitting diode
-  junction-temperature sensing using differential voltage/current
-  measurements,'' in \emph{2011 IEEE SENSORS}.\hskip 1em plus 0.5em minus
-  0.4em\relax IEEE, 2011, {TU} Delft, {ECTM}.
-
-\bibitem{murata_ncp15}
-``{NTC} thermistors {R44E} catalog — {NCP15XH103J03RC},'' Murata
-  Manufacturing Co., Ltd., December 2014, 2014.
-
 \bibitem{pangallo2018direct}
 G.~Pangallo, R.~Carotenuto, D.~Iero, E.~D. Mallemace, M.~Merenda, S.~Rao, and
   F.~G. Della~Corte, ``A direct junction temperature measurement technique for
   power {LEDs},'' in \emph{2018 IEEE 9th International Workshop on Applied
   Measurements for Power Systems (AMPS)}.\hskip 1em plus 0.5em minus
   0.4em\relax IEEE, 2018.
+
+\bibitem{murata_ncp15}
+``{NTC} thermistors {R44E} catalog — {NCP15XH103J03RC},'' Murata
+  Manufacturing Co., Ltd., December 2014, 2014.
+
+\bibitem{roscamabbing2011led}
+F.~D. Roscam~Abbing and M.~A.~P. Pertijs, ``Light-emitting diode
+  junction-temperature sensing using differential voltage/current
+  measurements,'' in \emph{2011 IEEE SENSORS}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, 2011, {TU} Delft, {ECTM}.
 
 \bibitem{vishay_tnpw}
 ``{TNPW} e3 — high stability thin film flat chip resistors,'' Vishay Dale

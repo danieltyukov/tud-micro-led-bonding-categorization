@@ -35,22 +35,22 @@ Student no. 5714699 \;\textbar\; \texttt{daniel.tyukov@alphait.us}}
 \end{figure}
 
 \begin{abstract}
-We designed a 93~mm $\times$ 93~mm two-layer FR-4 PCB to characterize how
-different solder pastes perform when bonding micro-LEDs. The board carries
-26 Würth WL-SFCC 0404 RGB LEDs (8 addressable, 18 in two daisy chains), four
-0402 NTCs for forward-voltage thermometry, a 100~$\Omega$ 0.1\% reference
-resistor with OPEN/SHORT/LOAD pads for impedance spectroscopy, and a set of
-TLM ladders and van der Pauw cloverleaves on the same substrate. Putting all
-of this on one PCB means a single cleanroom session yields bond resistance,
-contact resistivity, sheet resistance, and junction-to-substrate thermal
-resistance from the same hardware. No separate test coupons, no inter-board
-correlation. Two 32-pin headers break every active net out to a breadboard.
-The board is fab-ready for the Aisler standard pool with ENIG plating; LEDs
-are deliberately left unassembled, since the bond joint itself is the
-research subject and has to form under controlled cleanroom conditions. What
-follows is a walkthrough of the schematic, the characterization methods, the
-tools needed to run them, and the four-paste comparison the design was built
-for.
+This work presents a 93~mm $\times$ 93~mm two-layer FR-4 PCB designed to
+characterize how different solder pastes perform when bonding micro-LEDs.
+The board carries 26 Würth WL-SFCC 0404 RGB LEDs (8 addressable, 18 in two
+daisy chains), four 0402 NTCs for forward-voltage thermometry, a 100~$\Omega$
+0.1\% reference resistor with OPEN/SHORT/LOAD pads for impedance
+spectroscopy, and a set of TLM ladders and van der Pauw cloverleaves on the
+same substrate. Putting all of this on one PCB means a single cleanroom
+session yields bond resistance, contact resistivity, sheet resistance, and
+junction-to-substrate thermal resistance from the same hardware. No
+separate test coupons, no inter-board correlation. Two 32-pin headers break
+every active net out to a breadboard. The board is fab-ready for the Aisler
+standard pool with ENIG plating; LEDs are deliberately left unassembled,
+since the bond joint itself is the research subject and has to form under
+controlled cleanroom conditions. The report covers the schematic, the
+characterization methods, the tools needed to run them, and the four-paste
+comparison the design was built for.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -76,8 +76,8 @@ This board extends the v1 design Abdelwahab et al.\ shipped at ECTC 2025
 adds three more characterization methods (TLM contact resistivity, van der
 Pauw sheet resistance, EIS impedance) on the same substrate, so one
 cleanroom session produces a complete electrical fingerprint of whatever
-paste-and-reflow combination was run. We deliberately target the Aisler
-standard pool, not a semiconductor fab, to keep the boards cheap
+paste-and-reflow combination was run. The design deliberately targets the
+Aisler standard pool, not a semiconductor fab, to keep the boards cheap
 (\textasciitilde\euro40 each) and reproducible at any university lab.
 
 \section{Board Architecture}
@@ -137,17 +137,17 @@ instead.
 \subsection{Forward-voltage thermometry (V$_F$-TSP)}
 
 A diode's forward voltage at a fixed, low sense current falls roughly
-linearly with junction temperature. The slope, $S \equiv -\partial V_F /
-\partial T_J$, is constant enough over the operating range to invert for
-$T_J$ in real time \cite{roscamabbing2011led}. For a sense current $I_S
-\ll I_{op}$,
+linearly with junction temperature over a wide range
+\cite{pangallo2018direct}. The slope, $S \equiv -\partial V_F / \partial
+T_J$, is constant enough to invert for $T_J$ in real time. For a sense
+current $I_S \ll I_{op}$,
 \begin{equation}
   T_J(t) \;=\; T_{J,0} \;-\; \frac{1}{S}\bigl[V_F(t) - V_{F,0}\bigr],
   \label{eq:vftsp}
 \end{equation}
 where $V_{F,0}$ is the forward voltage at the calibration temperature
-$T_{J,0}$. We read $V_F$ across the four bonded contacts of the LED under
-test via the south header. The substrate reference comes from the four
+$T_{J,0}$. The LED $V_F$ is read across the four bonded contacts of the
+device under test via the south header. The substrate reference comes from the four
 NTCs (TH1--TH4, Murata NCP15XH103J03RC, $R_{25}=10$~k$\Omega$, $B_{25/85}=3380$~K
 \cite{murata_ncp15}) interleaved between the LED pairs and read through
 the north header. The Steinhart-B equation maps NTC resistance to
@@ -156,9 +156,11 @@ temperature:
   \frac{1}{T} \;=\; \frac{1}{T_0} \;+\; \frac{1}{B}\,\ln\!\left(\frac{R}{R_0}\right),
   \label{eq:ntc}
 \end{equation}
-with $T_0 = 298.15$~K, $R_0 = 10$~k$\Omega$. We pulse the sense current
-(100~$\mu$A, 1~ms, 10\% duty) to avoid self-heating bias
-\cite{pangallo2018direct}. The bond-joint thermal resistance is then the
+with $T_0 = 298.15$~K, $R_0 = 10$~k$\Omega$. To avoid self-heating bias
+the sense current is pulsed (100~$\mu$A, 1~ms, 10\% duty), following the
+pulsed differential V/I technique of Roscam Abbing and Pertijs
+\cite{roscamabbing2011led}, which also has the advantage of requiring
+calibration at only a single temperature. The bond-joint thermal resistance is then the
 steady-state ratio of the junction-to-substrate temperature difference to
 the dissipated power:
 \begin{equation}
@@ -188,8 +190,8 @@ pads are oversized so they double as four-wire Kelvin probe lands.
 
 TLM gives sheet resistance $R_{sh}$ and specific contact resistivity
 $\rho_c$ from one set of resistance measurements between successive
-finger pairs at known gaps $d$ \cite{wang2023cucu}. For $N$ identical
-contacts of width $W$ and characteristic transfer length $L_T$,
+finger pairs at known gaps $d$. For $N$ identical contacts of width $W$
+and characteristic transfer length $L_T$,
 \begin{equation}
   R_{tot}(d) \;=\; \frac{R_{sh}}{W}\,d \;+\; 2\,R_c,
   \quad
@@ -199,7 +201,7 @@ contacts of width $W$ and characteristic transfer length $L_T$,
 where $L$ is the contact length. A linear fit of $R_{tot}$ vs $d$ gives
 $R_{sh}$ from the slope and $2 R_c$ from the intercept; $\rho_c$ then
 follows from $\rho_c = R_c \cdot W \cdot L_T \cdot \tanh(L/L_T)$. The
-three widths in our ladder set make the transfer length's width
+three widths in the ladder set make the transfer length's width
 dependence directly measurable.
 
 \subsection{Van der Pauw (VDP)}
@@ -274,10 +276,14 @@ on identical hardware: same LED part, same substrate, same reflow profile
   \item \textbf{SAC305} (Sn 96.5\% / Ag 3.0\% / Cu 0.5\%), the industry baseline.
   \item \textbf{SAC0307}, a low-silver variant. Cheaper, slightly worse on
         thermal cycling, similar V$_F$ drop.
-  \item \textbf{Au-Sn 80/20 eutectic}, the high-temperature reference, with
-        documented best-in-class contact resistivity \cite{yin2024ausn}.
-  \item \textbf{Polymer-reinforced SAC305}, an impact-tolerant chemistry
-        relevant to flexible-display use \cite{ji2023polymer}.
+  \item \textbf{Au-Sn eutectic}, the canonical micro-LED flip-chip
+        bonding alloy, with reported low post-bond leakage current and
+        high shear strength but a strong sensitivity to bonding
+        temperature \cite{yin2024ausn}.
+  \item \textbf{Polymer-reinforced solder paste}, an impact-tolerant
+        chemistry developed for laser-assisted mass transfer that
+        preserves solder-joint reliability while absorbing chip-drop
+        energy \cite{ji2023polymer}.
 \end{enumerate}
 For each paste, a three-board batch (1 trial + 1 real + 1 spare, matching
 Aisler's batch size). Per board, measure: chain yield ($N_{ok}/N$ across
