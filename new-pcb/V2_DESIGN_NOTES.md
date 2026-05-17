@@ -98,7 +98,7 @@ zero. Deferring to v3.1 (4-layer board with B.Cu fanout bus zone).
 | Min via | 0.45 / 0.20 mm |
 | Min hole | 0.20 mm |
 
-Matches Aisler standard pool and Eurocircuits class-4 capability.
+Matches both Aisler standard pool and Eurocircuits Class-4 capability.
 
 ---
 
@@ -107,7 +107,7 @@ Matches Aisler standard pool and Eurocircuits class-4 capability.
 | File | Purpose |
 |---|---|
 | `gerbers/` | Per-layer Gerber files (X2 format) + drill `.drl` + `.gbrjob` |
-| `tud-microled-v2-gerbers.zip` | Gerber bundle — Aisler accepts the native `.kicad_pcb` so this is only needed if falling back to Eurocircuits |
+| `tud-microled-v2-gerbers.zip` | Gerber bundle — required for Eurocircuits; optional for Aisler (Aisler reads `.kicad_pcb` natively) |
 | `tud-microled-v2.step` | 3D model for mechanical fit |
 | `tud-microled-v2-top.pdf` | Top-side review PDF (F.Cu + F.Mask + F.SilkS + Edge.Cuts) |
 | `tud-microled-v2-bot.pdf` | Bottom-side review PDF (mirrored, B.Cu + B.Mask + B.SilkS + Edge.Cuts) |

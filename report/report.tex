@@ -45,8 +45,9 @@ same substrate. Putting all of this on one PCB means a single cleanroom
 session yields bond resistance, contact resistivity, sheet resistance, and
 junction-to-substrate thermal resistance from the same hardware. No
 separate test coupons, no inter-board correlation. Two 32-pin headers break
-every active net out to a breadboard. The board is fab-ready for the Aisler
-standard pool with ENIG plating; LEDs are deliberately left unassembled,
+every active net out to a breadboard. The board is fab-ready for the
+Aisler or Eurocircuits standard pool with ENIG plating; LEDs are
+deliberately left unassembled,
 since the bond joint itself is the research subject and has to form under
 controlled cleanroom conditions. The report covers the schematic, the
 characterization methods, the tools needed to run them, and the four-paste
@@ -77,8 +78,9 @@ adds three more characterization methods (TLM contact resistivity, van der
 Pauw sheet resistance, EIS impedance) on the same substrate, so one
 cleanroom session produces a complete electrical fingerprint of whatever
 paste-and-reflow combination was run. The design deliberately targets the
-Aisler standard pool, not a semiconductor fab, to keep the boards cheap
-(\textasciitilde\euro40 each) and reproducible at any university lab.
+Aisler / Eurocircuits standard pool, not a semiconductor fab, to keep the
+boards cheap (\textasciitilde\euro40--50 each) and reproducible at any
+university lab.
 
 \section{Board Architecture}
 
@@ -106,23 +108,23 @@ calibration block in the same horizontal band: bare OPEN/SHORT pads and a
 The middle strip is the test-structure zone: three TLM ladders at
 $W \in \{0.25, 0.5, 1.0\}$~mm with gaps of 200, 300, 500, 1000, 2000, and
 4000~$\mu$m, plus four VDP cloverleaves at $W \in \{1.0, 0.5, 0.25, 0.15\}$~mm.
-The smallest TLM gap stays above the Aisler standard-pool minimum, so the
-ladders fab in the same run, on the same ENIG surface, as the LED-side
-traces. The bottom strip carries the eight WL-SFCC LEDs (D1--D8) with the
+The smallest TLM gap stays above the standard-pool minimum at both Aisler
+and Eurocircuits, so the ladders fab in the same run, on the same ENIG
+surface, as the LED-side traces. The bottom strip carries the eight WL-SFCC LEDs (D1--D8) with the
 four NTCs interleaved between them, the DCL6 and DCL12 daisy chains
 (wired through the K$_R$ cathode), and the 32-pin south header that
 pre-routes every D1--D8 signal out to a ribbon cable.
 
 Design rule budget: 0.20~mm minimum copper track, 0.30~mm minimum copper
-clearance (1.3$\times$ and 2$\times$ over the Aisler 0.15~mm spec
-respectively), 0.30~mm minimum drill, 0.15~mm via annular ring. DRC
-returns zero violations and zero unconnected items. ENIG plating
-(Ni 4~$\mu$m, Au 0.075~$\mu$m) is non-negotiable: every probe pad has to
-be gold for reliable probe contact, and the customer-bonded LEDs need a
-gold surface to wet against. Component count: 192 footprints in total, 69
-of them assembled by Aisler (4 NTCs, the reference resistor, 64 header
-pins) and 123 left for the customer (the 26 LEDs bonded in the cleanroom
-and 97 bare-ENIG test lands).
+clearance (1.3$\times$ and 2$\times$ over the 0.15~mm standard-pool minimum
+at both Aisler and Eurocircuits), 0.30~mm minimum drill, 0.15~mm via
+annular ring. DRC returns zero violations and zero unconnected items. ENIG
+plating (Ni 4~$\mu$m, Au 0.075~$\mu$m) is non-negotiable: every probe pad
+has to be gold for reliable probe contact, and the customer-bonded LEDs
+need a gold surface to wet against. Component count: 192 footprints in
+total, 69 of them assembled by the fab (4 NTCs, the reference resistor, 64
+header pins) and 123 left for the customer (the 26 LEDs bonded in the
+cleanroom and 97 bare-ENIG test lands).
 
 The companion KiCad schematic captures the 36 electrically active
 components (the 26 LEDs, 4 NTCs, the resistor, 3 EIS test points, and the
@@ -235,20 +237,22 @@ the whole chain.
 \textbf{Software.} KiCad 9.0.8. The \texttt{.kicad\_pcb} is written
 programmatically by a Python script
 (\texttt{tools/generate\_pcb\_text.py}) rather than placed through the
-GUI. Fab outputs come out of \texttt{kicad-cli}: gerbers and drill (Aisler
-reads the native \texttt{.kicad\_pcb} but the bundle ships as a fallback),
-pick-and-place CSV, top and bottom review PDFs, a 3D STEP model, and the
-Beagle-format BOM (\texttt{tools/gen\_aisler\_bom.py}).
+GUI. Fab outputs come out of \texttt{kicad-cli}: gerbers and drill
+(required for Eurocircuits, optional for Aisler since Aisler reads the
+native \texttt{.kicad\_pcb}), pick-and-place CSV, top and bottom review
+PDFs, a 3D STEP model, and the fab-neutral BOM
+(\texttt{tools/gen\_fab\_bom.py}) which parses identically at Aisler
+Beagle and Eurocircuits.
 
-\textbf{Fabrication.} The board goes to Aisler on the standard 2-layer
-FR-4 1.55~mm pool with ENIG. Beagle assembly solders the 4 NTCs, the
-reference resistor, and the 64 header pins (cut from two 1$\times$40
-strips). The 26 WL-SFCC LED footprints are marked \emph{do not populate}
-in the BOM and called out explicitly in the order notes, since the LED
-bonding is the research subject and has to happen in the TU~Delft
-cleanroom under controlled paste, reflow, and die-bonder conditions.
-Three boards delivered, fully assembled apart from the LEDs, costs
-roughly \euro115--125.
+\textbf{Fabrication.} Either Aisler or Eurocircuits can produce the board
+on a 2-layer FR-4 1.55~mm pool with ENIG. The fab solders the 4 NTCs,
+the reference resistor, and the 64 header pins (cut from two
+1$\times$40 strips). The 26 WL-SFCC LED footprints are marked \emph{do
+not populate} in the BOM and called out explicitly in the order notes,
+since the LED bonding is the research subject and has to happen in the
+TU~Delft cleanroom under controlled paste, reflow, and die-bonder
+conditions. Three boards delivered, fully assembled apart from the LEDs,
+costs roughly \euro115--125 at Aisler or \euro135--160 at Eurocircuits.
 
 \textbf{Bonding.} LED placement runs on the Tresky T-3000-PRO. Its
 95~$\times$~95~mm work envelope fits the 93~$\times$~93~mm board with 1~mm
@@ -286,7 +290,8 @@ on identical hardware: same LED part, same substrate, same reflow profile
         energy \cite{ji2023polymer}.
 \end{enumerate}
 For each paste, a three-board batch (1 trial + 1 real + 1 spare, matching
-Aisler's batch size). Per board, measure: chain yield ($N_{ok}/N$ across
+Aisler's bundle size and convenient at Eurocircuits too). Per board,
+measure: chain yield ($N_{ok}/N$ across
 both DCL6 and DCL12), per-LED V$_F$ at 10~mA, $R_{th,bond}$ from the
 V$_F$-TSP transient, $R_s$, $R_p$, and $C_j$ from a fit of EIS data to
 (\ref{eq:eis}), and $\rho_c$ from a fit of TLM data to (\ref{eq:tlm}).
@@ -306,11 +311,11 @@ This v2 board puts four characterization methods (V$_F$-TSP, EIS, TLM,
 VDP) and a daisy-chain go/no-go test on a single 93~$\times$~93~mm
 substrate, so one cleanroom session produces a self-consistent measurement
 of bond resistance, contact resistivity, sheet resistance, and thermal
-resistance from the same hardware. The board is fab-ready on the Aisler
-standard pool with ENIG plating, with the design rules cleared at twice
-the published manufacturing minima. The schematic, BOM, and tool chain
-are committed alongside this report so anyone with KiCad and an Aisler
-account can re-fab a copy. Part 2 will report the first measurement
+resistance from the same hardware. The board is fab-ready on the
+standard pool at both Aisler and Eurocircuits with ENIG plating, with the
+design rules cleared at twice the published manufacturing minima. The
+schematic, BOM, and tool chain are committed alongside this report so
+anyone with KiCad and an account at either fab can re-fab a copy. Part 2 will report the first measurement
 results from the four-paste comparison once the boards land and the
 cleanroom session is done.
 

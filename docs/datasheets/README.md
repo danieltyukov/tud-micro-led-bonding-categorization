@@ -60,7 +60,7 @@ pre-assembled by the fab house (Aisler / Eurocircuits).**
 - Insulator height above PCB: 11.54 ± 0.2 mm
 - Datasheet recommended drill: 1.10 ± 0.15 mm (range 0.95-1.25)
 - PCB drill: 1.0 mm (within recommended range, at low edge — standard for 0.1" THT)
-- PCB pad: 1.7 mm Ø → annular ring 0.35 mm (well above Aisler 0.15 min)
+- PCB pad: 1.7 mm Ø → annular ring 0.35 mm (well above the 0.15 mm minimum at both Aisler and Eurocircuits)
 - 1×40 strip (101.6 mm length) — order 2 strips, fab cuts to 32 pins per row
 
 ---

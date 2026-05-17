@@ -33,7 +33,7 @@ Our LED chains carry the **chain current** (single value through the series). Wo
 | Parameter | Value | Spec |
 |---|---|---|
 | Trace width | 0.20 mm (default `TRACE_W`) | ≥ 0.15 mm min |
-| Copper thickness | 35 µm (1 oz) | Aisler default |
+| Copper thickness | 35 µm (1 oz) | default at Aisler and Eurocircuits |
 | Cross-section | 0.20 mm × 35 µm = 7×10⁻³ mm² | — |
 | Chain DC current | 10 mA continuous | — |
 | Current density | **1.43 A/mm²** | < 30 A/mm² (FR-4 safe limit for short traces) |

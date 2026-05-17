@@ -5,10 +5,10 @@ Joint work: **TU Delft** (ECTM, M. Mastrangeli, H. van Zeijl, A. Abdelwahab)
 and **ITEC B.V. / Nexperia** (R. van Hoorn, H. Kuipers). Financed by ITEC
 B.V. and co-financed by the Netherlands Enterprise Agency (RVO).
 
-**v4.0.7 PCB — fab-ready for Aisler standard-pool, ENIG finish.** 26 RGB
-micro-LEDs (8 characterization + 6+12 daisy chains), 4 NTCs for V_F-TSP
-thermometry, EIS calibration block, 64-pin breadboard interface, plus
-bare-pad test structures for TLM / VDP / DoE on the same substrate.
+**v4.0.7 PCB — fab-ready for Aisler or Eurocircuits standard pool, ENIG finish.**
+26 RGB micro-LEDs (8 characterization + 6+12 daisy chains), 4 NTCs for
+V_F-TSP thermometry, EIS calibration block, 64-pin breadboard interface,
+plus bare-pad test structures for TLM / VDP / DoE on the same substrate.
 
 ---
 
@@ -19,8 +19,9 @@ bare-pad test structures for TLM / VDP / DoE on the same substrate.
 | ![Board top](new-pcb/fab/preview/board_top.png) | ![Board bottom](new-pcb/fab/preview/board_bottom.png) |
 
 93 × 93 mm · 2-layer FR-4 · 1.55 mm · ENIG (Ni 4 µm / Au 0.075 µm) · white silk.
-DRC clean (0 violations, 0 unconnected). Routing on Aisler standard-pool min
-0.15 mm clearance with 2× headroom (0.30 mm achieved in south fanout lanes).
+DRC clean (0 violations, 0 unconnected). Routing clears both Aisler standard
+pool and Eurocircuits Class 4 (0.15 mm minimum clearance) with 2× headroom
+(0.30 mm achieved in the south fanout lanes).
 
 ## Schematic
 
@@ -65,7 +66,7 @@ and intentionally not on the schematic — they have no electrical wiring.
     ├── V2_DESIGN_NOTES.md            ← as-built notes for v4.0.7
     ├── VERIFICATION_v4.md            ← electrical-characterization workflow
     ├── ELECTRICAL_CHARACTERIZATION.md ← measurements, ports, lab tools
-    ├── FABRICATION_ORDER.md          ← Aisler order spec + DNP instructions
+    ├── FABRICATION_ORDER.md          ← Aisler / Eurocircuits order spec + DNP instructions
     ├── PUBLICATION_CONTRIBUTION.md   ← what this v2 contributes beyond ECTC 2025
     ├── library/                      ← vendored Würth WL-SFCC symbol/footprint/3D
     ├── tools/                        ← Python generators (PCB + schematic + BOM)
@@ -92,13 +93,22 @@ and intentionally not on the schematic — they have no electrical wiring.
 | v2 schematic                   | **done** (single-sheet A2, linked to PCB)    |
 | v2 layout                      | **done** (192 footprints, DRC clean)         |
 | v2 fab outputs                 | **done** (gerbers + BOM + pos + PDFs + STEP) |
-| v2 fabrication                 | ready to order (Aisler standard pool + ENIG) |
-| v2 assembly + characterization | pending Aisler delivery                      |
+| v2 fabrication                 | ready to order (Aisler or Eurocircuits standard pool + ENIG) |
+| v2 assembly + characterization | pending fab delivery                         |
 
-## Quick fab order (Aisler)
+## Quick fab order
 
+The PCB clears the standard pool at both fabs; pick whichever fits the schedule and budget.
+Full step-by-step in `new-pcb/FABRICATION_ORDER.md`.
+
+**Aisler (cheapest, ~€115–125 for 3 boards):**
 1. Drag-drop `new-pcb/tud-microled-v2.kicad_pcb` onto Aisler "Start Project"
-2. Settings: 2-layer, **ENIG (Gold)** finish, 1.55 mm FR-4, 3 boards, white silk
-3. Add Beagle assembly → upload `new-pcb/fab/tud-microled-v2-aisler-bom.csv` + `new-pcb/fab/tud-microled-v2-pos.csv`
-4. Paste the DNP instruction from `new-pcb/FABRICATION_ORDER.md` §"DNP — Critical instruction for Aisler" into the Beagle free-text notes field (the 26 LEDs are customer-bonded in the cleanroom)
-5. Expected cost: ~€115–125 for 3 fully-assembled boards delivered to TU Delft
+2. ENIG, 1.55 mm FR-4, 3 boards
+3. Add Beagle assembly → upload `new-pcb/fab/tud-microled-v2-fab-bom.csv` + `new-pcb/fab/tud-microled-v2-pos.csv`
+4. Paste the DNP instruction from `FABRICATION_ORDER.md` into the Beagle notes
+
+**Eurocircuits (~€135–160, faster lead time at TU Delft's traditional fab):**
+1. Upload `new-pcb/fab/tud-microled-v2-gerbers.zip` to Eurocircuits PCB visualiser
+2. Same ENIG / 1.55 mm / 3 boards configuration
+3. Add assembly → upload the same `tud-microled-v2-fab-bom.csv` + `-pos.csv`
+4. Paste the DNP instruction into Special Requirements
