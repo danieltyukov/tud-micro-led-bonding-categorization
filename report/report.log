@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.21)  17 MAY 2026 01:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.21)  17 MAY 2026 02:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -527,7 +527,7 @@ LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 3
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-<figures/tudelft_logo.pdf, id=56, 383.94841pt x 150.59485pt>
+<figures/tudelft_logo.pdf, id=52, 383.94841pt x 150.59485pt>
 File: figures/tudelft_logo.pdf Graphic file (type pdf)
 <use figures/tudelft_logo.pdf>
 Package pdftex.def Info: figures/tudelft_logo.pdf  used on input line 34.
@@ -545,132 +545,76 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 38.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 ! Undefined control sequence.
-l.79 cheap (\textasciitilde\euro
-                                40~per assembled board).
+l.81 (\textasciitilde\euro
+                          40 each) and reproducible at any university lab.
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-<figures/board_top.png, id=64, 1573.88pt x 1268.74pt>
+<figures/board_top.png, id=57, 1573.88pt x 1268.74pt>
 File: figures/board_top.png Graphic file (type png)
 <use figures/board_top.png>
-Package pdftex.def Info: figures/board_top.png  used on input line 92.
+Package pdftex.def Info: figures/board_top.png  used on input line 87.
 (pdftex.def)             Requested size: 216.71906pt x 174.69911pt.
-<figures/board_bottom.png, id=66, 1573.88pt x 1268.74pt>
+<figures/board_bottom.png, id=59, 1573.88pt x 1268.74pt>
 File: figures/board_bottom.png Graphic file (type png)
 <use figures/board_bottom.png>
-Package pdftex.def Info: figures/board_bottom.png  used on input line 93.
+Package pdftex.def Info: figures/board_bottom.png  used on input line 88.
 (pdftex.def)             Requested size: 216.71906pt x 174.69911pt.
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
 dist/fonts/enc/dvips/base/8r.enc}
 
 
  <./figures/tudelft_logo.pdf>]
-<figures/schematic.png, id=101, 1690.03395pt x 1194.98445pt>
-File: figures/schematic.png Graphic file (type png)
-<use figures/schematic.png>
-Package pdftex.def Info: figures/schematic.png  used on input line 138.
-(pdftex.def)             Requested size: 500.52063pt x 353.90314pt.
-LaTeX Font Info:    Trying to load font information for OMS+pcr on input line 1
-51.
 
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omspcr.fd
-File: omspcr.fd 
-)
-LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 151.
-
-Underfull \hbox (badness 2671) in paragraph at lines 149--158
-\OT1/ptm/m/n/10 the BOM and PCB): \OT1/pcr/m/n/10 LED_VCC \OT1/ptm/m/n/10 is th
-e 8-anode com-
- []
-
-
-Underfull \hbox (badness 6125) in paragraph at lines 149--158
-\OT1/ptm/m/n/10 mon bus (B.Cu cop-per pour); \OT1/pcr/m/n/10 LED$\OML/cmm/m/it/
-10 n$\OT1/pcr/m/n/10 _K\OMS/cmsy/m/n/10 f\OT1/pcr/m/n/10 R,G,B\OMS/cmsy/m/n/10 
-g \OT1/ptm/m/n/10 are
- []
-
-
-Underfull \hbox (badness 1584) in paragraph at lines 149--158
-\OT1/ptm/m/n/10 are chain end-points; \OT1/pcr/m/n/10 DCL\OMS/cmsy/m/n/10 f\OT1
-/pcr/m/n/10 6,12\OMS/cmsy/m/n/10 g\OT1/pcr/m/n/10 _J$\OML/cmm/m/it/10 k$ \OT1/p
-tm/m/n/10 are in-ter-nal junc-
- []
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 137.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 163.
+(hyperref)                removing `subscript' on input line 137.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 163.
+(hyperref)                removing `math shift' on input line 137.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 163.
-
-[2 <./figures/board_top.png> <./figures/board_bottom.png>] [3 <./figures/schema
-tic.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 282--290
-[]\OT1/ptm/b/n/10 Software. \OT1/ptm/m/n/10 Ki-Cad 9.0.8 for the project
+[2 <./figures/board_top.png> <./figures/board_bottom.png>]
+Underfull \hbox (badness 2035) in paragraph at lines 221--230
+\OT1/ptm/m/n/10 the K$[]$ cath-ode. One I-V sweep across the end-points
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 282--290
-\OT1/ptm/m/n/10 (\OT1/pcr/m/n/10 tud-microled-v2.kicad_pro\OT1/ptm/m/n/10 ); th
-e
+Underfull \hbox (badness 10000) in paragraph at lines 233--240
+[]\OT1/ptm/b/n/10 Software. \OT1/ptm/m/n/10 Ki-Cad 9.0.8. The \OT1/pcr/m/n/10 .
+kicad_pcb
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 282--290
-\OT1/pcr/m/n/10 .kicad_pcb \OT1/ptm/m/n/10 is pro-ce-du-rally gen-er-ated by
+Underfull \hbox (badness 10000) in paragraph at lines 233--240
+\OT1/ptm/m/n/10 is writ-ten pro-gram-mat-i-cally by a Python script
  []
 
 
-Underfull \hbox (badness 7344) in paragraph at lines 282--290
-\OT1/pcr/m/n/10 tools/generate_pcb_text.py \OT1/ptm/m/n/10 and the schematic
- []
-
-
-Underfull \hbox (badness 1609) in paragraph at lines 282--290
-\OT1/ptm/m/n/10 Fab out-puts are ex-ported with \OT1/pcr/m/n/10 kicad-cli\OT1/p
-tm/m/n/10 : ger-bers +
+Underfull \hbox (badness 1990) in paragraph at lines 233--240
+\OT1/ptm/m/n/10 (\OT1/pcr/m/n/10 tools/generate_pcb_text.py\OT1/ptm/m/n/10 ) ra
+ther than placed
  []
 
 ! Undefined control sequence.
-l.298 ...ions. Expected cost: \textasciitilde\euro
-                                                  115--125 for
+l.249 roughly \euro
+                   115--125.
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-
-Underfull \hbox (badness 2443) in paragraph at lines 329--332
-[]\OT1/ptm/b/n/10 Polymer-reinforced SAC305 \OT1/ptm/m/n/10 | emerg-ing impact-
-
- []
-
-(./report.bbl [4]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 6
-8.
- (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)
-Underfull \hbox (badness 5490) in paragraph at lines 68--70
-[]\OT1/ptm/m/n/8 ``WR-PHD 2.54 mm THT pin header, 1\TS1/ptm/m/n/8 Ö\OT1/ptm/m/n
-/8 40 single-row, P/N
- []
-
-
-Underfull \hbox (badness 1377) in paragraph at lines 99--104
-[]\OT1/ptm/m/n/8 H. Schwan, M. Schmid, and G. El-ger, ``Layer re-solved ther-ma
-l
+(./report.bbl [3]
+Underfull \hbox (badness 2717) in paragraph at lines 73--77
+\OT1/ptm/m/n/8 29), 2023, [][]$https : / / www . we-[]online . com / components
+ / products / datasheet /
  []
 
 )
@@ -685,7 +629,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[5
+[4
 
 ] (./report.aux)
  ***********
@@ -693,16 +637,16 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: E1143712CC006F50C12C925502E07B45;2465.
+(rerunfilecheck)             Checksum: C83DC840E3BB0EF1D43BADD9AA03554E;1998.
  ) 
 Here is how much of TeX's memory you used:
- 15036 strings out of 474222
- 292218 string characters out of 5748733
- 1945975 words of memory out of 5000000
- 37072 multiletter control sequences out of 15000+600000
- 597930 words of font info for 116 fonts, out of 8000000 for 9000
+ 14967 strings out of 474222
+ 291027 string characters out of 5748733
+ 1946975 words of memory out of 5000000
+ 37019 multiletter control sequences out of 15000+600000
+ 597616 words of font info for 115 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,80p,631b,1043s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,80p,553b,1041s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texli
@@ -718,10 +662,10 @@ are/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times
 /utmri8a.pfb>
-Output written on report.pdf (5 pages, 1203937 bytes).
+Output written on report.pdf (4 pages, 559405 bytes).
 PDF statistics:
- 244 PDF objects out of 1000 (max. 8388607)
- 196 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
- 125 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 213 PDF objects out of 1000 (max. 8388607)
+ 168 compressed objects within 2 object streams
+ 38 named destinations out of 1000 (max. 500000)
+ 112 words of extra memory for PDF output out of 10000 (max. 10000000)
 
