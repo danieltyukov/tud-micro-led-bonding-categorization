@@ -33,29 +33,29 @@ BOM_ASM = REPO / "new-pcb" / "fab" / "tud-microled-v2-fab-bom-assembly-only.csv"
 # DNP = "Yes" means do-not-populate (customer-bonded LEDs, bare pads)
 # DNP = "No"  means the fab assembles this part
 FOOTPRINT_TO_PART = {
-    # ───── ASSEMBLE these (DNP=No) ─────
+    # ───── ASSEMBLE these (DNP=No) — verified in Aisler database May 2026 ─────
     "NTC_0402": (
-        "NTC 10k 0402 B=3380K",
-        "Murata",
-        "NCP15XH103J03RC",
-        "LCSC",
-        "C5316",
+        "NTC 10k 0402 3% AEC-Q200",
+        "TDK",
+        "NTCG104BH103HT1",
+        "Mouser",
+        "810-NTCG104BH103HT1",
         "No",
     ),
     "EIS_Load_0603": (
-        "100R 0.1% 0603 thin-film",
-        "Vishay Dale",
-        "TNPW0603100RBEEA",
-        "DigiKey",
-        "541-100ARTR-ND",
+        "100R 0.1% 0603 thin-film 25ppm",
+        "Yageo",
+        "RT0603BRD07100RL",
+        "Mouser",
+        "603-RT0603BRD07100RL",
         "No",
     ),
     "Header_2.54mm": (
-        "Pin 2.54mm THT 1x40 single-row male",
-        "Wurth",
-        "61304011121",
-        "LCSC",
-        "C124378",
+        "Pin 2.54mm THT 1x40 single-row male gold",
+        "Samtec",
+        "TSW-140-07-G-S",
+        "Mouser",
+        "200-TSW14007GS",
         "No",
     ),
     # ───── DNP (customer bonds these in cleanroom) ─────
