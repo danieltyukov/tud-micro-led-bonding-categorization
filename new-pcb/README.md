@@ -1,50 +1,38 @@
 # new-pcb — v2 Micro-LED Bonding Characterization PCB
 
-**Status: fab-ready (v4.0.7).** DRC clean (0 violations, 0 unconnected items),
-gerbers + assembly outputs verified for both Aisler (Beagle assembly) and
-Eurocircuits (eC-stencil-mate or SMT line).
+**Status: fab-ready.** DRC clean (0 violations, 0 unconnected, 0 schematic-parity). F.Paste and B.Paste gerbers are intentionally empty — the workflow is *Eurocircuits PCB + "Place loose" components*, then hand-solder at TU Delft EKL with wire/flux.
 
 ## Quick links
 
-- **Order from Aisler or Eurocircuits** → `FABRICATION_ORDER.md`
+- **Order from Eurocircuits** → `FABRICATION_ORDER.md`
 - **As-built design notes** → `V2_DESIGN_NOTES.md`
 - **Original spec** → `PCB_DESIGN_PLAN.md`
 - **Electrical characterization workflow** → `ELECTRICAL_CHARACTERIZATION.md`
 - **What this v2 contributes vs ECTC 2025** → `PUBLICATION_CONTRIBUTION.md`
 
-## Layout of this folder
+## Folder layout
 
 ```
 new-pcb/
-├── tud-microled-v2.kicad_pro     ← KiCad 9.0.8 project
-├── tud-microled-v2.kicad_pcb     ← PCB layout (192 footprints, DRC clean)
-├── tud-microled-v2.kicad_sch     ← single-sheet A2 schematic (linked to PCB)
-├── PCB_DESIGN_PLAN.md            ← original design spec
-├── V2_DESIGN_NOTES.md            ← as-built notes (the source of truth for v4.0.7)
-├── VERIFICATION_v4.md            ← electrical-characterization verification
-├── ELECTRICAL_CHARACTERIZATION.md ← measurement plan + lab tools
-├── FABRICATION_ORDER.md          ← Aisler / Eurocircuits side-by-side order checklist + DNP instructions
-├── PUBLICATION_CONTRIBUTION.md   ← v2 publication contributions
-├── README.md                     ← you are here
-├── library/                      ← KiCad symbol/footprint/3D library
-│   ├── README.md                 ← how to wire the library into KiCad
-│   ├── symbols/                  ← Würth WL-SFCC custom symbol
-│   ├── footprints/               ← WL-SFCC, NTC, header, EIS, TLM, VDP, etc.
-│   └── 3dmodels/                 ← STEP models for renders
-├── tools/                        ← procedural generators
-│   ├── generate_pcb_text.py      ← emits the .kicad_pcb (S-expression generator)
-│   ├── generate_schematic.py     ← emits the .kicad_sch (used early; superseded by MCP)
-│   └── gen_fab_bom.py            ← emits the fab-neutral BOM CSV (Aisler Beagle / Eurocircuits compatible)
-└── fab/                          ← fabrication outputs (ready to upload to Aisler or Eurocircuits)
-    ├── tud-microled-v2-fab-bom.csv      ← MPN-based BOM (parses identically at both fabs)
-    ├── tud-microled-v2-pos.csv          ← Pick-and-place position file
-    ├── tud-microled-v2-top.pdf          ← top visual review (F.Cu+F.Mask+F.SilkS+Edge.Cuts)
-    ├── tud-microled-v2-bot.pdf          ← bottom visual review (mirrored)
-    ├── tud-microled-v2-schematic.pdf    ← schematic PDF for documentation
-    ├── tud-microled-v2.step             ← 3D mechanical model
-    ├── tud-microled-v2-gerbers.zip      ← gerber bundle (Eurocircuits fallback)
-    ├── gerbers/                          ← per-layer gerbers + drill .drl
-    └── preview/                          ← 3D renders + schematic PNG
+├── tud-microled-v2.kicad_pro     KiCad 9.0.8 project
+├── tud-microled-v2.kicad_pcb     PCB layout (33 footprints, DRC clean)
+├── tud-microled-v2.kicad_sch     single-sheet A2 schematic
+├── PCB_DESIGN_PLAN.md            original design spec
+├── V2_DESIGN_NOTES.md            as-built notes
+├── VERIFICATION_v4.md            electrical-characterization verification
+├── ELECTRICAL_CHARACTERIZATION.md measurement plan + lab tools
+├── FABRICATION_ORDER.md          Eurocircuits "Place loose" order checklist
+├── PUBLICATION_CONTRIBUTION.md   v2 contributions vs ECTC 2025
+├── library/                      Würth WL-SFCC LED symbol/footprint/3D
+├── tools/                        Python helpers (PCB patcher, BOM generator)
+└── fab/                          gerbers, BOM, pos, PDFs, STEP, top.png
+    ├── tud-microled-v2-fab-bom.csv          BOM with TDK + Yageo + Samtec MPNs (Mouser PNs included)
+    ├── tud-microled-v2-fab-bom-assembly-only.csv  slim BOM (the 3 assembled rows only)
+    ├── tud-microled-v2-pos.csv               7 placements
+    ├── tud-microled-v2-top.pdf / -bot.pdf    visual review
+    ├── tud-microled-v2-gerbers.zip           26-file gerber + drill bundle
+    ├── tud-microled-v2.step                  3D model
+    └── preview/top.png                       1600×1600 raytraced render
 ```
 
 ## Design summary
@@ -53,20 +41,46 @@ new-pcb/
 |---|---|
 | Board | 93 × 93 mm, 2-layer FR-4, 1.55 mm |
 | Finish | ENIG (Ni 4 µm / Au 0.075 µm) |
-| Min track / clearance | 0.20 / 0.30 mm (≥ 2× the 0.15 mm minimum for Aisler standard pool / Eurocircuits Class 4) |
-| Min drill / annular ring | 0.30 / 0.15 mm (matches both fabs' spec) |
-| Components on board | 192 footprints (69 assembled + 123 bare/DNP) |
-| Routed nets | 164 named nets, 0 unconnected |
-| Footprints assembled by fab | 4 NTC + 1 R + 64 header pins = 69 placements |
-| Footprints bonded by customer | 26 WL-SFCC RGB LEDs (cleanroom, marked DNP for the fab) |
+| Min track / clearance | 0.20 / 0.30 mm (Eurocircuits Class 4 minimum is 0.15 mm) |
+| Min drill / annular ring | 0.30 / 0.15 mm |
+| Footprints on board | **33** (1 R + 4 NTC + 2 multi-pin headers + 26 LEDs DNP) |
+| Distinct components | **3** (Yageo R, TDK NTC, Samtec header) |
+| Placements per board (assembled) | **7** (1 R + 4 NTC + 2 header strips) |
+| LED bonding | 26 × Würth WL-SFCC RGB at customer cleanroom (Tresky T-3000-PRO) |
+| Solder-paste apertures | **0** (F.Paste and B.Paste gerbers empty by design) |
+
+## Bill of materials
+
+3 distinct part numbers — all stocked at Mouser EU (1-day NL delivery) and resolvable through Eurocircuits' supplier scanner:
+
+| Ref(s) | Manufacturer | MPN | Mouser PN |
+|---|---|---|---|
+| R_EIS_LOAD | Yageo | RT0603BRD07100RL | 603-RT0603BRD07100RL |
+| H_N + H_S | Samtec | TSW-140-07-G-S | 200-TSW14007GS |
+| TH1..TH4 | TDK | NTCG104BH103HT1 | 810-NTCG104BH103HT1 |
 
 ## Quick start
 
 1. Open `tud-microled-v2.kicad_pro` in KiCad 9.0 or newer.
-2. Verify `WE_3DMODEL_DIR` is set in **Preferences → Configure Paths**
-   (see `library/README.md` for the value).
-3. Run `kicad-cli pcb drc new-pcb/tud-microled-v2.kicad_pcb` to confirm 0 violations.
+2. Confirm `WE_3DMODEL_DIR` is set in **Preferences → Configure Paths** (see `library/README.md`).
+3. Run checks: `kicad-cli pcb drc tud-microled-v2.kicad_pcb` and `kicad-cli sch erc tud-microled-v2.kicad_sch` — both should report 0 violations.
 4. Regenerate fab outputs after any PCB edit:
-   - `python3 tools/generate_pcb_text.py` to regenerate the PCB from source (⚠ destroys the GND copper pour — see `V2_DESIGN_NOTES.md`)
-   - `kicad-cli pcb export gerbers/drill/pdf/pos/step` for fab artifacts
-   - `python3 tools/gen_fab_bom.py` for the fab-neutral BOM CSV (works for both Aisler and Eurocircuits)
+   - `kicad-cli pcb export gerbers --output fab/gerbers/ tud-microled-v2.kicad_pcb`
+   - `kicad-cli pcb export drill --output fab/gerbers/ tud-microled-v2.kicad_pcb`
+   - `kicad-cli pcb export pos --format csv --units mm --use-drill-file-origin --output fab/tud-microled-v2-pos.csv tud-microled-v2.kicad_pcb`
+   - `kicad-cli pcb export pdf --layers F.Cu,F.Silkscreen,F.Mask,Edge.Cuts -o fab/tud-microled-v2-top.pdf tud-microled-v2.kicad_pcb`
+   - `kicad-cli pcb render --side top --width 1600 --height 1600 --quality high --output fab/preview/top.png tud-microled-v2.kicad_pcb`
+   - `python3 tools/gen_fab_bom.py` to refresh the BOM CSV
+   - `(cd fab/gerbers && zip -q ../tud-microled-v2-gerbers.zip *)` to rebundle for Eurocircuits
+
+## tools/ scripts
+
+| Script | Purpose |
+|---|---|
+| `gen_fab_bom.py` | Reads `fab/tud-microled-v2-pos.csv`, emits `tud-microled-v2-fab-bom.csv` + slim variant |
+| `patch_aisler_mpns.py` | Adds Manufacturer + MPN custom fields to each footprint so any fab auto-detects them |
+| `consolidate_pcb.py` | One-time refactor that collapsed 64 single-pin headers into 2 multi-pin strips and deleted the 123 bare-pad design-only footprints |
+| `strip_all_paste.py` | Removes F.Paste / B.Paste from every pad in the design (used for the loose-components workflow) |
+| `clean_dangling.py` | Removes orphan tracks/vias left over by `consolidate_pcb.py` |
+| `unify_values.py` | Sets the `Value` field of every footprint to its MPN so Aisler/EC Grouped views collapse them properly |
+| `inspect_headers.py` | Read-only debug helper |

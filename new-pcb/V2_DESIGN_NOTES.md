@@ -1,5 +1,7 @@
 # v2 PCB — Design Notes (v3 iteration, delivered)
 
+> **As-built note (May 2026):** Notes below were written for the v4.0.7 layout (192 footprints including bare-pad test structures). The fab-ordered version has been simplified: bare-pad structures removed, headers consolidated into 2 multi-pin strips, F.Paste gerber emptied. Current as-built footprint count: **33** (4 NTC + 1 R + 2 strips + 26 LEDs DNP). See `FABRICATION_ORDER.md` for the as-built fab spec and `README.md` for the current BOM.
+
 What's actually shipped in `tud-microled-v2.kicad_pcb`. Companion to
 `PCB_DESIGN_PLAN.md` (spec) and `ELECTRICAL_CHARACTERIZATION.md` (test plan).
 

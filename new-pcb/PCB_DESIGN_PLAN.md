@@ -1,5 +1,7 @@
 # Micro-LED Bonding Characterization PCB — v2 Design Plan
 
+> **As-built note (May 2026):** This document captures the full original design scope (LED daisy chains + DoE bond-pad array + TLM/VDP test structures + V_F-TSP probe pads). The version sent to fab (Eurocircuits, "Place loose") was **simplified to LED-bonding only** — bare-pad test structures (BondPad_DoE, Probe_1.27mm, TC_Pad_1mm, TLM, VDP, Fiducial_1mm) were removed from the layout, and the 64 individual single-pin headers were consolidated into 2 multi-pin 1×32 strips. Remaining footprints: 4 NTC + 1 R + 2 header strips + 26 LEDs (DNP). See `FABRICATION_ORDER.md` for the as-built fab spec.
+
 **Status:** Draft. Owner: Daniel (PCB) + Ahmed (process). Target tape-out: TBD.
 **Predecessor:** `old-pcb/Electrical test + LED-no solder.kicad_pcb` (ECTC 2025).
 **Companion docs:** `../PROJECT_DETAILS.md`, `ELECTRICAL_CHARACTERIZATION.md` (measurements + ports + lab tools), `../docs/ECTC-2025-published Ahmed Abdelwahab.pdf`.

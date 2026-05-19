@@ -1,5 +1,7 @@
 # Electrical Characterization Plan — v2 PCB
 
+> **As-built note (May 2026):** The v2 board ordered through Eurocircuits has been simplified to **LED-bonding only** — the bare-pad test structures (TLM ladders, VDP cloverleaves, DoE bond-pad array, probe pads, TC pads, fiducials) that backed sections of this plan were removed from the as-fabricated layout. The V_F + NTC + EIS-reference-resistor characterization path is still present (4 NTCs near each LED for V_F-TSP, 100 Ω calibration resistor, 2 × 32-pin breadboard headers for probing). Sections referring to TLM/VDP/DoE remain here as forward-looking spec for a future revision. See `FABRICATION_ORDER.md` for the as-built fab spec.
+
 How the v2 board enables electrical characterization of LED bonds made with
 different bonding materials. Companion to `PCB_DESIGN_PLAN.md`.
 

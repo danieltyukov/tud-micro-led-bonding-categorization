@@ -207,7 +207,7 @@ See **`docs/datasheets/README.md`** for the full index. Currently in folder:
 
 | Datasheet | File | Status |
 |---|---|---|
-| Würth WL-SFCC 0404 RGB LED | `Wurth-WL-SFCC-0404-RGB-LED-150044M155220.pdf` | ✅ in repo |
-| Vishay TNPW 0603 thin-film series | `Vishay-Dale-TNPW0603-Thin-Film-Resistor-28758.pdf` | ✅ in repo |
-| Würth WR-PHD 2.54 mm pin header (1×40 single-row) | `Wurth-WR-PHD-1x40-2.54mm-PinHeader-61304011121.pdf` | ✅ in repo |
-| Murata NCP15XH103J03RC NTC | `Murata-NCP15XH103J03RC-NTC-R44E.pdf` | ✅ in repo (downloaded via Mouser CDN) |
+| Würth WL-SFCC 0404 RGB LED (`150044M155220`) | `Wurth-WL-SFCC-0404-RGB-LED-150044M155220.pdf` | ✅ in repo — actual ordered part |
+| Vishay TNPW 0603 thin-film series | `Vishay-Dale-TNPW0603-Thin-Film-Resistor-28758.pdf` | ✅ in repo — electrical reference; **ordered part is Yageo RT0603BRD07100RL** (equivalent 100 Ω 0.1% thin-film 0603) |
+| Würth WR-PHD 2.54 mm pin header (1×40 single-row) | `Wurth-WR-PHD-1x40-2.54mm-PinHeader-61304011121.pdf` | ✅ in repo — mechanical reference; **ordered part is Samtec TSW-140-07-G-S** (equivalent 1×40 single-row male, 2.54 mm, gold THT) |
+| Murata NCP15XH103J03RC NTC | `Murata-NCP15XH103J03RC-NTC-R44E.pdf` | ✅ in repo — electrical reference; **ordered part is TDK NTCG104BH103HT1** (equivalent 10 kΩ 0402 NTC, B25/85 ≈ 3380 K, AEC-Q200) |

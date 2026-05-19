@@ -1,5 +1,7 @@
 # Publication Contribution Plan — building on Abdelwahab ECTC 2025
 
+> **As-built note (May 2026):** The v2 board ordered through Eurocircuits is a simplified LED-bonding-only version. Sections of this plan that depended on TLM/VDP/DoE bare-pad test structures (now removed from the layout) are forward-looking for a future revision. The four-point V_F + NTC thermometry contribution is still supported by the as-built board.
+
 What new science the v2 PCB enables vs what was already published in
 [Abdelwahab 2025] *"Pick-and-Release: A Novel Contactless Bonding Method for
 Die Attachment"* (ECTC 2025, pp. 2125–2132). Companion to
