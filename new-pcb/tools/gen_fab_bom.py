@@ -43,11 +43,11 @@ FOOTPRINT_TO_PART = {
         "No",
     ),
     "EIS_Load_0603": (
-        "100R 0.1% 0603 thin-film 25ppm",
+        "100R 0.1% 0603 thin-film 10ppm",
         "Yageo",
-        "RT0603BRD07100RL",
+        "RT0603BRB07100RL",
         "Mouser",
-        "603-RT0603BRD07100RL",
+        "603-RT0603BRB07100RL",
         "No",
     ),
     "Header_2.54mm": (

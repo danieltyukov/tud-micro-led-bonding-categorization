@@ -42,7 +42,7 @@ All parts ship loose; you hand-solder at EKL.
 
 | Ref(s) | Footprint | Manufacturer | MPN | Mouser part # | Qty per board | Qty for 10 boards |
 |---|---|---|---|---|---:|---:|
-| **R_EIS_LOAD** | 0603 thin-film | Yageo | `RT0603BRD07100RL` | 603-RT0603BRD07100RL | 1 | 10 |
+| **R_EIS_LOAD** | 0603 thin-film | Yageo | `RT0603BRB07100RL` | 603-RT0603BRB07100RL | 1 | 10 |
 | **H_N** + **H_S** | 1×32 THT (cut from 1×40) | Samtec | `TSW-140-07-G-S` | 200-TSW14007GS | 2 strips | 20 strips |
 | **TH1, TH2, TH3, TH4** | 0402 NTC | TDK | `NTCG104BH103HT1` | 810-NTCG104BH103HT1 | 4 | 40 |
 

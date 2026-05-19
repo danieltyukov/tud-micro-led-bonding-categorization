@@ -62,7 +62,7 @@ B.V. and co-financed by the Netherlands Enterprise Agency (RVO).
 | v2 design plan                 | done                                                |
 | v2 KiCad project               | done (93 × 93 mm, 2-layer ENIG, DRC clean)          |
 | v2 schematic                   | done (single-sheet A2, linked to PCB)               |
-| v2 layout                      | done (33 footprints, 7 placements, 26 LEDs DNP)     |
+| v2 layout                      | done (130 footprints, 7 placements, 26 LEDs DNP)     |
 | v2 fab outputs                 | done (gerbers + BOM + pos + PDFs + STEP + top.png)  |
 | v2 fabrication                 | **ready to order** at Eurocircuits ("Place loose")  |
 | v2 assembly + LED bonding      | EKL cleanroom session — pending fab delivery        |

@@ -331,6 +331,11 @@
 			(uuid "9678c99e-fd93-40d3-89aa-ad89486a9626")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "BondPad_DoE"
 		(layer "F.Cu")
@@ -504,6 +509,11 @@
 			(uuid "b9a5f369-372b-47cf-a5b4-f39ae5f68bfb")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -649,6 +659,11 @@
 			(uuid "8483af33-d898-4c0f-84d8-6c5747df03ef")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "BondPad_DoE"
 		(layer "F.Cu")
@@ -1183,6 +1198,11 @@
 			(uuid "3fc72ad0-ac30-4a41-9d94-794426e2fbd2")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -1390,6 +1410,11 @@
 			(uuid "0c689ef7-db9c-45e5-8707-18084baecb3b")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -1639,6 +1664,11 @@
 			(uuid "d93ca191-ddbf-43ba-ad34-6484f55b857d")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -1867,6 +1897,11 @@
 			(uuid "c328eecf-e97c-4d3a-a4bc-71b5596e626b")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "WL-SFCC_0404"
 		(layer "F.Cu")
@@ -1950,6 +1985,11 @@
 			(uuid "d4b3dc12-3fda-473c-bc4c-1891839da8fb")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -2496,6 +2536,11 @@
 			(uuid "236985d6-910f-45f2-a4cf-6555743fd89b")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "TLM"
 		(layer "F.Cu")
@@ -2695,6 +2740,11 @@
 			(uuid "2536f457-67fb-4a67-b2b1-a864a4b07749")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -3021,6 +3071,11 @@
 			(uuid "47075ab0-d754-4cf3-a5ce-2e6fadfd9bca")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -3689,6 +3744,11 @@
 			(uuid "4874c0c7-c988-41a3-ba87-fd64a078bd4e")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "BondPad_DoE"
 		(layer "F.Cu")
@@ -4015,6 +4075,11 @@
 			(uuid "3bd0fbd0-1cbc-4458-a1df-b009d7897313")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -4283,6 +4348,11 @@
 			(uuid "449c2e1c-48ba-4db8-996e-933008b76e7f")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "EIS_Load_0603"
 		(layer "F.Cu")
@@ -4300,7 +4370,7 @@
 				)
 			)
 		)
-		(property "Value" "RT0603BRD07100RL"
+		(property "Value" "RT0603BRB07100RL"
 			(at 0 2 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -4349,7 +4419,7 @@
 				)
 			)
 		)
-		(property "MPN" "RT0603BRD07100RL"
+		(property "MPN" "RT0603BRB07100RL"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -4378,6 +4448,11 @@
 			(uuid "2635c365-81a6-4f48-b4aa-c3fb84bf7257")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "WL-SFCC_0404"
 		(layer "F.Cu")
@@ -4461,6 +4536,11 @@
 			(uuid "4f8893e4-91e4-4d2a-b5d1-c32088b9560a")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -4759,6 +4839,11 @@
 			(uuid "4a8432db-2cc7-4f14-901c-af7f6ebbac1b")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "TLM"
 		(layer "F.Cu")
@@ -5070,6 +5155,11 @@
 			(uuid "e66cdee8-5bf9-42e5-a770-7de96375d2c3")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "WL-SFCC_0404"
 		(layer "F.Cu")
@@ -5153,6 +5243,11 @@
 			(uuid "6cd70688-750f-4cac-9fac-c88530a418a2")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -5899,6 +5994,11 @@
 			(uuid "58aea10c-3c40-4e45-baf8-cf18ec9eaf13")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "TC_Pad_1mm"
 		(layer "F.Cu")
@@ -6179,6 +6279,11 @@
 			(uuid "d381bb43-24ae-4f5f-a4d5-2577376e2d50")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "BondPad_DoE"
 		(layer "F.Cu")
@@ -6444,6 +6549,11 @@
 			(uuid "004e3c42-0ded-4a81-ac25-88b32417d92a")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "BondPad_DoE"
 		(layer "F.Cu")
@@ -6601,6 +6711,11 @@
 			(uuid "177d8aa2-ae6a-4a31-9c3c-6ab8da9226cb")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -7022,6 +7137,11 @@
 			(uuid "04ef6d8c-6cfc-4bac-89cd-f3c4ad9c62e9")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Fiducial_1mm"
 		(layer "F.Cu")
@@ -7555,6 +7675,11 @@
 			(uuid "b8719734-ca13-4919-a97d-8cd89a71c042")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -7762,6 +7887,11 @@
 			(uuid "f53a4bfc-b985-44f2-aaf7-ee1f5590d4a8")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -7907,6 +8037,11 @@
 			(uuid "0b45f4d0-7bee-4b22-a670-5ace65d122ac")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -8176,6 +8311,11 @@
 			(uuid "704c3731-fe71-4e18-8e3c-d2c12675f372")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -8660,6 +8800,11 @@
 			(uuid "f2f675ab-a071-44d5-ad20-190f90d0ebfc")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -9143,6 +9288,11 @@
 			(uuid "3a9abc1c-38c2-44af-983c-702b84333d0e")
 		)
 		(embedded_fonts no)
+		(model "${WE_3DMODEL_DIR}/LED_SMD_Wurth.3dshapes/D_Wurth_WL-SFCC-0404superflat.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "BondPad_DoE"
 		(layer "F.Cu")
@@ -9329,6 +9479,11 @@
 			(uuid "46aab317-f313-4bf8-8eff-bf2f0fd040c9")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 0))
+		)
 	)
 	(footprint "Probe_1.27mm"
 		(layer "F.Cu")
@@ -10108,6 +10263,11 @@
 			(uuid "34ed115c-ad92-442e-b779-cda289de8f81")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x32_P2.54mm_Vertical.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 -90))
+		)
 	)
 	(footprint "Header_2.54mm"
 		(layer "F.Cu")
@@ -10431,6 +10591,11 @@
 			(uuid "27b5330a-605d-4d7f-a180-17536ef90851")
 		)
 		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x32_P2.54mm_Vertical.step"
+			(offset (xyz 0 0 0))
+			(scale (xyz 1 1 1))
+			(rotate (xyz 0 0 -90))
+		)
 	)
 	(gr_line
 		(start 1.5 1.5)

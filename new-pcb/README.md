@@ -15,7 +15,7 @@
 ```
 new-pcb/
 ├── tud-microled-v2.kicad_pro     KiCad 9.0.8 project
-├── tud-microled-v2.kicad_pcb     PCB layout (33 footprints, DRC clean)
+├── tud-microled-v2.kicad_pcb     PCB layout (130 footprints, DRC clean)
 ├── tud-microled-v2.kicad_sch     single-sheet A2 schematic
 ├── PCB_DESIGN_PLAN.md            original design spec
 ├── V2_DESIGN_NOTES.md            as-built notes
@@ -43,7 +43,7 @@ new-pcb/
 | Finish | ENIG (Ni 4 µm / Au 0.075 µm) |
 | Min track / clearance | 0.20 / 0.30 mm (Eurocircuits Class 4 minimum is 0.15 mm) |
 | Min drill / annular ring | 0.30 / 0.15 mm |
-| Footprints on board | **33** (1 R + 4 NTC + 2 multi-pin headers + 26 LEDs DNP) |
+| Footprints on board | **130** (1 R + 4 NTC + 2 multi-pin headers + 26 LEDs DNP) |
 | Distinct components | **3** (Yageo R, TDK NTC, Samtec header) |
 | Placements per board (assembled) | **7** (1 R + 4 NTC + 2 header strips) |
 | LED bonding | 26 × Würth WL-SFCC RGB at customer cleanroom (Tresky T-3000-PRO) |
@@ -55,7 +55,7 @@ new-pcb/
 
 | Ref(s) | Manufacturer | MPN | Mouser PN |
 |---|---|---|---|
-| R_EIS_LOAD | Yageo | RT0603BRD07100RL | 603-RT0603BRD07100RL |
+| R_EIS_LOAD | Yageo | RT0603BRB07100RL | 603-RT0603BRB07100RL |
 | H_N + H_S | Samtec | TSW-140-07-G-S | 200-TSW14007GS |
 | TH1..TH4 | TDK | NTCG104BH103HT1 | 810-NTCG104BH103HT1 |
 
