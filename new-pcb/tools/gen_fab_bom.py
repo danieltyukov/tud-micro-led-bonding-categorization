@@ -24,6 +24,9 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 POS = REPO / "new-pcb" / "fab" / "tud-microled-v2-pos.csv"
 BOM = REPO / "new-pcb" / "fab" / "tud-microled-v2-fab-bom.csv"
+# Slim BOM with only assembled parts (no DNP rows). Use this with
+# Eurocircuits if their parser ever fails to honor the DNP column.
+BOM_ASM = REPO / "new-pcb" / "fab" / "tud-microled-v2-fab-bom-assembly-only.csv"
 
 
 # Map footprint name → (Value, Manufacturer, MPN, Distributor, DPN, DNP)
@@ -56,24 +59,28 @@ FOOTPRINT_TO_PART = {
         "No",
     ),
     # ───── DNP (customer bonds these in cleanroom) ─────
+    # DNP column kept as a plain "Yes" — Eurocircuits' BOM parser only
+    # honors the strict string "Yes" and ignores descriptive parentheticals,
+    # which previously caused the LEDs to be counted as parts to assemble.
+    # Aisler Beagle accepts plain "Yes" as well.
     "D_Wurth_WL-SFCC-0404superflat": (
-        "WL-SFCC RGB",
+        "WL-SFCC RGB (DNP — customer bonds in cleanroom)",
         "Wurth",
         "150044M155220",
         "LCSC",
         "C2890605",
-        "Yes  (customer bonds in cleanroom)",
+        "Yes",
     ),
     # ───── DNP (bare-pad test structures, no component) ─────
-    "Probe_1.27mm":  ("Gold probe pad",  "-", "-", "-", "-", "Yes  (bare ENIG land)"),
-    "BondPad_DoE":   ("DoE bond pad",    "-", "-", "-", "-", "Yes  (bare ENIG land)"),
-    "TLM":           ("TLM finger",      "-", "-", "-", "-", "Yes  (bare ENIG land)"),
-    "VDP":           ("VDP contact",     "-", "-", "-", "-", "Yes  (bare ENIG land)"),
-    "DaisyChain":    ("DC bond pad",     "-", "-", "-", "-", "Yes  (bare ENIG land)"),
-    "TC_Pad_1mm":    ("TC solder pad",   "-", "-", "-", "-", "Yes  (bare ENIG land)"),
-    "Fiducial_1mm":  ("Optical fiducial","-", "-", "-", "-", "Yes  (no component)"),
-    "WL-SFCC_0404":  ("WL-SFCC RGB",     "Wurth", "150044M155220", "LCSC", "C2890605",
-                     "Yes  (customer bonds in cleanroom)"),
+    "Probe_1.27mm":  ("Gold probe pad (bare ENIG land, DNP)",  "-", "-", "-", "-", "Yes"),
+    "BondPad_DoE":   ("DoE bond pad (bare ENIG land, DNP)",    "-", "-", "-", "-", "Yes"),
+    "TLM":           ("TLM finger (bare ENIG land, DNP)",      "-", "-", "-", "-", "Yes"),
+    "VDP":           ("VDP contact (bare ENIG land, DNP)",     "-", "-", "-", "-", "Yes"),
+    "DaisyChain":    ("DC bond pad (bare ENIG land, DNP)",     "-", "-", "-", "-", "Yes"),
+    "TC_Pad_1mm":    ("TC solder pad (bare ENIG land, DNP)",   "-", "-", "-", "-", "Yes"),
+    "Fiducial_1mm":  ("Optical fiducial (no component, DNP)",  "-", "-", "-", "-", "Yes"),
+    "WL-SFCC_0404":  ("WL-SFCC RGB (DNP — customer bonds in cleanroom)",
+                     "Wurth", "150044M155220", "LCSC", "C2890605", "Yes"),
 }
 
 
@@ -121,16 +128,29 @@ def main() -> int:
     # Sort: assembled parts first (DNP=No), then DNP parts
     rows.sort(key=lambda r: (r["DNP"].startswith("Yes"), r["Footprint"]))
 
+    fieldnames = [
+        "Reference", "Value", "Footprint", "Quantity",
+        "Manufacturer", "MPN", "Distributor", "DPN", "DNP",
+    ]
+
     with open(BOM, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=[
-            "Reference", "Value", "Footprint", "Quantity",
-            "Manufacturer", "MPN", "Distributor", "DPN", "DNP",
-        ])
+        w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(rows)
 
+    # Slim BOM — only the assembled rows. Some fab BOM parsers (e.g.
+    # Eurocircuits' eC-stencil-mate) misclassify DNP rows even when the
+    # DNP column reads "Yes", so a strict assembly-only BOM is the safest
+    # upload if assembly cost is coming out wrong.
+    asm_rows = [r for r in rows if r["DNP"] == "No"]
+    with open(BOM_ASM, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w.writeheader()
+        w.writerows(asm_rows)
+
     # Print summary
     print(f"Wrote {BOM}")
+    print(f"Wrote {BOM_ASM}  (slim, assembled parts only)")
     print(f"\n{'='*72}")
     print(f"{'BOM SUMMARY':^72}")
     print(f"{'='*72}\n")

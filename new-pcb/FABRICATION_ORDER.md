@@ -106,16 +106,33 @@ Paste this verbatim into the order notes (Aisler Beagle free-text field, or Euro
 
 Files you can ignore for Aisler: `tud-microled-v2-gerbers.zip` (only needed for Eurocircuits).
 
-### Option B — Eurocircuits (recommended if TU Delft preferred / faster lead time)
+### Option B — Eurocircuits (TU Delft's traditional fab)
 
 | File (from `new-pcb/fab/`) | Where in Eurocircuits UI |
 |---|---|
 | `tud-microled-v2-gerbers.zip` | "Upload your design" → PCB visualiser (auto-extracts Gerbers + drill) |
-| `tud-microled-v2-fab-bom.csv` | Assembly → BOM (Eurocircuits accepts the same MPN-based CSV) |
+| **`tud-microled-v2-fab-bom-assembly-only.csv`** | Assembly → BOM (**use this for Eurocircuits, not the full BOM**) |
 | `tud-microled-v2-pos.csv` | Assembly → Pick-and-Place |
 | `tud-microled-v2-top.pdf` / `-bot.pdf` | Visual review |
 
-The BOM CSV is fab-neutral (Reference, Value, Footprint, Qty, Manufacturer, MPN, Distributor, DPN, DNP). Both Aisler Beagle and Eurocircuits parse it correctly. The pick-and-place is standard KiCad `.pos` format which both accept.
+**Why the slim BOM for Eurocircuits?** Eurocircuits' BOM editor (eC-stencil-mate) lists every row in the CSV as a line item, regardless of the DNP column. A previous upload of the full BOM produced a quote with €659.60 of phantom assembly cost and six red "Unidentified" warnings — caused by two separate issues:
+
+1. **DNP parsing.** Eurocircuits requires the DNP column to read literally `Yes` or `No`; anything else (e.g. `"Yes (customer bonds in cleanroom)"`) is silently treated as `No`. That made the 26 WL-SFCC LEDs count toward the assembly placement total. The current BOMs use strict `Yes`/`No`, so this specific bug is gone.
+2. **Bare-pad rows.** The seven DNP rows (BP_*, FID*, PP_*, TC*, TLM_*, VDP_*, and the LEDs) carry `MPN="-"` because they are intentional gold lands, not parts. Even with DNP correctly flagged, Eurocircuits' editor still displays each of these as a row marked "Unidentified", which doesn't add to cost but does produce six red warnings and the orange "Incomplete" banner.
+
+The slim BOM (`tud-microled-v2-fab-bom-assembly-only.csv`) sidesteps both issues by omitting every DNP row entirely. The CSV contains only the three rows Eurocircuits actually needs:
+
+| Qty | Manufacturer | MPN | Distributor cross-ref |
+|---:|---|---|---|
+| 4 | Murata | `NCP15XH103J03RC` | LCSC C5316 |
+| 1 | Vishay Dale | `TNPW0603100RBEEA` | DigiKey 541-100ARTR-ND |
+| 64 | Würth | `61304011121` | LCSC C124378 · Newark 20X1009 |
+
+69 placements total, zero ambiguity, no "Unidentified" line items. Eurocircuits' supplier scanner may still flag the parts as "NI" (No Info) for a working day while their engineers manually look up European-distributor pricing, but the quote will progress to a complete state instead of staying "Incomplete".
+
+### Aisler keeps using the full BOM
+
+For Aisler the full `tud-microled-v2-fab-bom.csv` is still the right file — Beagle uses the DNP rows to cross-check its sanity pass and tolerates `MPN="-"` on intentional DNP entries. Strict `Yes`/`No` in the DNP column works for both fabs, so the same file is safe at Aisler.
 
 ---
 
