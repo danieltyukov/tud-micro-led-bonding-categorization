@@ -5,8 +5,8 @@ Joint work: **TU Delft** (ECTM, M. Mastrangeli, H. van Zeijl, A. Abdelwahab)
 and **ITEC B.V. / Nexperia** (R. van Hoorn, H. Kuipers). Financed by ITEC
 B.V. and co-financed by the Netherlands Enterprise Agency (RVO).
 
-**v2 PCB — fab-ready for Eurocircuits ("Place loose" components workflow), ENIG finish.**
-26 RGB micro-LEDs (8 stand-alone + 6+12 daisy chains), 4 NTCs for V_F-TSP thermometry, 1 calibration resistor, and dual 32-pin breadboard interface. Components ship loose alongside the PCBs; LEDs are bonded at TU Delft EKL under the Tresky T-3000-PRO.
+**v2 PCB — fab-ready for Eurocircuits PCB + assembly, ENIG finish.**
+26 RGB micro-LEDs (8 stand-alone + 6+12 daisy chains), 4 NTCs for V_F-TSP thermometry, 1 calibration resistor, and dual 32-pin breadboard interface. Eurocircuits reflows/solders the 4 NTC + 1 R + 2 header strips. The 26 LEDs ship as bare ENIG gold pads and are bonded at TU Delft EKL under the Tresky T-3000-PRO.
 
 ---
 
@@ -14,7 +14,7 @@ B.V. and co-financed by the Netherlands Enterprise Agency (RVO).
 
 ![Board top](new-pcb/fab/preview/top.png)
 
-93 × 93 mm · 2-layer FR-4 · 1.55 mm · ENIG (Ni 4 µm / Au 0.075 µm) · white silk · green soldermask. DRC clean (0 violations, 0 unconnected, 0 schematic-parity). Solder-paste gerbers empty by design — no fab ever pre-tins the LED bond pads.
+93 × 93 mm · 2-layer FR-4 · 1.55 mm · ENIG (Ni 4 µm / Au 0.075 µm) · white silk · green soldermask. DRC clean (0 violations, 0 unconnected, 0 schematic-parity). F.Paste has 10 apertures for the 5 SMT placements; the 26 LED bond pads are intentionally paste-free so no fab tins them.
 
 ## What's in here
 
@@ -68,12 +68,12 @@ B.V. and co-financed by the Netherlands Enterprise Agency (RVO).
 | v2 assembly + LED bonding      | EKL cleanroom session — pending fab delivery        |
 | v2 electrical characterization | pending bonded boards                               |
 
-## Quick fab order — Eurocircuits "Place loose"
+## Quick fab order — Eurocircuits PCB + assembly
 
 Full step-by-step in `new-pcb/FABRICATION_ORDER.md`.
 
-1. Upload `new-pcb/fab/tud-microled-v2-gerbers.zip` to **PCB visualiser** → 2-layer, 1.55 mm FR-4, **ENIG**, white silk, green mask, **10 boards**.
+1. Upload `new-pcb/fab/tud-microled-v2-gerbers.zip` to **PCB visualiser** → 2-layer, 1.55 mm FR-4, **ENIG** (chemical Ni/Au), white silk, green mask, **10 boards**.
 2. Add **PCBA service** → upload `new-pcb/fab/tud-microled-v2-fab-bom.csv` + `new-pcb/fab/tud-microled-v2-pos.csv`.
-3. In eC-stencil-mate BOM editor, set every line's placement mode to **"Place loose"** (3 lines: Yageo R, Samtec header, TDK NTC).
-4. The 26 LED rows are auto-filtered (`exclude_from_bom` flag in the PCB). They ship as bare ENIG gold pads only.
-5. Lead time ~5-7 working days. Boards + loose-parts bag arrive together. Hand-solder NTC/R/header pins at TU Delft EKL, then bond LEDs under the Tresky.
+3. In eC-stencil-mate BOM editor, leave every line in the default **"Place on board"** mode (3 lines: Yageo R, Samtec header, TDK NTC).
+4. The 26 LED rows are auto-filtered (`exclude_from_bom` flag in the PCB). They ship as bare ENIG gold pads for EKL bonding.
+5. Lead time ~7 WD PCB + 5 WD PCBA. Fully-assembled boards (minus the 26 LEDs) arrive together. Bond LEDs at TU Delft EKL under the Tresky.

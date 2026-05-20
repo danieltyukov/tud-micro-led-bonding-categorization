@@ -1,6 +1,6 @@
 # new-pcb — v2 Micro-LED Bonding Characterization PCB
 
-**Status: fab-ready.** DRC clean (0 violations, 0 unconnected, 0 schematic-parity). F.Paste and B.Paste gerbers are intentionally empty — the workflow is *Eurocircuits PCB + "Place loose" components*, then hand-solder at TU Delft EKL with wire/flux.
+**Status: fab-ready.** DRC clean (0 violations, 0 unconnected, 0 schematic-parity). Workflow: *Eurocircuits PCB + PCBA-proto*, all 3 BOM lines set to "Place on board" so the 4 NTC + 1 R + 2 header strips are reflowed / soldered by Eurocircuits. F.Paste has 10 apertures (NTC + R only); the 26 LED footprints stay paste-free and ship as bare ENIG gold for cleanroom bonding at TU Delft EKL.
 
 ## Quick links
 
@@ -47,7 +47,7 @@ new-pcb/
 | Distinct components | **3** (Yageo R, TDK NTC, Samtec header) |
 | Placements per board (assembled) | **7** (1 R + 4 NTC + 2 header strips) |
 | LED bonding | 26 × Würth WL-SFCC RGB at customer cleanroom (Tresky T-3000-PRO) |
-| Solder-paste apertures | **0** (F.Paste and B.Paste gerbers empty by design) |
+| Solder-paste apertures | **10** on F.Paste (4 NTC × 2 + 1 R × 2). B.Paste empty. 26 LED footprints intentionally paste-free. |
 
 ## Bill of materials
 

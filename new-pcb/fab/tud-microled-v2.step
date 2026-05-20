@@ -1,7 +1,7 @@
 ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('KiCad electronic assembly'),'2;1');
-FILE_NAME('tud-microled-v2.step','2026-05-19T23:34:00',('Pcbnew'),(
+FILE_NAME('tud-microled-v2.step','2026-05-20T20:17:38',('Pcbnew'),(
     'Kicad'),'Open CASCADE STEP processor 7.6','KiCad to STEP converter'
   ,'Unknown');
 FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));
@@ -46,12 +46,12 @@ DATA;
 #34 = DIRECTION('',(1.,0.,0.));
 #35 = AXIS2_PLACEMENT_3D('',#36,#37,#38);
 #36 = CARTESIAN_POINT('',(7.13,-13.5,1.595));
-#37 = DIRECTION('',(0.,0.,1.));
-#38 = DIRECTION('',(1.,0.,0.));
+#37 = DIRECTION('',(0.,-0.,1.));
+#38 = DIRECTION('',(1.110223024625E-16,1.,0.));
 #39 = AXIS2_PLACEMENT_3D('',#40,#41,#42);
 #40 = CARTESIAN_POINT('',(7.13,-85.,1.595));
-#41 = DIRECTION('',(0.,0.,1.));
-#42 = DIRECTION('',(1.,0.,0.));
+#41 = DIRECTION('',(0.,-0.,1.));
+#42 = DIRECTION('',(1.110223024625E-16,1.,0.));
 #43 = AXIS2_PLACEMENT_3D('',#44,#45,#46);
 #44 = CARTESIAN_POINT('',(0.,0.,0.));
 #45 = DIRECTION('',(0.,0.,1.));

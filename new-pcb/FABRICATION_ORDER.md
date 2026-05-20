@@ -1,20 +1,20 @@
-# Fabrication Order — Eurocircuits "Place loose"
+# Fabrication Order — Eurocircuits PCB + Assembly
 
 **Project:** TUD micro-LED v4 · **Designer:** Daniel Tyukov · 5714699 · ET4277 / ET4391
 **Board:** 93 × 93 mm · 2-layer FR-4 · 1.55 mm · ENIG · DRC clean (0 violations, 0 unconnected, 0 schematic-parity)
 
-Order path: **Eurocircuits PCB-proto + PCBA-proto with every line set to "Place loose"** — Eurocircuits sources every component through their European distributor network and ships them bagged-and-labelled alongside the bare PCBs. Nothing is soldered. The 26 LEDs stay off the PCB entirely (bonded later at TU Delft EKL under the Tresky T-3000-PRO with a controlled paste profile). The 5 SMT placements + 64 header pins are hand-soldered at EKL with solder wire and flux during the same cleanroom session.
+Order path: **Eurocircuits PCB-proto + PCBA-proto, all 3 BOM lines set to "Place on board"** (Eurocircuits sources the parts through their European distributor network, reflows the 5 SMD placements on the SMT line, and hand-solders the 2 THT header strips). The 26 LEDs stay off the PCB entirely (DNP — bonded later at TU Delft EKL under the Tresky T-3000-PRO with a controlled paste profile). The boards arrive fully assembled except for the LEDs.
 
-The PCB has **no solder-paste apertures anywhere** (F.Paste and B.Paste gerbers are empty) — that's deliberate so that no fab ever pre-tins the LED bond pads.
+The PCB's F.Paste gerber has **exactly 10 apertures** — only the 4 NTCs (8 pads) and 1 resistor (2 pads). The 26 LED footprints have no paste apertures so the SMT stencil never deposits paste on the bond pads.
 
 ---
 
 ## TL;DR
 
 1. Bare PCB: 10 × 93 mm × 93 mm, 2-layer FR-4 1.55 mm, **ENIG**, white silk, green soldermask.
-2. PCBA service: upload BOM + pos, set every line to **"Place loose"**, no stencil.
-3. Components sourced and shipped loose by Eurocircuits: 4 × TDK NTC + 1 × Yageo R + 20 × Samtec headers (2 strips per board × 10 boards).
-4. 26 LED footprints are marked DNP (`exclude_from_bom` + `exclude_from_pos_files` in the .kicad_pcb) — Eurocircuits ignores them entirely.
+2. PCBA service: upload BOM + pos, all 3 BOM lines set to **"Place on board"**, no stencil add-on needed.
+3. Components sourced and assembled by Eurocircuits: 4 × TDK NTC + 1 × Yageo R + 2 × Samtec headers per board × 10 boards.
+4. 26 LED footprints are marked DNP (`exclude_from_bom` + `exclude_from_pos_files` in the .kicad_pcb) — Eurocircuits ignores them entirely and the LED pads ship as bare ENIG gold.
 
 ---
 
@@ -32,13 +32,13 @@ The PCB has **no solder-paste apertures anywhere** (F.Paste and B.Paste gerbers 
 | Silk | White |
 | Min clearance / track | 0.30 / 0.20 mm (design); clears Eurocircuits Class 4 (0.15 mm minimum) with 2× headroom |
 | Min drill / annular ring | 0.30 / 0.15 mm |
-| Solder paste | **none** — F.Paste and B.Paste gerbers are intentionally empty |
+| Solder paste | F.Paste 10 apertures (4 NTC + 1 R) · B.Paste empty · 26 LED pads paste-free |
 
 ---
 
 ## Bill of materials — 3 distinct parts, 7 placements per board
 
-All parts ship loose; you hand-solder at EKL.
+All 7 placements are soldered on the Eurocircuits SMT/THT line. Only the 26 LEDs ship as bare ENIG gold lands for EKL bonding.
 
 | Ref(s) | Footprint | Manufacturer | MPN | Mouser part # | Qty per board | Qty for 10 boards |
 |---|---|---|---|---|---:|---:|
@@ -74,21 +74,21 @@ Total assembled placements per board: **7** (1 × R + 2 × header strips + 4 × 
 
 ## Step-by-step at eurocircuits.com
 
-1. **Create a PCB-proto order** — upload `tud-microled-v2-gerbers.zip`. Configure: 2-layer, 1.55 mm FR-4, ENIG, white silk, green mask, 10 boards.
+1. **Create a PCB-proto order** — upload `tud-microled-v2-gerbers.zip`. Configure: 2-layer, 1.55 mm FR-4, **ENIG** (chemical Ni/Au), white silk, green mask, 10 boards.
 2. **Add PCBA service** to the same order — upload `tud-microled-v2-fab-bom.csv` and `tud-microled-v2-pos.csv`.
-3. In the eC-stencil-mate BOM editor, **set every line's placement mode to "Place loose"**. There are exactly 3 lines (Yageo R, Samtec strip, TDK NTC), all marked DNP=No.
+3. In the eC-stencil-mate BOM editor, leave every line in the default **"Place on board"** mode. There are exactly 3 lines (Yageo R, Samtec strip, TDK NTC), all marked DNP=No.
 4. The 26 LED rows do not appear because `exclude_from_bom` filters them out at the .kicad_pcb layer.
 5. Eurocircuits' supplier scanner will resolve the 3 MPNs through Mouser/Farnell. They may show "NI" (No Info) for ~1 working day while an engineer confirms European pricing — normal.
-6. Pay; lead time ~5-7 working days. Both PCBs and the loose-parts bag arrive in one shipment.
+6. Pay; lead time ~7 WD PCB + 5 WD PCBA. Fully-assembled boards (minus the 26 LEDs) arrive in one shipment.
 
 ---
 
 ## When the boards arrive — sanity-check inspection
 
-1. **All 10 boards have gold pads everywhere** — 26 LED footprints, 4 NTC pads, 1 R pad, every probe annular ring, every test-pad land. No tin, no HASL.
-2. **No solder paste residue** anywhere. If there's any paste film on the LED footprints, reject the boards.
-3. **64 header holes (32 north + 32 south)** are clean, plated, and unobstructed.
-4. **The parts bag contains:** 40 × TDK NTC (taped strip ok), 10 × Yageo R, 20 × Samtec 1×40 strip (you'll cut each to 32 pins on the bench).
-5. **Cross-check MPNs printed on the parts packaging** against the BOM CSV.
+1. **26 LED footprints are bare ENIG gold** — no solder, no tin, no paste residue. If there is ANY paste film on the LED bond pads, reject the boards (the bonding step at EKL will fail).
+2. **4 NTCs and 1 resistor are reflowed cleanly** — no tombstoning, no bridging, no solder balls.
+3. **2 Samtec header strips are soldered into the 64 THT holes** (32 north + 32 south), pins vertical, no missing pins, no cold joints.
+4. **Probe pads, TLM/VDP, DoE bond pads, TC pads, fiducials** all bare gold — no tin, no HASL.
+5. **Cross-check labels** on the parts against the BOM CSV: TDK NTCG104BH103HT1, Yageo RT0603BRB07100RL, Samtec TSW-140-07-G-S.
 
 If anything is wrong, contact Eurocircuits within their 1-week claim window — they re-fab without quibble.
