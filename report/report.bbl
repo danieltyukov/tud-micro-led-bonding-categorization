@@ -55,9 +55,11 @@ G.~Pangallo, R.~Carotenuto, D.~Iero, E.~D. Mallemace, M.~Merenda, S.~Rao, and
   Measurements for Power Systems (AMPS)}.\hskip 1em plus 0.5em minus
   0.4em\relax IEEE, 2018.
 
-\bibitem{murata_ncp15}
-``{NTC} thermistors {R44E} catalog — {NCP15XH103J03RC},'' Murata
-  Manufacturing Co., Ltd., December 2014, 2014.
+\bibitem{tdk_ntcg104}
+``{NTCG} series {NTC} thermistors — {NTCG104BH103HT1}, 10\,k$\omega$
+  $\pm$3\%, 0402, {AEC-Q200},'' TDK Corporation, commercial {NTC} thermistor
+  catalog, 2023,
+  \url{https://product.tdk.com/system/files/dam/doc/product/sensor/ntc/chip-ntc-thermistor/catalog/tpd_commercial_ntc-thermistor_ntcg_en.pdf}.
 
 \bibitem{roscamabbing2011led}
 F.~D. Roscam~Abbing and M.~A.~P. Pertijs, ``Light-emitting diode
@@ -65,9 +67,9 @@ F.~D. Roscam~Abbing and M.~A.~P. Pertijs, ``Light-emitting diode
   measurements,'' in \emph{2011 IEEE SENSORS}.\hskip 1em plus 0.5em minus
   0.4em\relax IEEE, 2011, {TU} Delft, {ECTM}.
 
-\bibitem{vishay_tnpw}
-``{TNPW} e3 — high stability thin film flat chip resistors,'' Vishay Dale
-  datasheet 28758, rev. 10-Apr-2026, 2026.
+\bibitem{yageo_rt0603}
+``{RT} series precision thin film chip resistor — {RT0603BRB07100RL},
+  100\,$\omega$ $\pm$0.1\%, 10\,ppm/k,'' Yageo datasheet {PYu-RT}, 2024.
 
 \bibitem{wurth_wlsfcc}
 ``{WL-SFCC} {SMT} full-color chip {LED} compact, 0404 superflat, {P/N}

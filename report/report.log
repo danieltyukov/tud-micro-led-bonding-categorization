@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.21)  17 MAY 2026 10:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.21)  25 MAY 2026 23:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -226,6 +226,10 @@ File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
 (/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 )
+(/usr/share/texlive/texmf-dist/tex/latex/eurosym/eurosym.sty
+Package: eurosym 1998/08/06 v1.1 European currency symbol ``Euro''
+\@eurobox=\box55
+)
 (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
 
@@ -278,8 +282,8 @@ Package: siunitx 2024-01-25 v3.3.10 A comprehensive (SI) units package
 \l__siunitx_number_group_size_int=\count292
 \l__siunitx_number_group_minimum_int=\count293
 \l__siunitx_angle_tmp_dim=\dimen188
-\l__siunitx_angle_marker_box=\box55
-\l__siunitx_angle_unit_box=\box56
+\l__siunitx_angle_marker_box=\box56
+\l__siunitx_angle_unit_box=\box57
 \l__siunitx_compound_count_int=\count294
 
 (/usr/share/texlive/texmf-dist/tex/latex/translations/translations.sty
@@ -307,14 +311,14 @@ Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 ))
-\l__siunitx_table_tmp_box=\box57
+\l__siunitx_table_tmp_box=\box58
 \l__siunitx_table_tmp_dim=\dimen189
 \l__siunitx_table_column_width_dim=\dimen190
-\l__siunitx_table_integer_box=\box58
-\l__siunitx_table_decimal_box=\box59
-\l__siunitx_table_uncert_box=\box60
-\l__siunitx_table_before_box=\box61
-\l__siunitx_table_after_box=\box62
+\l__siunitx_table_integer_box=\box59
+\l__siunitx_table_decimal_box=\box60
+\l__siunitx_table_uncert_box=\box61
+\l__siunitx_table_before_box=\box62
+\l__siunitx_table_after_box=\box63
 \l__siunitx_table_before_dim=\dimen191
 \l__siunitx_table_carry_dim=\dimen192
 \l__siunitx_unit_tmp_int=\count296
@@ -324,12 +328,12 @@ Package pdftexcmds Info: \pdfdraftmode found.
 (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
 Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
 \col@sep=\dimen193
-\ar@mcellbox=\box63
+\ar@mcellbox=\box64
 \extrarowheight=\dimen194
 \NC@list=\toks24
 \extratabsurround=\skip54
 \backup@length=\skip55
-\ar@cellbox=\box64
+\ar@cellbox=\box65
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
@@ -447,43 +451,43 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip56
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 13.
+Package hyperref Info: Option `colorlinks' set `true' on input line 14.
 Package translations Info: No language package found. I am going to use `englis
-h' as default language. on input line 18.
+h' as default language. on input line 19.
 
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count310
-\l__pdf_internal_box=\box65
+\l__pdf_internal_box=\box66
 )
 (./report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
 
 -- Lines per column: 56 (exact).
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count311
 \scratchdimen=\dimen199
-\scratchbox=\box66
+\scratchbox=\box67
 \nofMPsegments=\count312
 \nofMParguments=\count313
 \everyMPshowfont=\toks25
@@ -507,22 +511,22 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 18.
-Package hyperref Info: Link coloring ON on input line 18.
+or `english'. on input line 19.
+Package hyperref Info: Link coloring ON on input line 19.
  (./report.out) (./report.out)
 \@outlinefile=\write3
 \openout3 = `report.out'.
 
 LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 3
-1.
+2.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 31.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 32.
 LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 3
-1.
+2.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
@@ -530,98 +534,89 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 <figures/tudelft_logo.pdf, id=52, 383.94841pt x 150.59485pt>
 File: figures/tudelft_logo.pdf Graphic file (type pdf)
 <use figures/tudelft_logo.pdf>
-Package pdftex.def Info: figures/tudelft_logo.pdf  used on input line 34.
+Package pdftex.def Info: figures/tudelft_logo.pdf  used on input line 35.
 (pdftex.def)             Requested size: 75.60077pt x 29.65196pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 38.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 39.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 38.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 39.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-! Undefined control sequence.
-l.82 boards cheap (\textasciitilde\euro
-                                       40--50 each) and reproducible at any
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-<figures/board_top.png, id=57, 1573.88pt x 1268.74pt>
+<figures/board_top.png, id=57, 1999.47pt x 1999.47pt>
 File: figures/board_top.png Graphic file (type png)
 <use figures/board_top.png>
-Package pdftex.def Info: figures/board_top.png  used on input line 89.
-(pdftex.def)             Requested size: 216.71906pt x 174.69911pt.
-<figures/board_bottom.png, id=59, 1573.88pt x 1268.74pt>
+Package pdftex.def Info: figures/board_top.png  used on input line 90.
+(pdftex.def)             Requested size: 216.71906pt x 216.70837pt.
+<figures/board_bottom.png, id=59, 1999.47pt x 1999.47pt>
 File: figures/board_bottom.png Graphic file (type png)
 <use figures/board_bottom.png>
-Package pdftex.def Info: figures/board_bottom.png  used on input line 90.
-(pdftex.def)             Requested size: 216.71906pt x 174.69911pt.
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
-dist/fonts/enc/dvips/base/8r.enc}
+Package pdftex.def Info: figures/board_bottom.png  used on input line 91.
+(pdftex.def)             Requested size: 216.71906pt x 216.70837pt.
+ [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf
+-dist/fonts/enc/dvips/base/8r.enc}
 
 
  <./figures/tudelft_logo.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 139.
+(hyperref)                removing `math shift' on input line 140.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 139.
+(hyperref)                removing `subscript' on input line 140.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 139.
+(hyperref)                removing `math shift' on input line 140.
 
 [2 <./figures/board_top.png> <./figures/board_bottom.png>]
-Underfull \hbox (badness 2035) in paragraph at lines 225--234
+Underfull \hbox (badness 2035) in paragraph at lines 227--236
 \OT1/ptm/m/n/10 the K$[]$ cath-ode. One I-V sweep across the end-points
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--246
+Underfull \hbox (badness 10000) in paragraph at lines 239--248
 []\OT1/ptm/b/n/10 Software. \OT1/ptm/m/n/10 Ki-Cad 9.0.8. The \OT1/pcr/m/n/10 .
 kicad_pcb
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 237--246
+Underfull \hbox (badness 10000) in paragraph at lines 239--248
 \OT1/ptm/m/n/10 is writ-ten pro-gram-mat-i-cally by a Python script
  []
 
 
-Underfull \hbox (badness 1990) in paragraph at lines 237--246
+Underfull \hbox (badness 1990) in paragraph at lines 239--248
 \OT1/ptm/m/n/10 (\OT1/pcr/m/n/10 tools/generate_pcb_text.py\OT1/ptm/m/n/10 ) ra
 ther than placed
  []
 
-! Undefined control sequence.
-l.255 costs roughly \euro
-                         115--125 at Aisler or \euro135--160 at Eurocircuits.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+[3] (./report.bbl
+Underfull \hbox (badness 1478) in paragraph at lines 59--63
+\OT1/ptm/m/n/8 0402, AEC-Q200,'' TDK Cor-po-ra-tion, com-mer-cial NTC ther-mis-
+tor
+ []
 
-! Undefined control sequence.
-l.255 ... roughly \euro115--125 at Aisler or \euro
-                                                  135--160 at Eurocircuits.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-(./report.bbl [3]
-Underfull \hbox (badness 2717) in paragraph at lines 73--77
+Underfull \hbox (badness 10000) in paragraph at lines 59--63
+\OT1/ptm/m/n/8 cat-a-log, 2023, [][]$https : / / product . tdk . com / system /
+ ^^Lles / dam / doc / product /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 59--63
+\OT1/ptm/m/n/8 sensor / ntc / chip-[]ntc-[]thermistor / catalog / tpd[]commerci
+al[]ntc-[]thermistor[]
+ []
+
+
+Underfull \hbox (badness 2717) in paragraph at lines 75--79
 \OT1/ptm/m/n/8 29), 2023, [][]$https : / / www . we-[]online . com / components
  / products / datasheet /
  []
@@ -649,32 +644,33 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: C83DC840E3BB0EF1D43BADD9AA03554E;1998.
  ) 
 Here is how much of TeX's memory you used:
- 14967 strings out of 474222
- 291027 string characters out of 5748733
+ 15043 strings out of 474222
+ 292268 string characters out of 5748733
  1946975 words of memory out of 5000000
- 37019 multiletter control sequences out of 15000+600000
- 597616 words of font info for 115 fonts, out of 8000000 for 9000
+ 37090 multiletter control sequences out of 15000+600000
+ 598240 words of font info for 117 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,80p,553b,1045s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,80p,553b,906s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times
-/utmri8a.pfb>
-Output written on report.pdf (4 pages, 560037 bytes).
+f-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/eurosym/feymr10.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/
+utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on report.pdf (4 pages, 1141038 bytes).
 PDF statistics:
- 212 PDF objects out of 1000 (max. 8388607)
- 167 compressed objects within 2 object streams
+ 225 PDF objects out of 1000 (max. 8388607)
+ 176 compressed objects within 2 object streams
  38 named destinations out of 1000 (max. 500000)
  112 words of extra memory for PDF output out of 10000 (max. 10000000)
 

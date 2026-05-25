@@ -5,6 +5,7 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage[official]{eurosym}
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage{siunitx}
@@ -121,10 +122,10 @@ at both Aisler and Eurocircuits), 0.30~mm minimum drill, 0.15~mm via
 annular ring. DRC returns zero violations and zero unconnected items. ENIG
 plating (Ni 4~$\mu$m, Au 0.075~$\mu$m) is non-negotiable: every probe pad
 has to be gold for reliable probe contact, and the customer-bonded LEDs
-need a gold surface to wet against. Component count: 192 footprints in
-total, 69 of them assembled by the fab (4 NTCs, the reference resistor, 64
-header pins) and 123 left for the customer (the 26 LEDs bonded in the
-cleanroom and 97 bare-ENIG test lands).
+need a gold surface to wet against. Component count: 130 footprints in
+total, 7 assembled by the fab (4 NTCs, the reference resistor, and two
+32-pin header strips) and 123 left for the customer (the 26 LEDs bonded in
+the cleanroom and 97 bare-ENIG test lands).
 
 The companion KiCad schematic captures the 36 electrically active
 components (the 26 LEDs, 4 NTCs, the resistor, 3 EIS test points, and the
@@ -150,8 +151,8 @@ current $I_S \ll I_{op}$,
 where $V_{F,0}$ is the forward voltage at the calibration temperature
 $T_{J,0}$. The LED $V_F$ is read across the four bonded contacts of the
 device under test via the south header. The substrate reference comes from the four
-NTCs (TH1--TH4, Murata NCP15XH103J03RC, $R_{25}=10$~k$\Omega$, $B_{25/85}=3380$~K
-\cite{murata_ncp15}) interleaved between the LED pairs and read through
+NTCs (TH1--TH4, TDK NTCG104BH103HT1, $R_{25}=10$~k$\Omega$, $B_{25/85}=3380$~K
+\cite{tdk_ntcg104}) interleaved between the LED pairs and read through
 the north header. The Steinhart-B equation maps NTC resistance to
 temperature:
 \begin{equation}
@@ -185,7 +186,8 @@ EIS is only as good as its calibration. The board carries three on-PCB
 references: \texttt{EIS\_OPEN} (two isolated 1.27~mm gold pads,
 $Z \rightarrow \infty$), \texttt{EIS\_SHORT} (paired pads joined by a
 solder bridge, $Z \rightarrow 0$), and \texttt{EIS\_LOAD} (the 100~$\Omega$
-0.1\% reference resistor, TCR 25~ppm/K \cite{vishay_tnpw}). The resistor
+0.1\% reference resistor, Yageo RT0603BRB07100RL, TCR 10~ppm/K
+\cite{yageo_rt0603}). The resistor
 pads are oversized so they double as four-wire Kelvin probe lands.
 
 \subsection{Transmission line model (TLM)}
@@ -246,8 +248,8 @@ Beagle and Eurocircuits.
 
 \textbf{Fabrication.} Either Aisler or Eurocircuits can produce the board
 on a 2-layer FR-4 1.55~mm pool with ENIG. The fab solders the 4 NTCs,
-the reference resistor, and the 64 header pins (cut from two
-1$\times$40 strips). The 26 WL-SFCC LED footprints are marked \emph{do
+the reference resistor, and the two 32-pin header strips (cut from
+1$\times$40 stock). The 26 WL-SFCC LED footprints are marked \emph{do
 not populate} in the BOM and called out explicitly in the order notes,
 since the LED bonding is the research subject and has to happen in the
 TU~Delft cleanroom under controlled paste, reflow, and die-bonder
