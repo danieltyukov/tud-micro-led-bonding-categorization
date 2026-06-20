@@ -13,10 +13,14 @@ and nothing where paste actually needs to be printed.
 
 ## What this stencil does (two aperture types on `F.Paste`)
 
-1. **Paste apertures** (1:1 with the copper pad) on **all 327 exposed conductive
-   pads** so paste can be printed: DoE bond pads (`BP_*`), WL-SFCC LEDs
-   (`D*`, `DCL6_*`, `DCL12_*`), probe pads (`PP_*`), TLM/VDP test structures,
-   thermocouple pads (`TC*`), and fiducials (`FID*`).
+1. **Paste apertures** (1:1 with the copper pad) on the **240 bond/attach pads**:
+   DoE bond pads (`BP_*`), WL-SFCC LED lands (`D1–D8`, `DCL6_*`, `DCL12_*`), and
+   thermocouple pads (`TC*`).
+
+   **Deliberately left bare (no paste)** — every spot a probe tip or vision system
+   touches: all probe pads (`PP_*` — daisy-chain in/out, per-LED A/KB/KG/KR, NTC,
+   GND, EIS open/short cal), the TLM/VDP sheet-resistance structures, and the
+   fiducials (`FID*`). These keep their soldermask opening but get no solder.
 
 2. **Clearance reliefs** (a window drawn *around the component body*, not a paste
    dot) so the foil lies flat over parts already on the board — **no bulges**:
