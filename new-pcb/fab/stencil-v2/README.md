@@ -13,14 +13,16 @@ and nothing where paste actually needs to be printed.
 
 ## What this stencil does (two aperture types on `F.Paste`)
 
-1. **Paste apertures** (1:1 with the copper pad) on the **240 bond/attach pads**:
-   DoE bond pads (`BP_*`), WL-SFCC LED lands (`D1–D8`, `DCL6_*`, `DCL12_*`), and
-   thermocouple pads (`TC*`).
+1. **Paste apertures** (1:1 with the copper pad) on the **277 bond/characterization
+   pads**: DoE bond pads (`BP_*`), WL-SFCC LED lands (`D1–D8`, `DCL6_*`, `DCL12_*`),
+   thermocouple pads (`TC*`), and the TLM ladders + Van der Pauw structures
+   (`TLM_*`, `VDP_*`) — those are part of the solder/contact-resistance
+   characterization, so they get solder.
 
-   **Deliberately left bare (no paste)** — every spot a probe tip or vision system
+   **Deliberately left bare (no paste)** — only where a probe tip or vision system
    touches: all probe pads (`PP_*` — daisy-chain in/out, per-LED A/KB/KG/KR, NTC,
-   GND, EIS open/short cal), the TLM/VDP sheet-resistance structures, and the
-   fiducials (`FID*`). These keep their soldermask opening but get no solder.
+   GND, EIS open/short cal) and the fiducials (`FID*`). These keep their soldermask
+   opening but get no solder.
 
 2. **Clearance reliefs** (a window drawn *around the component body*, not a paste
    dot) so the foil lies flat over parts already on the board — **no bulges**:
@@ -50,10 +52,10 @@ and nothing where paste actually needs to be printed.
 ## Ordering notes (Eurocircuits stencil service)
 
 - Order **top stencil only** (no bottom-side components/paste).
-- Suggested foil thickness **100–120 µm**. Reasoning: smallest bond apertures are
-  0.4 mm (LED) and 0.5 mm (DoE) squares — fine at 100–150 µm. **But** the VDP
-  (0.15 mm) and TLM (0.25 mm) test-structure apertures are at/below the reliable
-  paste-release limit for thicker foils; at ≤100 µm they release better. Those are
-  test pads, not bond sites, so partial transfer there is acceptable if you prefer
-  a thicker foil for the bond pads.
+- Suggested foil thickness **100–120 µm**. The bond pads (0.4 mm LED, 0.5 mm DoE)
+  and the wide TLM bars print fine. **Fine-feature caveat:** the smallest Van der
+  Pauw apertures are 0.15 mm and 0.25 mm squares — below the reliable paste-release
+  limit (area ratio < 0.66) even with a 100 µm foil, so those central squares may
+  transfer little or no paste. The openings are there; just don't count on a clean
+  deposit on the 0.15/0.25 mm VDP squares. A thinner foil helps marginally.
 - The foil can be larger than the 93 × 93 mm board and trimmed after, as discussed.
