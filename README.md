@@ -1,79 +1,41 @@
-# tud-micro-led-bonding-categorization
+# Micro-LED Bonding Categorization
 
-Characterization of micro-LED / 1 mm² die bonding on PCB substrates.
-Joint work: **TU Delft** (ECTM, M. Mastrangeli, H. van Zeijl, A. Abdelwahab)
-and **ITEC B.V. / Nexperia** (R. van Hoorn, H. Kuipers). Financed by ITEC
-B.V. and co-financed by the Netherlands Enterprise Agency (RVO).
+Course project (ET4277 + ET4391) and research contribution at TU Delft ECTM, investigating how ~1 mm² LED dies bond to a PCB without mounting pressure (pick-and-release / air-drop), and how to characterize the resulting bonds geometrically, mechanically, and electrically. Joint work with M. Mastrangeli, H. van Zeijl, and A. Abdelwahab (TU Delft) and ITEC B.V. / Nexperia (R. van Hoorn, H. Kuipers), financed by ITEC B.V. and co-financed by RVO. Builds on a v1 board published at ECTC 2025.
 
-**v2 PCB — fab-ready for Eurocircuits PCB + assembly, ENIG finish.**
-26 RGB micro-LEDs (8 stand-alone + 6+12 daisy chains), 4 NTCs for V_F-TSP thermometry, 1 calibration resistor, and dual 32-pin breadboard interface. Eurocircuits reflows/solders the 4 NTC + 1 R + 2 header strips. The 26 LEDs ship as bare ENIG gold pads and are bonded at TU Delft EKL under the Tresky T-3000-PRO.
+The work splits into two reports (both in `part1/` and `part2/`): part 1 designs the test board and its electrical characterization; part 2 documents the bonding process and the capillary self-alignment physics.
 
----
+## The test board (v2/v4)
 
-## Board overview
+A single 93 × 93 mm 2-layer FR-4 board (ENIG, all pads gold) packing every structure needed to characterize bonds on one substrate: a 6 × 6 bond-pad design of experiments (three pad geometries × three fillet radii at 3.5 mm pitch), TLM ladders and Van der Pauw crosses for sheet and contact resistance, 6- and 12-LED daisy chains, eight standalone RGB LEDs with four NTC thermometers for junction-temperature sensing, and an LCR calibration set (open / short / 100 Ω).
 
-![Board top](new-pcb/fab/preview/top.png)
+![Annotated fab render of the micro-LED bond characterization board](new-pcb/fab/preview/top.png)
 
-93 × 93 mm · 2-layer FR-4 · 1.55 mm · ENIG (Ni 4 µm / Au 0.075 µm) · white silk · green soldermask. DRC clean (0 violations, 0 unconnected, 0 schematic-parity). F.Paste has 10 apertures for the 5 SMT placements; the 26 LED bond pads are intentionally paste-free so no fab tins them.
+The board is designed in KiCad and exported fab-ready for Eurocircuits: the five SMT parts (resistor, headers, NTCs) are reflowed by the fab, while the 26 LED bond pads ship as bare gold and are bonded at the TU Delft EKL cleanroom under a Tresky T-3000-PRO die bonder. Board sources, generators, and fab outputs (gerbers, BOM, position, STEP, PDFs) are under `new-pcb/`; the KiCad project itself is DRC-clean with full schematic parity.
 
-## What's in here
+## Part 1: electrical characterization
 
-```
-.
-├── README.md                  ← you are here
-├── PROJECT_DETAILS.md         ← deep dive: project context, v1 board, papers
-├── docs/                      ← 4 component datasheets + papers + collaboration notes
-│   ├── datasheets/
-│   ├── ECTC-2025-published Ahmed Abdelwahab.pdf
-│   ├── s41586-023-06167-5 (1).pdf       (Nature, capillary self-alignment)
-│   ├── patent-published-2024-2026.pdf
-│   ├── 150044M155220-RGB LEDs.pdf
-│   └── Work with Ahmed.md
-├── old-pcb/                   ← v1 board (ECTC-2025 paper), read-only reference
-└── new-pcb/                   ← v2 board, FAB-READY
-    ├── README.md
-    ├── tud-microled-v2.kicad_*       KiCad 9.0.8 project
-    ├── PCB_DESIGN_PLAN.md            original spec
-    ├── V2_DESIGN_NOTES.md            as-built notes
-    ├── VERIFICATION_v4.md            verification workflow
-    ├── ELECTRICAL_CHARACTERIZATION.md measurement plan + lab tools
-    ├── FABRICATION_ORDER.md          Eurocircuits "Place loose" order checklist
-    ├── PUBLICATION_CONTRIBUTION.md   v2 contributions vs ECTC 2025
-    ├── library/                      Würth WL-SFCC library
-    ├── tools/                        BOM generator + one-time PCB patchers
-    └── fab/                          gerbers, BOM, pos, PDFs, STEP, top render
-```
+Design of the measurement methodology: TLM/Van der Pauw extraction of contact and sheet resistance on ENIG, daisy-chain continuity, and V_F-based temperature sensing (V_F-TSP) using the on-board NTCs as reference. Report and KiCad project archive in `part1/`.
 
-## Where to start, by role
+## Part 2: bonding and capillary self-alignment
 
-- **PCB designer / reviewer** → `new-pcb/README.md` then `new-pcb/V2_DESIGN_NOTES.md`
-- **Fab / order placement (Filip)** → `new-pcb/FABRICATION_ORDER.md`
-- **EKL / cleanroom (LED bonding step)** → `new-pcb/PCB_DESIGN_PLAN.md` §7, §9 + datasheet `docs/150044M155220-RGB LEDs.pdf`
-- **Electrical characterization / lab planning** → `new-pcb/ELECTRICAL_CHARACTERIZATION.md`
-- **Project context for new readers** → `PROJECT_DETAILS.md`, then `docs/ECTC-2025-published Ahmed Abdelwahab.pdf`
-- **Reproducing the v1 results** → `old-pcb/` + `PROJECT_DETAILS.md` §2
+Cleanroom process work: solder-paste stencil printing, die-bonder placement of the micro-LEDs, and analysis of capillary self-alignment and residual die tilt (bond-line thickness and tilt are measured, not corrected). Photographed throughout in `part2/photos-during-lab2/`.
 
-## Status
+![Solder-paste printed bond-pad array before die placement](part2/report/figures/printed_array.jpg)
 
-| Component                      | Status                                              |
-|--------------------------------|-----------------------------------------------------|
-| v1 board (ECTC 2025)           | shipped                                             |
-| Project context document       | done                                                |
-| v2 design plan                 | done                                                |
-| v2 KiCad project               | done (93 × 93 mm, 2-layer ENIG, DRC clean)          |
-| v2 schematic                   | done (single-sheet A2, linked to PCB)               |
-| v2 layout                      | done (130 footprints, 7 placements, 26 LEDs DNP)     |
-| v2 fab outputs                 | done (gerbers + BOM + pos + PDFs + STEP + top.png)  |
-| v2 fabrication                 | **ready to order** at Eurocircuits ("Place loose")  |
-| v2 assembly + LED bonding      | EKL cleanroom session — pending fab delivery        |
-| v2 electrical characterization | pending bonded boards                               |
+The report (`part2/report/report.pdf`) ties the observed self-alignment and tilt back to the fluid-joint physics from the cited literature (`part2/downloaded_references/`, capillary self-alignment and fluidic self-assembly papers).
 
-## Quick fab order — Eurocircuits PCB + assembly
+## Repository layout
 
-Full step-by-step in `new-pcb/FABRICATION_ORDER.md`.
+| Path | Contents |
+| --- | --- |
+| `part1/` | Electrical characterization report, board project archive, fab quote |
+| `part2/` | Bonding process report, lab photos, self-alignment references |
+| `new-pcb/` | v2/v4 KiCad project, generation tools, and Eurocircuits fab package |
+| `old-pcb/` | v1 board (ECTC 2025), kept for reference |
+| `report/` | Consolidated part 1 report source and reference papers |
+| `docs/` | Datasheets, published papers, patent, collaboration notes |
+| `PROJECT_DETAILS.md` | Full project context and design rationale |
 
-1. Upload `new-pcb/fab/tud-microled-v2-gerbers.zip` to **PCB visualiser** → 2-layer, 1.55 mm FR-4, **ENIG** (chemical Ni/Au), white silk, green mask, **10 boards**.
-2. Add **PCBA service** → upload `new-pcb/fab/tud-microled-v2-fab-bom.csv` + `new-pcb/fab/tud-microled-v2-pos.csv`.
-3. In eC-stencil-mate BOM editor, leave every line in the default **"Place on board"** mode (3 lines: Yageo R, Samtec header, TDK NTC).
-4. The 26 LED rows are auto-filtered (`exclude_from_bom` flag in the PCB). They ship as bare ENIG gold pads for EKL bonding.
-5. Lead time ~7 WD PCB + 5 WD PCBA. Fully-assembled boards (minus the 26 LEDs) arrive together. Bond LEDs at TU Delft EKL under the Tresky.
+Fabrication logistics (Eurocircuits order steps, stencil handling, "place loose" LED rows) are detailed in `new-pcb/FABRICATION_ORDER.md` and `new-pcb/README.md`.
+
+Tools: KiCad 9, Python fab/BOM generators, Eurocircuits PCB + PCBA, Tresky die bonder, LCR/TLM measurement bench.
