@@ -1,4 +1,19 @@
-# Lab measurement plan - micro-LED bond characterization (v2 PCB, 2 boards)
+# Lab measurement plan - micro-LED bond characterization (v2 PCB, 8 samples / 5 boards)
+# Version: PSU + DMM (no SMU available)
+
+> **Scope update (2026-08-03):** there are **8 bonded samples on 5 PCBs**, not 2 boards.
+> See `SAMPLES.md`.
+>
+> - Samples 1 and 2 are whole boards: D1 - D8 plus both daisy chains (26 sites each).
+> - Samples 3 - 8 sit two to a PCB, split at the x = 46.5 mm centreline, and have
+>   **only D1 - D4 (odd) or D5 - D8 (even) bonded**. No chains.
+> - Sections 9, 10 and 12's chain items therefore apply to samples 1 and 2 only.
+> - The DoE bond-pad array, TLM ladders and Van der Pauw cloverleaves carry no solder
+>   and no dice on any board. **Section 13 has been removed** and they are out of scope
+>   for the whole campaign.
+>
+> This plan needs a bench PSU. For the session that runs with only the handheld DMM,
+> see `PHASE1_DMM_ONLY.md` and `EQUIPMENT_DMM.md`.
 
 Goal: extract per-bond electrical data from the two boards Ahmed assembled (same solder paste,
 two different reflow processes) so the process types can be compared. You collect raw data per
@@ -13,45 +28,64 @@ Nominal V_F at 10 mA: R ~ 2.0 V, G/B ~ 3.0 V. Chains run through the RED channel
 
 1. `00_boards.csv` - board metadata (1 row per board)
 2. `01_site_map.csv` - status of all 26 LED sites per board (1 row per site)
-3. Sweep CSVs - one file per I-V sweep, named per section 8
-4. `02_spot_log.csv` - every single-point measurement (1 row each)
-5. Photos: each board whole, each chain, any anomaly (bridge, tombstone, missing LED)
+3. `02_data_log.csv` - EVERY electrical reading, one row per point (template in section 8)
+4. Photos: each board whole, each chain, any anomaly (bridge, tombstone, missing LED)
 
-Make a folder per board: `T1/`, `T2/`. Anything unusual goes in a `notes` column, never on paper only.
+Log into a laptop spreadsheet directly, one row per reading. No paper-only notes.
 
 ---
 
-## 1. Equipment (TU Delft measurement lab)
+## 1. Equipment (confirmed available in the hall)
 
-| Item | Purpose |
+| Item | Role |
 |---|---|
-| SMU, Keithley 2400/2450 or Keysight B290x class | All I-V. Must reach 35 V compliance for the N=12 chain |
-| 6.5-digit bench DMM | Continuity, NTC resistance, spot checks |
-| 4 Kelvin/mini-grabber leads + 2-4 needle probes (or probe station) | Probe pads are 1.27 mm ENIG squares |
+| Techtron SP304 (0-30 V, 4 A) | Main source. Analog meters = coarse indication only |
+| Tektronix PWS2185 (0-18 V) | In series with the SP304 for the N=12 chain (48 V total); also the fixed 2 V source for reverse leakage |
+| Fluke 177 (x2 if possible - borrow one from a neighboring bench) | DMM-V across the device; second one across R_series. Also ohms, diode mode, continuity |
+| Escort ELC 2260 or Digimess RLC 200 (LCR meter, 4-wire Kelvin) | Series resistors, board CAL resistor, NTCs. PASSIVE only - never on an LED. RLC 200 DC V input can replace the second Fluke. Nice to have, not required now that the bare test structures are out of scope |
+| Resistors | 1 kOhm (x2) and 10 kOhm, 1/4 W, any tolerance (their exact value gets measured, section 4) |
+| Breadboard + wires | To build the series loop; female 0.1" jumpers to plug onto the board's south header |
+| 2-4 needle probes or fine tweezers-probes | Probe pads are 1.27 mm; chain LED pad wings are smaller |
 | Stereo or USB microscope | Landing probes, joint inspection, photos |
-| ESD wrist strap + mat | LEDs are ESD sensitive; wear it the whole session |
-| Female 0.1" jumper wires or 32-pin ribbon | Plug directly onto the soldered south header |
+| ESD wrist strap | Wear the whole session |
+| USB stick / laptop | For the log and photos |
 
-## 2. Default instrument config
+NOT needed: TDS 2022B oscilloscope, AFG 3021B function generator. Farnell VC14 optional.
 
-- Source CURRENT, measure voltage, for every LED measurement. Never source voltage
-  forward across an LED without a current limit.
-- 4-wire (remote sense) ON wherever the wiring supports it, autozero ON.
-- NPLC 1 for sweeps, NPLC 10 for single spot readings.
-- Room temp stable; log NTC (section 5) at the start of each measurement block.
+## 2. The measurement circuit (used for ALL LED points)
 
-Safe-limits card:
+```
+PSU (+) ---- R_series ----+---- [device anode side]
+                          |          device
+        Fluke B (V mode) reads V_R across R_series
+                          |
+PSU (-) ------------------+---- [device cathode side]
 
-| Target | Source | Limit / compliance |
-|---|---|---|
-| Single LED channel, forward | 0 -> 10 mA sweep | 5 V compliance, 10 mA max |
-| Chain N=6 (red) | 0 -> 10 mA sweep | 20 V compliance |
-| Chain N=12 (red) | 0 -> 10 mA sweep | 35 V compliance |
-| Any LED, reverse | -2 V (optional -5 V on suspects only) | 100 uA compliance |
-| NTC (TH1-TH4) | DMM 2-wire ohms, or SMU 10 uA | 1 V |
-| CAL resistor / strips / VDP | 1 mA (CAL), 100 mA (strips/VDP) | 1 V |
+Fluke A (V mode) probes DIRECTLY across the device pads
+```
 
----
+- R_series makes the PSU a quasi current source.
+- CURRENT IS READ AS VOLTAGE: I = V_R / R_series. Do NOT use the Fluke 177 mA jack -
+  its 0.1 mA resolution is too coarse. Across a 1 kOhm resistor, 1 mA = 1.000 V, which
+  the Fluke resolves to 0.1%.
+- Fluke A reads V at the device, so lead/resistor drops do not pollute the reading.
+- With only ONE meter: set the PSU, read V_R, move the meter to the device, read V_F,
+  read V_R again to confirm it did not drift. Two meters = one step, so borrow one.
+- To set a current: raise PSU voltage until V_R / R hits the target (within a few %),
+  then record the honest pair (I, V). Exact setpoints do not matter.
+- SP304 current knob: minimum + a small nudge (~backstop of tens of mA), always.
+- Output OFF / voltage to zero while moving probes. Start every device at the lowest current.
+
+| Target | R_series | PSU voltage needed | Max current |
+|---|---|---|---|
+| Single LED channel, forward | 1 kOhm | 0 -> ~13 V (SP304 alone) | 10 mA |
+| Chain N=6 (red) | 1 kOhm | 0 -> ~25 V (SP304 alone) | 10 mA |
+| Chain N=12 (red) | 1 kOhm | 0 -> ~40 V (SP304 + PWS2185 in series) | 10 mA |
+| Any LED, reverse | 10 kOhm | 2 V fixed (5 V only on suspects) | ~200 uA worst case |
+
+Never connect a PSU directly across an LED without the series resistor.
+Series stacking: PWS2185 (+) into SP304 (-); the load sees SP304(+) to PWS2185(-).
+Verify the stacked open-circuit voltage with the Fluke before first contact.
 
 ## 3. Board intake (10 min)
 
@@ -61,24 +95,29 @@ Safe-limits card:
    `board_id, ahmed_label, process_desc, paste_type, reflow_method, assembly_date, notes`
 3. Photograph each board top side fully, plus a close-up of each LED row and chain.
 
-## 4. Setup verification on the 100 ohm CAL resistor (5 min, once)
+## 4. Rig verification (10 min, once)
 
-The board has EIS CAL pads: OPEN pair, SHORT pair, and R_EIS_LOAD = 100 Ω 0.1%.
-
-1. 4-wire, source 1 mA: measure LOAD. Expect 100.0 ± 0.2 Ω. If not, fix the Kelvin wiring
-   before touching any LED.
-2. Measure SHORT pair: expect < 50 mΩ (this is your residual lead/trace error).
-3. Log both in `02_spot_log.csv`.
+1. Measure YOUR series resistors first: LCR meter 4-wire (R function, 100 Hz) on the
+   1 kOhm and 10 kOhm. Write the exact values on tape on the breadboard and in the log.
+   Every current in this session is computed from these numbers.
+2. Board CAL pads (OPEN pair, SHORT pair, R_EIS_LOAD = 100 Ohm 0.1%): LCR 4-wire on the
+   LOAD pads, expect 100.0 +/- 0.2 Ohm. Fluke 2-wire on the same pads: the difference is
+   your lead offset for later. SHORT pair: log the residual mOhm-level value.
+3. Build the section 2 loop with the CAL resistor as device: set ~1 mA (V_R ~ 1 V),
+   check V_device/I = ~100 Ohm. This proves the whole rig before any LED sees current.
+4. Log everything in `02_data_log.csv`.
 
 ## 5. Temperature (2 min per block)
 
-DMM across each NTC probe pad (PP_NTC1..4) to the GND pad (PP_GND1/2). Log all four raw
-resistances (~10 kΩ at 25 °C, lower when warmer) in `02_spot_log.csv`. Repeat at the start of
-each numbered section below and whenever the room or board changed. Conversion to °C happens in analysis.
+Fluke ohms across each NTC probe pad (PP_NTC1..4) to the GND pad (PP_GND1/2). Log all four
+raw resistances (~10 kOhm at 25 C, lower when warmer). Repeat at the start of each numbered
+section below. Conversion to degrees C happens in analysis.
 
 ## 6. Visual site map (15 min per board)
 
-Under the microscope, for all 26 sites (D1-D8, DCL6_L1-L6, DCL12_L1-L12):
+Under the microscope. Samples 1 and 2: all 26 sites (D1-D8, DCL6_L1-L6, DCL12_L1-L12).
+Samples 3-8: the 4 individual LEDs of that half only (D1-D4 odd, D5-D8 even). 76 sites
+in total across the campaign.
 
 - Numbering convention: chain LEDs count from the IN pad side. L1 = nearest IN.
 - Record in `01_site_map.csv`:
@@ -88,94 +127,104 @@ Under the microscope, for all 26 sites (D1-D8, DCL6_L1-L6, DCL12_L1-L12):
 
 ## 7. Continuity and short screen (10 min per board)
 
-DMM continuity, gentle probing:
+Fluke, gentle probing:
 
-1. Each chain: IN pad to OUT pad. A diode chain reads OPEN to a DMM continuity beeper
-   (that is normal); use DMM diode mode instead: it should show OL (12 chain) or conduct
-   faintly; the real test is the SMU sweep. What you are screening for here is a hard SHORT
-   (solder bridge across a die: reads < 100 Ω resistive both polarities).
-2. On each individual LED D1-D8: check adjacent cathode pins on the south header for
-   shorts (KG-KB, KB-KR). Any short: note in site map, skip that channel later.
+1. Each chain, IN pad to OUT pad, resistance mode BOTH polarities: screening for a hard
+   SHORT (solder bridge across a die: < 100 Ohm resistive both ways). A healthy diode
+   chain reads OL / very high - that is normal.
+2. Each individual LED D1-D8: check adjacent cathode pins on the south header for shorts
+   (KG-KB, KB-KR). Any short: note in site map, skip that channel later.
+3. DMM diode mode on each D1-D8 red channel (A pin to KR pin): should read ~1.8-2.1 V or
+   OL if V_F exceeds the DMM test voltage; a reading near 0 V = shorted joint.
 
-## 8. Data file conventions
+## 8. Data log format
 
-Sweep files: `{board}_{device}_{channel}_{test}.csv` with header `V,I`, e.g.
-`T1_D3_G_fwd.csv`, `T2_DCL12_R_fwd.csv`, `T1_DCL6-L04_R_spot.csv`.
-Devices: `D1..D8`, `DCL6`, `DCL12`, `DCL6-L01..`, `DCL12-L01..`, `CAL`, `STRIP1..`, `VDP0.25` etc.
-Channels: `R`, `G`, `B` (omit for non-LED). Tests: `fwd`, `rev`, `spot`.
+Single file `02_data_log.csv`, one row per reading:
 
-Spot log columns:
-`timestamp, board_id, device, channel, test, source_A_or_V, measured_V_or_A, wires(2/4), T_ntc_ohm, notes`
+```
+timestamp, board_id, device, channel, test, I_meas_mA, V_meas_V, T_ntc_ohm, notes
+```
 
-If the SMU cannot export CSV to USB, photograph the screen AND type the numbers into the
-spot log; for sweeps, use the lab PC (most benches have KickStart or a LabVIEW logger).
+- Add a `sample_id` column (1-8) next to `board_id`; on PCBs C/D/E the board alone does
+  not identify the condition.
+- Devices: `D1..D8`, `DCL6`, `DCL12`, `DCL6-L01..`, `DCL12-L01..`, `CAL`.
+- Channels: `R`, `G`, `B` (blank for non-LED). Tests: `fwd`, `rev`, `cont`, `ntc`.
+- I = V_R / R_series (computed), V from the meter across the device. Log measured values,
+  never the PSU setpoints. Logging V_R directly in the notes column is also fine.
 
-## 9. Chain I-V - the primary bond metric (20 min per board)
+## 9. Chain I-V, point by point (25 min per board) - SAMPLES 1 AND 2 ONLY
 
-For DCL6 and DCL12 on each board:
+Chains exist only on samples 1 and 2. For DCL6 and DCL12 on those two boards, using the
+section 2 loop:
 
-1. Hookup: force HI on IN pad, force LO on OUT pad (mini-grabbers or needles). Sense HI/LO
-   with separate needles on the same IN/OUT pads (two contacts per 1.27 mm pad is fine).
-   Some north header pins are routed to the chain endpoints (marked with silk circles);
-   you may use those for force AFTER verifying continuity pin-to-pad with the DMM.
-2. Sweep 0 -> 10 mA, 51 points min (log spacing 10 uA -> 10 mA even better), compliance
-   20 V (N=6) / 35 V (N=12). Save as `{board}_DCL6_R_fwd.csv` etc.
-3. Immediately repeat once (checks contact stability; keep both files, suffix `_b`).
-4. If the chain hits compliance at near-zero current: it is open (missing LED or open joint).
-   Note it and go to section 10 to localize; still a result, not a failure.
+1. Hookup: PSU/loop wires on the IN and OUT probe pads (grabbers or needles); voltmeter
+   needles also on the IN/OUT pads (two contacts on a 1.27 mm pad is fine). Some north
+   header pins are routed to the chain endpoints (marked with silk circles); usable for
+   the force loop AFTER a continuity check pin-to-pad.
+2. N=12 only: SP304 + PWS2185 in series (verify stacked voltage with the Fluke first).
+3. Take points at approximately: 0.2, 0.5, 1, 2, 5, 8, 10 mA. Log each row.
+4. Re-take the 10 mA point once after lifting and re-landing a probe (contact stability
+   check; log both, note `repeat`).
+5. If current stays ~0 with PSU voltage railed: chain is open (missing LED or open joint).
+   Log it as `fwd, 0 mA at max V`, then localize in section 10. An open is a result.
 
-## 10. Per-site V_F on chain LEDs (30-45 min per board)
+## 10. Per-site V_F on chain LEDs (30-45 min per board) - SAMPLES 1 AND 2 ONLY
 
-This localizes bad joints and gives per-site statistics. For EACH chain LED, land two
-needles on the exposed solder wings of that LED's own pads: anode-side wing and K_R-side wing.
+Localizes bad joints and gives per-site statistics. For EACH chain LED, land the loop +
+voltmeter needles on the exposed solder wings of that LED's own pads: anode-side wing and
+K_R-side wing. V = die V_F + both bond joints.
 
-1. Source 1 mA, NPLC 10, read V. Then 10 mA, read V. Log both as `spot` rows
-   (device `DCL6-L03` style). V = die V_F + both bond joints.
-2. Mandatory for every LED of an open or outlier chain; for healthy chains measure all
-   sites anyway if time permits, else at least 3 sites per chain.
-3. Optional bonus on suspect sites: G/B channels via the K_G/K_B pad wings (source 1 mA,
-   compliance 5 V) - tests the other two bonds of the same die.
+1. Two points per site: ~1 mA and ~10 mA. Log as `DCL6-L03` style rows.
+2. Mandatory for every LED of an open or outlier chain; for healthy chains do all sites
+   if time permits, else at least 3 sites per chain.
+3. Optional on suspect sites: G/B channels via the K_G/K_B pad wings, ~1 mA point only -
+   tests the other two bonds of the same die.
 
-## 11. Individual LEDs D1-D8, all 3 channels (30 min per board)
+## 11. Individual LEDs D1-D8 (30-40 min per board) - THE PRIMARY DATASET
+
+This is the only structure common to all 8 samples, so it carries the whole cross-sample
+comparison. 40 dice: 8 on each of samples 1 and 2, 4 on each of samples 3-8.
 
 The south header is pre-wired: each 4-pin block = one LED, order A, KG, KB, KR
-(pins 1-4 = D1, 5-8 = D2, ... 29-32 = D8). All A pins are the common anode bus.
+(pins 1-4 = D1, 5-8 = D2, ... 29-32 = D8). All A pins are one common anode net.
+On PCBs C/D/E, D1-D4 belong to the odd sample and D5-D8 to the even one.
 
-1. Hookup via jumper wires: force HI on the block's A pin, force LO on the channel's K pin.
-   For Kelvin: sense HI on ANY OTHER A pin (they are all one net), sense LO stays 2-wire or
-   goes to the LED's PP_Dn_K* probe pad with a needle.
-2. Per LED, per channel (R, G, B): sweep 0 -> 10 mA, 51 pts, compliance 5 V.
-   Save `{board}_D{n}_{R|G|B}_fwd.csv`. 24 sweeps per board; with the header this is fast.
-3. On 2 LEDs per board (pick D1 and D8), also take a needle-probed 4-wire spot at 10 mA on
-   the PP pads and log it - this quantifies the header lead error for the analysis.
+1. Loop via jumper wires: PSU + R_series into the block's A pin, return from the channel's
+   K pin. Voltmeter: easiest is the same header pins (adds ~0.1-0.3 Ohm of trace, fine for
+   V_F); for the golden subset below, its needles go on the PP_Dn_A / PP_Dn_K* probe pads.
+2. RED channel, every LED: points at 0.5, 1, 2, 5, 10 mA (5 rows per LED). Red matters
+   most - it is the same channel the chains test.
+3. GREEN and BLUE, every LED: points at 1 and 10 mA (2 rows per channel). Densify to the
+   full 5 points if you are ahead of schedule.
+4. Golden subset: on D1 and D8 of each board, repeat the 10 mA red point with DMM2 on the
+   probe pads (true Kelvin) - quantifies the header-path error for analysis.
 
 ## 12. Reverse leakage screen (10 min per board)
 
-Per LED channel (D1-D8 minimum; chain sites only if suspect): source -2 V, compliance
-100 uA, NPLC 10, read I. Log as `rev` spot rows. Healthy: well under 1 uA.
-Only if a channel looks damaged, also record -5 V. Do not go beyond -5 V.
+Swap R_series to 10 kOhm, reverse the device connection, PWS2185 at 2.0 V. Read leakage as
+mV across the 10 kOhm (Fluke mV range): 1 uA = 10 mV, resolvable down to ~10 nA.
 
-## 13. Solder-film QC structures (optional, 20 min per board, do if time remains)
+1. Per LED channel on D1-D8: log V_R (compute I) after ~5 s settle. Healthy: well under
+   1 uA, i.e. under 10 mV.
+2. Chain sites (samples 1 and 2): only the suspects from sections 9-10.
+3. Only if a channel already looks damaged, also record a 5 V point. Never beyond 5 V.
 
-Same paste and reflow as the LED joints, so they compare T1 vs T2 directly:
+## 13. Removed
 
-1. Sheet-R strips ("solder-paste sheet-R after reflow", lengths 2000/4000 um, widths per
-   silk): 4-wire, source 100 mA, read V (expect only mV). Two needles each strip end.
-   Log R per strip as spot rows, device `STRIP{n}` counted left to right.
-2. VDP cloverleaves (W = 1.0/0.5/0.25/0.15 mm): 4 contacts each. Source 100 mA through two
-   adjacent corners, read V across the other two; repeat rotated 90 degrees. Log both V/I.
-   Skip the 0.15/0.25 mm ones if paste transfer visibly failed there (known stencil limit).
-3. TLM ladders: 30 second job - DMM continuity across each finger gap. Expect OPEN (gaps
-   are only bridged if solder flowed). Log any gap that conducts, with bank and finger.
+Was "Solder-film QC structures" (sheet-R strips, Van der Pauw, TLM ladders). Those
+structures carry no solder and no dice on any of the five PCBs, so there is nothing to
+measure on them. Out of scope for the whole campaign. See `SAMPLES.md` section 2.
 
 ## 14. Shutdown checklist
 
-- [ ] Both boards: chain sweeps (4 files) + repeats
-- [ ] Both boards: D1-D8 x RGB sweeps (48 files)
-- [ ] Per-site chain spots logged, all outliers localized
-- [ ] Reverse leakage logged
-- [ ] Site maps + board metadata + spot log complete, NTC logged per block
+- [ ] CAL rig check logged (section 4)
+- [ ] All 5 PCBs: D1-D8 red 5-point sets, G/B 2-point sets, golden subset (section 11)
+- [ ] Samples 1 and 2: chain point sets, DCL6 + DCL12, with repeats (section 9)
+- [ ] Samples 1 and 2: per-site chain points logged, all outliers localized (section 10)
+- [ ] Reverse leakage logged (section 12)
+- [ ] Site maps + sample metadata complete (`00_samples.csv`), NTC logged per block
 - [ ] Photos backed up; boards back in ESD bags, labeled
 
-Priority if time runs short, in order: section 9 (chains), 10 (per-site spots), 11 (D1-D8),
-12 (reverse), 13 (QC structures).
+Priority if time runs short, in order: section 11 (D1-D8 across all 8 samples, this is
+the cross-sample comparison and nothing replaces it), then 9 and 10 (chains, samples 1
+and 2), then 12 (reverse).
