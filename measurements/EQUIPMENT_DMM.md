@@ -216,13 +216,18 @@ Ordered by cost, so the next session can be planned.
 
 | Add | Cost | Unlocks |
 |---|---|---|
-| 9 V battery + 1 kΩ resistor + breadboard | near zero | Real I-V on single LEDs at ~1 - 7 mA. Read V across the resistor for current, V across the LED for V_F, same meter, two readings. Gives **R_s from a 2-point slope**, the first genuinely quantitative bond number, and it applies to all 40 individual dice. |
-| 4 × 9 V in series (36 V) + 1 kΩ | near zero | The N=6 chain on samples 1 and 2 forward-biased, which is otherwise completely inaccessible. |
+| **Arduino UNO + 6 resistors** (already owned) | **zero** | **A full 63-point I-V sweep per channel, 4-wire Kelvin, pulsed against self-heating. Extracts R_s to about ±10 mΩ, 1σ. This is the real upgrade: see `ARDUINO_IV_RIG.md`.** |
+| 9 V battery + 1 kΩ resistor + breadboard | near zero | One or two I-V points per channel. Superseded by the Arduino rig, which does the same job better. A two-point slope cannot separate the diode's exponential term from R_s, so it does not actually yield a bond number. |
+| 4 × 9 V in series (36 V) + dividers | near zero | The chains on samples 1 and 2 forward-biased, which is otherwise completely inaccessible. See `ARDUINO_IV_RIG.md` section 9. |
 | Bench PSU 0-30 V + 1 kΩ + 10 kΩ | lab loan | Full `MEASUREMENT_PLAN.md`: chain I-V sweeps on both chains, per-site V_F at 1 and 10 mA, reverse leakage down to ~10 nA. |
 | Second DMM | lab loan | Halves the session time. Removes the "set, read V_R, move probe, read V_F, re-read V_R" dance. |
-| SMU (Keithley 2400 class) | lab booking | Everything, in one instrument, with true 4-wire and mΩ resolution. The only path to per-bond R_b. |
+| SMU (Keithley 2400 class) + Summit 11K/12K probe station | lab booking | True pulsed I-V, 24 V compliance for the N=12 chain, pA reverse leakage. **Does not isolate per-bond R_b on these samples** (R_die is still in the sum) and does not improve the cross-sample comparison, which is limited by n and die spread rather than by resolution. Read `DECISIONS.md` D1 before booking. |
 
-The 9 V battery route is worth doing on the same day as phase 1. It converts a
-qualitative screen into a two-point I-V per channel for the price of a battery, and it
-is the cheapest way to get a number that actually discriminates between two healthy
-bonds rather than only between working and failed.
+The Arduino rig costs nothing beyond parts already on the bench and is the cheapest way
+to get a number that discriminates between two *healthy* bonds rather than only between
+working and failed. Build it as soon as the phase-1 screen is done, and skip the battery
+route entirely.
+
+Do not use the Arduino Nano ESP32 for this: 3.3 V logic cannot forward-bias a 3.0 V blue
+channel with any headroom for current sensing, and the ESP32-S3 ADC is markedly more
+nonlinear than the ATmega's.

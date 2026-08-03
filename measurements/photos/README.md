@@ -6,6 +6,7 @@ Reference photos for the lab sessions. Filenames are `YYYY-MM-DD_subject.jpg`.
 |---|---|---|
 | `2026-08-03_samples-01-08_overview.jpg` | 2026-08-03 | All 8 bonded samples on 5 v2 PCBs, laid out with paper number tags. Basis for `SAMPLES.md`. |
 | `2026-08-03_dmm-thsinde-18B-plus.jpg` | 2026-08-03 | The digital multimeter available for phase 1. Basis for `EQUIPMENT_DMM.md`. |
+| `2026-08-03_microcontrollers.jpg` | 2026-08-03 | Arduino UNO R3 (ATmega328P-PU) and Arduino Nano ESP32 (u-blox NORA-W106). Basis for `ARDUINO_IV_RIG.md`. The UNO is the one used; the Nano ESP32 is not suitable for the analog path. |
 
 Notes on the overview photo:
 

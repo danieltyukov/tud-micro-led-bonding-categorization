@@ -37,6 +37,66 @@ and is the more informative product. Yield is the defect census that accompanies
 
 ---
 
+## Sequencing with the Arduino rig
+
+`ARDUINO_IV_RIG.md` replaces part of this session and depends on another part. Do not run
+all of phase 1 and then build the rig: about 80 min of it would be duplicated work.
+
+### What the Arduino rig replaces (do NOT do the full five-board pass first)
+
+| Step | Why it is superseded |
+|---|---|
+| Step 4, diode V_F on D1 - D8 | The rig measures V_F at 63 currents per channel instead of one, and extracts R_s |
+| Step 6, reverse leakage | The rig reaches ~100 nA; the DMM only distinguishes `OL` from not-`OL` |
+| Step 7b, per-site chain V_F | Same measurement, but swept |
+
+Still do **step 4 on one board** before building the rig. It costs 20 min and gives you
+ground truth: a channel the DMM says is dead is dead, so when the Arduino later reads
+nothing you know it is your probe contact and not the bond. It is also the cross-check
+that validates the rig's absolute V_F.
+
+### What the Arduino rig does NOT replace
+
+| Step | Why the DMM is still needed |
+|---|---|
+| Step 0, site map | Visual. Nothing electrical substitutes for it. |
+| Step 2, wiring integrity | The rig's Kelvin sensing is meaningless until you know each header pin actually reaches its probe pad. |
+| Step 3, NTC temperature | The DMM does this at 0.026 K in seconds. |
+| Step 5, short and bridge screen | The rig cannot measure 60 MΩ. See the hard dependency below. |
+| Step 7a, chain end-to-end screen | Same. |
+
+### Hard prerequisites, in order (about 2 h)
+
+Everything here must be done and logged **before** the first die sees Arduino current.
+
+1. **Step 1**, meter self-characterization. Needed regardless.
+2. **Step 0**, site map, all 76 sites. The rig cannot tell an empty site from an open bond.
+3. **Step 2**, wiring integrity, all five PCBs. Specifically 2a: the rig forces current
+   through the header pin and senses at the probe pad, so if that trace is open the force
+   path is dead and you would chase a phantom bond failure.
+4. **Step 5**, isolation screen, all five PCBs. **This is the one that will actually bite
+   you.** A bridge between two cathodes of the same die, say `LEDn_KR` to `LEDn_KB`,
+   splits the drive current between two junctions. The rig would happily sweep it and
+   report a plausible but wrong R_s for the parallel combination, with nothing in the
+   data to reveal it. The DMM at 60 MΩ finds it in seconds; the rig cannot find it at all.
+5. **Step 3**, one NTC block per board, as the temperature baseline.
+6. **Step 4 on one board only**, as ground truth and cross-check.
+
+Plus three checks specific to the rig, done with the same meter:
+
+7. **Probe-pad contact quality.** Land a needle on each `PP_Dn_A` and `PP_Dn_KR` you plan
+   to use and confirm low ohms to its header pin. A pad that will not take a contact makes
+   the Kelvin sense read a floating node through the 1 kΩ series resistor, which looks
+   like data rather than like a failure.
+8. **`R_EIS_LOAD` = 100.0 Ω.** It becomes the rig's sense resistor, so confirm it is
+   undamaged (step 1, S3). Its 0.1 % tolerance is the only traceable calibration in the
+   whole Arduino chain.
+9. **The UNO's 5 V rail.** DC V, 6 V range. This number goes into the `VCC` constant in
+   the sketch and is a direct gain error on every R_s. Measure it again with the rig
+   powered and drawing current, since it sags under load and differs between USB cables.
+
+---
+
 ## Deliverables
 
 | File | Content |
@@ -308,8 +368,27 @@ resistor would unlock DC-A for a few euro; see `EQUIPMENT_DMM.md` section 7.
 
 ## Suggested order and time budget
 
-Roughly 5 - 6 h of bench time. The order below degrades gracefully: stopping after any
-numbered block still leaves a complete, comparable dataset.
+### If the Arduino rig is being built (recommended)
+
+About 3 h at the bench, then build the rig. Everything here is either a prerequisite or
+not replaced by it.
+
+| Order | Step | Scope | Time |
+|---|---|---|---|
+| 1 | Step 1 | once, plus the UNO 5 V rail and `R_EIS_LOAD` | 20 min |
+| 2 | Step 0 | 76 sites, all samples | 45 - 60 min |
+| 3 | Step 2 + probe-pad contact check | all 5 PCBs | 60 min |
+| 4 | **Step 5** | **all 5 PCBs. The cathode-bridge case is invisible to the rig** | **50 min** |
+| 5 | Step 3 | one block per board | 10 min |
+| 6 | Step 4 | **one board only**, as ground truth | 20 min |
+| 7 | Step 7a | samples 1 and 2 | 10 min |
+
+Then build the rig. Steps 4 (remaining boards), 6 and 7b are superseded by it.
+
+### If the rig is not being built, or as a fallback
+
+Roughly 5 - 6 h for the full standalone session. The order degrades gracefully: stopping
+after any numbered block still leaves a complete, comparable dataset.
 
 | Order | Step | Scope | Time |
 |---|---|---|---|
