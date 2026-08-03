@@ -1,0 +1,66 @@
+board_tag,check,detail,dial,range,rel,reading,unit,verdict,note
+1,pin_to_pad,pin 4 to D1 4th gold pad,ohm,600.0,on,,ohm,,
+1,pin_to_pad,pin 8 to D2 4th gold pad,ohm,600.0,on,,ohm,,
+1,pin_to_pad,pin 12 to D3 4th gold pad,ohm,600.0,on,,ohm,,
+1,pin_to_pad,pin 16 to D4 4th gold pad,ohm,600.0,on,,ohm,,
+1,pin_to_pad,pin 20 to D5 4th gold pad,ohm,600.0,on,,ohm,,
+1,pin_to_pad,pin 24 to D6 4th gold pad,ohm,600.0,on,,ohm,,
+1,pin_to_pad,pin 28 to D7 4th gold pad,ohm,600.0,on,,ohm,,
+1,pin_to_pad,pin 32 to D8 4th gold pad,ohm,600.0,on,,ohm,,
+1,anode_bus,pin 1 to pin 29,ohm,600.0,on,,ohm,,
+1,anode_bus,beeper across pins 1/5/9/13/17/21/25/29,cont,-,on,,-,,all 8 continuous?
+1,adj_iso,pin 2 to pin 3,ohm,60.00M,off,,ohm,,expect OL
+1,adj_iso,pin 3 to pin 4,ohm,60.00M,off,,ohm,,expect OL
+1,adj_iso,pin 4 to pin 5,ohm,60.00M,off,,ohm,,expect OL
+2,pin_to_pad,pin 4 to D1 4th gold pad,ohm,600.0,on,,ohm,,
+2,pin_to_pad,pin 8 to D2 4th gold pad,ohm,600.0,on,,ohm,,
+2,pin_to_pad,pin 12 to D3 4th gold pad,ohm,600.0,on,,ohm,,
+2,pin_to_pad,pin 16 to D4 4th gold pad,ohm,600.0,on,,ohm,,
+2,pin_to_pad,pin 20 to D5 4th gold pad,ohm,600.0,on,,ohm,,
+2,pin_to_pad,pin 24 to D6 4th gold pad,ohm,600.0,on,,ohm,,
+2,pin_to_pad,pin 28 to D7 4th gold pad,ohm,600.0,on,,ohm,,
+2,pin_to_pad,pin 32 to D8 4th gold pad,ohm,600.0,on,,ohm,,
+2,anode_bus,pin 1 to pin 29,ohm,600.0,on,,ohm,,
+2,anode_bus,beeper across pins 1/5/9/13/17/21/25/29,cont,-,on,,-,,all 8 continuous?
+2,adj_iso,pin 2 to pin 3,ohm,60.00M,off,,ohm,,expect OL
+2,adj_iso,pin 3 to pin 4,ohm,60.00M,off,,ohm,,expect OL
+2,adj_iso,pin 4 to pin 5,ohm,60.00M,off,,ohm,,expect OL
+3/4,pin_to_pad,pin 4 to D1 4th gold pad,ohm,600.0,on,,ohm,,
+3/4,pin_to_pad,pin 8 to D2 4th gold pad,ohm,600.0,on,,ohm,,
+3/4,pin_to_pad,pin 12 to D3 4th gold pad,ohm,600.0,on,,ohm,,
+3/4,pin_to_pad,pin 16 to D4 4th gold pad,ohm,600.0,on,,ohm,,
+3/4,pin_to_pad,pin 20 to D5 4th gold pad,ohm,600.0,on,,ohm,,
+3/4,pin_to_pad,pin 24 to D6 4th gold pad,ohm,600.0,on,,ohm,,
+3/4,pin_to_pad,pin 28 to D7 4th gold pad,ohm,600.0,on,,ohm,,
+3/4,pin_to_pad,pin 32 to D8 4th gold pad,ohm,600.0,on,,ohm,,
+3/4,anode_bus,pin 1 to pin 29,ohm,600.0,on,,ohm,,
+3/4,anode_bus,beeper across pins 1/5/9/13/17/21/25/29,cont,-,on,,-,,all 8 continuous?
+3/4,adj_iso,pin 2 to pin 3,ohm,60.00M,off,,ohm,,expect OL
+3/4,adj_iso,pin 3 to pin 4,ohm,60.00M,off,,ohm,,expect OL
+3/4,adj_iso,pin 4 to pin 5,ohm,60.00M,off,,ohm,,expect OL
+5/6,pin_to_pad,pin 4 to D1 4th gold pad,ohm,600.0,on,,ohm,,
+5/6,pin_to_pad,pin 8 to D2 4th gold pad,ohm,600.0,on,,ohm,,
+5/6,pin_to_pad,pin 12 to D3 4th gold pad,ohm,600.0,on,,ohm,,
+5/6,pin_to_pad,pin 16 to D4 4th gold pad,ohm,600.0,on,,ohm,,
+5/6,pin_to_pad,pin 20 to D5 4th gold pad,ohm,600.0,on,,ohm,,
+5/6,pin_to_pad,pin 24 to D6 4th gold pad,ohm,600.0,on,,ohm,,
+5/6,pin_to_pad,pin 28 to D7 4th gold pad,ohm,600.0,on,,ohm,,
+5/6,pin_to_pad,pin 32 to D8 4th gold pad,ohm,600.0,on,,ohm,,
+5/6,anode_bus,pin 1 to pin 29,ohm,600.0,on,,ohm,,
+5/6,anode_bus,beeper across pins 1/5/9/13/17/21/25/29,cont,-,on,,-,,all 8 continuous?
+5/6,adj_iso,pin 2 to pin 3,ohm,60.00M,off,,ohm,,expect OL
+5/6,adj_iso,pin 3 to pin 4,ohm,60.00M,off,,ohm,,expect OL
+5/6,adj_iso,pin 4 to pin 5,ohm,60.00M,off,,ohm,,expect OL
+7/8,pin_to_pad,pin 4 to D1 4th gold pad,ohm,600.0,on,,ohm,,
+7/8,pin_to_pad,pin 8 to D2 4th gold pad,ohm,600.0,on,,ohm,,
+7/8,pin_to_pad,pin 12 to D3 4th gold pad,ohm,600.0,on,,ohm,,
+7/8,pin_to_pad,pin 16 to D4 4th gold pad,ohm,600.0,on,,ohm,,
+7/8,pin_to_pad,pin 20 to D5 4th gold pad,ohm,600.0,on,,ohm,,
+7/8,pin_to_pad,pin 24 to D6 4th gold pad,ohm,600.0,on,,ohm,,
+7/8,pin_to_pad,pin 28 to D7 4th gold pad,ohm,600.0,on,,ohm,,
+7/8,pin_to_pad,pin 32 to D8 4th gold pad,ohm,600.0,on,,ohm,,
+7/8,anode_bus,pin 1 to pin 29,ohm,600.0,on,,ohm,,
+7/8,anode_bus,beeper across pins 1/5/9/13/17/21/25/29,cont,-,on,,-,,all 8 continuous?
+7/8,adj_iso,pin 2 to pin 3,ohm,60.00M,off,,ohm,,expect OL
+7/8,adj_iso,pin 3 to pin 4,ohm,60.00M,off,,ohm,,expect OL
+7/8,adj_iso,pin 4 to pin 5,ohm,60.00M,off,,ohm,,expect OL

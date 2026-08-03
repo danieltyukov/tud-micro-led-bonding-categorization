@@ -1,0 +1,5 @@
+board_tag,sample,chain,range,reading_fwd,reading_rev,verdict,note
+1,1,DC-A_N6,60.00M,,,,"6 dice, left chain"
+1,1,DC-B_N12,60.00M,,,,"12 dice, right chain"
+2,2,DC-A_N6,60.00M,,,,"6 dice, left chain"
+2,2,DC-B_N12,60.00M,,,,"12 dice, right chain"

@@ -222,7 +222,8 @@ measure on them. Out of scope for the whole campaign. See `SAMPLES.md` section 2
 - [ ] Samples 1 and 2: chain point sets, DCL6 + DCL12, with repeats (section 9)
 - [ ] Samples 1 and 2: per-site chain points logged, all outliers localized (section 10)
 - [ ] Reverse leakage logged (section 12)
-- [ ] Site maps + sample metadata complete (`00_samples.csv`), NTC logged per block
+- [ ] Site maps complete, NTC logged per block. Process metadata (`00_samples.csv`) stays
+      withheld until all readings are in, see `SAMPLES.md` section 4
 - [ ] Photos backed up; boards back in ESD bags, labeled
 
 Priority if time runs short, in order: section 11 (D1-D8 across all 8 samples, this is

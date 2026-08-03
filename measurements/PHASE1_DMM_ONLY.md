@@ -61,7 +61,7 @@ that validates the rig's absolute V_F.
 |---|---|
 | Step 0, site map | Visual. Nothing electrical substitutes for it. |
 | Step 2, wiring integrity | The rig's Kelvin sensing is meaningless until you know each header pin actually reaches its probe pad. |
-| Step 3, NTC temperature | The DMM does this at 0.026 K in seconds. |
+| Step 3, NTC temperature | The DMM does this at 0.022 K in seconds. |
 | Step 5, short and bridge screen | The rig cannot measure 60 MΩ. See the hard dependency below. |
 | Step 7a, chain end-to-end screen | Same. |
 
@@ -101,7 +101,7 @@ Plus three checks specific to the rig, done with the same meter:
 
 | File | Content |
 |---|---|
-| `00_samples.csv` | one row per sample: process metadata (`SAMPLES.md` section 4) |
+| `00_samples.csv` | one row per sample: process metadata. **Withheld until measurement is complete**, see `SAMPLES.md` section 4 |
 | `01_site_map.csv` | one row per bonded site per sample: visual state |
 | `02_data_log.csv` | one row per electrical reading |
 | `03_temperature.csv` | one row per measurement block: the NTC resistances |
@@ -140,7 +140,8 @@ blank rather than guessing. Convert to °C in analysis, never in the lab:
    T       T₀       B         R₀
 ```
 
-with T₀ = 298.15 K, R₀ = 10 kΩ, B = 3435 K for the TDK NTCG104BH103HT1.
+with T₀ = 298.15 K, R₀ = 10 kΩ, **B = 4100 K** for the TDK NTCG104BH103HT1 (datasheet
+row: 4067 / 4092 / 4100 / 4110 K for B25/50, B25/80, B25/85, B25/100).
 
 ---
 
@@ -219,15 +220,15 @@ defect. Catch it now, before it looks like a process result.
 
 ## Step 3. Temperature (2 min, at every block boundary)
 
-Ω mode, **60.00 kΩ range locked** (10 Ω resolution ≈ 0.026 K), REL off.
+Ω mode, **60.00 kΩ range locked** (10 Ω resolution ≈ 0.022 K), REL off.
 
-`PP_NTCn` to `PP_GND1`. Expect about 10 kΩ at 25 °C, falling roughly 390 Ω per K of
+`PP_NTCn` to `PP_GND1`. Expect about 10 kΩ at 25 °C, falling roughly 460 Ω per K of
 warming. Log raw resistances into `03_temperature.csv`; do not convert in the lab.
 
 Why this matters: dV_F/dT ≈ −2 mV/K. Holding a board for a few minutes shifts V_F by
 several mV, the same size as the differences between bonding conditions. The NTC log is
 what lets you separate the two later. It is also the one measurement on this board that
-the DMM does genuinely well, at about 0.026 K resolution.
+the DMM does genuinely well, at about 0.022 K resolution.
 
 ---
 

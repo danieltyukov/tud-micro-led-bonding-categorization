@@ -20,6 +20,15 @@ bonding conditions can be compared on a continuous scale instead of pass/fail.
 
 ## Parts to gather
 
+Datasheet-verified electrical limits for this build are in
+`../docs/datasheets/INSTRUMENTS.md`, extracted from the Microchip ATmega328P datasheet.
+The one that constrains the design:
+
+> **Maximum current per port: ±30 mA.** Arduino D0 - D7 are all Port D, so the six bank
+> pins share one 30 mA budget. The bank below draws about 13.7 mA total on a red channel
+> and 9.2 mA on blue, so it sits at under half the limit. Do not add more branches without
+> redoing that sum. The 40 mA per-pin figure is not the binding limit here.
+
 | Part | Count | Use |
 |---|---|---|
 | 10 kΩ, 4.7 kΩ, 2.2 kΩ, 1 kΩ, 470 Ω, 220 Ω | 1 each | the current bank |
@@ -180,6 +189,25 @@ cat /dev/ttyACM0 | tee R2_sweeps/verify_2026-08-12.csv
 
 Pick one healthy red channel. Sweep it three times, changing only `OVERSAMPLE` in the
 sketch: **64**, then **256**, then **1024**. Fit R_s from each.
+
+Why those numbers matter, from the ATmega328P datasheet. A conversion takes **13 ADC clock
+cycles**, and the sketch sets the prescaler to /32, so at 16 MHz the ADC clock is 500 kHz
+and one conversion is 26 µs:
+
+| `OVERSAMPLE` | Time for 3 channels | Effective bits |
+|---|---|---|
+| 64 | 5.0 ms | 13 |
+| 256 | 20 ms | 14 |
+| 1024 | 80 ms | 15 |
+
+That is the pulse length the die is powered for, so it is directly the amount of
+self-heating you are baking into R_s.
+
+Note that /32 is deliberately outside the datasheet's stated window: "the successive
+approximation circuitry requires an input clock frequency between 50kHz and 200kHz to get
+maximum resolution." Raw per-sample resolution is degraded, oversampling more than recovers
+it, and the shorter pulse is worth more than the lost bit. This step is what confirms that
+trade holds for your dice rather than assuming it.
 
 If R_s changes between them, the die is heating during the pulse and that heating is being
 counted as resistance. Drop to the shortest setting whose R_s still agrees with the one

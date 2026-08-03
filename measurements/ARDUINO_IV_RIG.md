@@ -117,8 +117,20 @@ spread of levels, so any E12 values you have will do.
 Green and blue at V_F ≈ 3.0 V leave less headroom, so the same bank tops out around
 10 mA instead of 17 mA. That is fine, 10 mA is the target anyway.
 
-Pin loading: keep each pin under about 15 mA and the total under about 60 mA. The
-ATmega328P absolute maximum is 40 mA per pin and 200 mA total, so this is comfortable.
+Pin loading, from the ATmega328P absolute maximum ratings table (see
+`../docs/datasheets/INSTRUMENTS.md`):
+
+| Limit | Value |
+|---|---|
+| DC current per I/O pin | 40.0 mA |
+| DC current VCC and GND pins | 200.0 mA |
+| **Maximum current per port** | **±30 mA** |
+
+**The per-port limit binds, not the per-pin one.** Arduino D0 - D7 are all Port D, so the
+six bank branches share one 30 mA budget. Solving the bank against the loop
+(I = G·(5 − V_F) / (1 + 100·G), with G = 8.44 mS) gives **13.7 mA total on a red channel
+and 9.2 mA on blue**, both under half the limit, and the largest single branch (220 Ω)
+carries about 7.4 mA against a 40 mA pin limit. Adding branches means redoing that sum.
 The pin's own output impedance (roughly 25 Ω) sits in series with each resistor and
 shifts the levels slightly, which does not matter since the current is measured.
 

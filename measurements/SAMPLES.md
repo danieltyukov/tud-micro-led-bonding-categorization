@@ -78,10 +78,21 @@ statistics and treat yield as the defect census that accompanies them.
 Samples 1 and 2, with 8 individual dice plus 36 chain dice, are the only ones where a
 yield number carries weight. They are also the only ones where chain data exists at all.
 
-## 4. Process metadata to capture
+## 4. Process metadata, held back deliberately
 
-Currently missing and needed before any of this means anything. One row per sample in
-`00_samples.csv`:
+The measurement campaign is run **blind**. The operator records everything against the
+paper tag number and does not know which bonding process each tag is, until every reading
+is taken. See `FINAL_MEASUREMENTS/1_MULTIMETER_ONLY.md`.
+
+This is the right call. Probing is a manual, judgement-laden measurement: how long you
+hold a needle, whether you re-land after an ugly reading, whether you record a marginal
+value as `OL`. Expectations leak into all of it and the operator cannot feel it happening.
+Blinding removes that channel at zero cost, because the mapping is joined on afterwards
+by sample number.
+
+The mapping still has to exist, and it has to be **locked before measurement, not
+reconstructed from memory after**. Otherwise this is not a blind study, it is just missing
+data. One row per sample, kept separately:
 
 ```
 sample_id, pcb_id, half, lab_label, paste_type, paste_lot, die_finish,
@@ -89,8 +100,7 @@ mounting_method, mounting_pressure_MPa, reflow_profile_id, bonding_date,
 operator, notes
 ```
 
-Fill this from the bonding records before the measurement session, not after. Without
-it, eight sets of numbers are eight sets of numbers.
+Hand it over only once the readings are in.
 
 ---
 
@@ -183,7 +193,7 @@ even though the chain itself only uses red.
 
 ### 5.5 NTC thermistors
 
-TDK `NTCG104BH103HT1`, 10 kΩ at 25 °C, B ≈ 3435 K. One terminal on `NTCn`, the other on
+TDK `NTCG104BH103HT1`, 10 kΩ ±3 % at 25 °C, **B(25/85) = 4100 K**. One terminal on `NTCn`, the other on
 the `GND` B.Cu pour, which surfaces at `PP_GND1` and `PP_GND2`.
 
 | NTC | x (mm) | Half |
