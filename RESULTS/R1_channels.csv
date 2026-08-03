@@ -11,9 +11,9 @@ board_tag,sample,die,channel,pin_a,pin_k,diode_V,lit,iso_ak_fwd,iso_ak_rev,verdi
 1,1,D4,R,13,16,,,,,,
 1,1,D4,G,13,14,,,,,,
 1,1,D4,B,13,15,,,,,,
-1,1,D5,R,17,20,,,,,,
-1,1,D5,G,17,18,,,,,,
-1,1,D5,B,17,19,,,,,,
+1,1,D5,R,17,20,,,,,no_die,die absent (step 2). Do not probe. Excluded from statistics.
+1,1,D5,G,17,18,,,,,no_die,die absent (step 2). Do not probe. Excluded from statistics.
+1,1,D5,B,17,19,,,,,no_die,die absent (step 2). Do not probe. Excluded from statistics.
 1,1,D6,R,21,24,,,,,,
 1,1,D6,G,21,22,,,,,,
 1,1,D6,B,21,23,,,,,,
@@ -59,9 +59,9 @@ board_tag,sample,die,channel,pin_a,pin_k,diode_V,lit,iso_ak_fwd,iso_ak_rev,verdi
 2,2,D6,R,21,24,,,,,,
 2,2,D6,G,21,22,,,,,,
 2,2,D6,B,21,23,,,,,,
-2,2,D7,R,25,28,,,,,,
-2,2,D7,G,25,26,,,,,,
-2,2,D7,B,25,27,,,,,,
+2,2,D7,R,25,28,,,,,no_die,die absent (step 2). Do not probe. Excluded from statistics.
+2,2,D7,G,25,26,,,,,no_die,die absent (step 2). Do not probe. Excluded from statistics.
+2,2,D7,B,25,27,,,,,no_die,die absent (step 2). Do not probe. Excluded from statistics.
 2,2,D8,R,29,32,,,,,,
 2,2,D8,G,29,30,,,,,,
 2,2,D8,B,29,31,,,,,,
@@ -122,9 +122,9 @@ board_tag,sample,die,channel,pin_a,pin_k,diode_V,lit,iso_ak_fwd,iso_ak_rev,verdi
 5/6,6,D5,R,17,20,,,,,,
 5/6,6,D5,G,17,18,,,,,,
 5/6,6,D5,B,17,19,,,,,,
-5/6,6,D6,R,21,24,,,,,,
-5/6,6,D6,G,21,22,,,,,,
-5/6,6,D6,B,21,23,,,,,,
+5/6,6,D6,R,21,24,,,,,no_die,die absent. Do not probe. Excluded from statistics.
+5/6,6,D6,G,21,22,,,,,no_die,die absent. Do not probe. Excluded from statistics.
+5/6,6,D6,B,21,23,,,,,no_die,die absent. Do not probe. Excluded from statistics.
 5/6,6,D7,R,25,28,,,,,,
 5/6,6,D7,G,25,26,,,,,,
 5/6,6,D7,B,25,27,,,,,,

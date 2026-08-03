@@ -15,8 +15,21 @@ Background, if you ever want it: `../docs/datasheets/INSTRUMENTS.md`.
 - Black probe into `COM`.
 - Red probe into the far right jack (`VΩHz`).
 - Dial: from `OFF`, **4 clicks clockwise**. Land on the orange cluster at the top.
-- Display should show `Ω`. If not, press `SELECT` until it does.
 - Wrist strap on. Hold boards by the edges.
+
+**Getting to a function (measured on your meter):**
+
+Turning the dial one click away and back always lands on **resistance**. From there:
+
+| Want | Presses of `SELECT` from resistance |
+|---|---|
+| resistance `Ω` | 0 |
+| continuity (wifi icon) | 1 |
+| diode | 2 |
+| capacitance `nF` | 3 |
+
+So whenever a step below says a function, first flick the dial off and back, then press
+`SELECT` that many times.
 
 Work through the boards in rotation, not one board at a time.
 
@@ -60,11 +73,10 @@ Work through the boards in rotation, not one board at a time.
 - Touch the two gold pads marked `OPEN`. **Read out.**
 
 **1f**
-- Press `SELECT` until the **diode symbol** shows.
+- Flick the dial off and back. Press `SELECT` **twice** (diode).
 - Touch the two ends of `100R LOAD`. **Read out.**
 
-**1g**
-- Press `SELECT` four times. **Read out the order the four icons appear in.**
+**1g** Every hour or so, and once at the very end, redo **1c** and **read out**.
 
 ---
 
@@ -87,7 +99,7 @@ filename**.
 
 ## Step 3 — temperature (once per board, and again after each break)
 
-- Press `SELECT` until `Ω` shows.
+- Flick the dial off and back (lands on resistance).
 - If REL is showing, press `REL Δ` once.
 - Hold `RANGE` **2 seconds** until `AUTO` appears.
 - Red probe on the gold square just left of `TH1`. Black probe on a small pad marked `GND`
@@ -100,7 +112,7 @@ filename**.
 
 ## Step 4 — board check (each board)
 
-- Press `SELECT` until `Ω`. If REL is showing, press `REL Δ` once.
+- Flick the dial off and back. If REL is showing, press `REL Δ` once.
 - Hold `RANGE` **2 seconds** until `AUTO`.
 - Touch the tips together. Press `RANGE` **once**. Press `REL Δ` **once**.
 
@@ -110,9 +122,9 @@ Repeat with pins `8, 12, 16, 20, 24, 28, 32` against D2 to D8's 4th gold pad.
 **4b** Touch pin `1` and pin `29`. **Read out.**
 
 **4c**
-- Press `SELECT` **once** (sound-wave icon).
+- Press `SELECT` **once** (continuity, wifi icon).
 - Touch pin `1` to each of `5, 9, 13, 17, 21, 25, 29`. **Read out: beeps or not**, for each.
-- Press `SELECT` until `Ω` again.
+- Flick the dial off and back to return to resistance.
 
 **4d**
 - Hold `RANGE` **2 seconds**. Hold the probes apart in the air. Press `RANGE` **once**.
@@ -138,7 +150,7 @@ For each die, using its four pins from the table above, **read out each**:
 
 ## Step 6 — light up every channel (each board, each die)
 
-- Press `SELECT` until the **diode symbol** shows.
+- Flick the dial off and back. Press `SELECT` **twice** (diode).
 - Turn the lights down so you can see the die glow.
 - Backlight quits after 15 seconds. Long-press `HOLD` to bring it back.
 
@@ -155,14 +167,14 @@ header, and **read out** what you get.
 ## Step 7 — chains (boards 1 and 2 only)
 
 **7a**
-- Press `SELECT` until `Ω`. Hold `RANGE` **2 seconds**. Hold the probes apart in the air.
+- Flick the dial off and back. Hold `RANGE` **2 seconds**. Hold the probes apart in the air.
   Press `RANGE` **once**.
 - Touch the gold pad marked `IN` and the one marked `OUT` on the **left** chain.
   **Read out.** Swap the probes over. **Read out.**
 - Same on the **right** chain. **Read out** both ways.
 
 **7b**
-- Press `SELECT` until the **diode symbol**.
+- Press `SELECT` **twice** (diode).
 - Put both probes on the two solder edges of the first chain die. **Read out.**
 - Lift both probes, land them again. **Read out.**
 - Do that for all 6 dice in the left chain and all 12 in the right chain, on both boards.
