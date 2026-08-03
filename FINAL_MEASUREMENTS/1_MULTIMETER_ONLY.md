@@ -117,7 +117,12 @@ filename**.
 - Touch the tips together. Press `RANGE` **once**. Press `REL Δ` **once**.
 
 **4a** Touch pin `4`, then D1's 4th gold pad. **Read out.**
-Repeat with pins `8, 12, 16, 20, 24, 28, 32` against D2 to D8's 4th gold pad.
+
+- **Board 1 only:** repeat with pins `8, 12, 16, 20, 24, 28, 32` against D2 to D8's 4th
+  gold pad. All eight.
+- **Every other board:** just pin `4` and pin `32`. Two readings.
+
+4b, 4c and 4d are done on **every** board.
 
 **4b** Touch pin `1` and pin `29`. **Read out.**
 
