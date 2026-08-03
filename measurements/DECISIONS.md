@@ -4,6 +4,54 @@ Append-only. Newest first. One entry per decision that would otherwise get re-ar
 
 ---
 
+## D2. Defer driving the daisy chains end to end
+
+**Date:** 2026-08-03
+**Status:** accepted, revisit after round 1
+**Scope:** the two chains on each of samples 1 and 2 (DC-A, 6 dice; DC-B, 12 dice)
+
+### Decision
+
+Do not attempt chain end-to-end measurement in round 1 or round 2. Removed from
+`FINAL_MEASUREMENTS/1_MULTIMETER_ONLY.md` to keep that session to meter and boards only.
+
+### Why it was deferred
+
+The only hardware barrier is voltage: 6 dice in series need about 12 V and 12 need about
+24 V. Neither the DMM nor the UNO's 5 V rail reaches that. The method needs four 9 V
+batteries and clips, which were not on the table.
+
+### What is lost
+
+The chain is the only structure that puts all the bonds of a path in series: 12 bonds for
+DC-A, 24 for DC-B. Without it, those 36 chain dice are still characterized individually
+(round 1 step 7 gives each a 1 mA point, round 2 can sweep each via grabber clips), but
+never as a chain.
+
+Note the loss is modest. The measurement would be coarse anyway: chain voltage sits on the
+meter's 60 V range at 10 mV per count, giving a couple of ohms of uncertainty on the chain
+resistance, which spread over 12 bonds is about 0.17 Ω per bond against bonds of 0.01 to
+0.1 Ω. It confirms every bond conducts and catches gross degradation. It does not resolve
+normal bond variation.
+
+### Method, if it comes back
+
+Battery stack (+) through a series resistor into the chain **IN** pad, chain **OUT** back
+to the stack (−). Two 9 V for DC-A, four for DC-B. Measure across the series resistor for
+current, then across IN to OUT for chain voltage, then across the resistor again to check
+drift. Five resistor values give five points: 10k / 4.7k / 2.2k / 1k / 470 for DC-A, and
+22k / 10k / 4.7k / 2.2k / 1k for DC-B.
+
+Safety point worth keeping: a reversed stack is safe **while the chain is intact**, because
+the voltage divides across the dice and no single one exceeds 3 V. If one die is open it
+takes the whole stack. So test polarity at the largest resistor and do not leave it
+connected.
+
+Watch the dice light as well as the meter. A dark die in an otherwise lit chain means
+solder is shorting it out, which is why current still flows.
+
+---
+
 ## D1. Do not book SMU time before the Arduino rig has run
 
 **Date:** 2026-08-03
