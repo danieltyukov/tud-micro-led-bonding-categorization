@@ -52,6 +52,57 @@ All eight A pins are one common wire.
 **Write `OL` as the literal text `OL`.** Never as a number, never as blank. Blank means
 "not measured yet" and the two must stay distinguishable.
 
+**Three places you can touch, and when to use which.**
+
+| Where | What it looks like | Used in |
+|---|---|---|
+| **South header pins** | the bottom black strip, 32 upright metal pins | steps 4, 5, 6, 8 |
+| **Gold probe pads** | 1.27 mm gold squares: the row just above the header, the ones beside TH1-4, the GND pads, the chain IN and OUT pads, and everything in the EIS CAL box | steps 1, 3, 4, 7 |
+| **The die's own solder edges** | the shiny fillet where a die meets its pad, needs a fine tip | step 7 chain dice, and the step 6 fallback |
+
+The rule: **use a header pin wherever one exists.** A pin carries 0.1 - 0.5 Ω of trace and
+contact resistance, and in round 1 that never matters. At 1 mA it is half a millivolt on a
+1.8 V reading, and every isolation test is a comparison against `OL`. Pins are faster and
+far more repeatable than balancing a probe tip on a 1.27 mm square.
+
+Go to the gold pads or the solder edges only where there is no pin, which is the two daisy
+chains and the temperature and calibration structures, or where a step says so explicitly.
+Round 2 is different: there the 0.5 Ω is the whole measurement, so the sense connection
+moves to the pads.
+
+The BOND-PAD DoE grid, the TLM ladders and the Van der Pauw cloverleaves are bare gold with
+nothing bonded to them. Do not probe them at all.
+
+**Interleave the boards.** Do not finish board 1, then board 2, then board 3. Rotate:
+board 1 die 1, board 2 die 1, board 3/4 die 1, and so on. If you work board by board, then
+room temperature, your probing technique and the meter's drift all change in step with the
+sample number, and there is no way afterwards to tell a process difference from a
+time-of-day difference. Rotating costs nothing but board handling and removes the problem
+entirely.
+
+---
+
+## Step 0. Write down what actually differs between the 8 samples
+
+Do this before touching a probe, from the bonding records, not from memory.
+
+Without it the campaign produces eight sets of numbers with no axis to plot them against.
+This is the single largest risk to the whole project and it is not a measurement problem.
+
+### Record: `00_samples.csv` (8 rows)
+
+```
+sample,board_tag,half,lab_label,paste_type,paste_lot,die_finish,mounting_method,
+mounting_pressure_MPa,reflow_profile_id,bonding_date,operator,note
+```
+
+```
+1,1,whole,T1,SAC305 type-5,LOT2261,Au,pick-and-place,0.5,P-A,2026-07-14,AA,
+3,3/4,left,C3,SAC305 type-5,LOT2261,Au,pressureless,0,P-B,2026-07-15,AA,
+```
+
+Leave a cell blank only if the information genuinely does not exist, and say so in `note`.
+
 ---
 
 ## Step 1. Prove the meter, on the red box
@@ -306,6 +357,7 @@ Send back these six files:
 
 | File | Rows |
 |---|---|
+| `00_samples.csv` | 8. **Without this the rest cannot be interpreted.** |
 | `R1_meter.csv` | about 20 |
 | `R1_board.csv` | about 30 |
 | `R1_temp.csv` | one per board visit |

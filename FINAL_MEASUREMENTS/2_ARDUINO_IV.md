@@ -37,6 +37,32 @@ not have clips, sweep the 40 header-reachable dice and mark the chain dice as de
 
 ---
 
+## Where to connect, and why it changes from round 1
+
+Round 1 said: use a header pin wherever one exists, because the 0.1 - 0.5 Ω of trace and
+contact never mattered there. **Round 2 inverts that**, because that 0.1 - 0.5 Ω is now
+larger than the bond you are trying to measure.
+
+The fix is not to abandon the pins. It is to separate the two jobs:
+
+| Job | Where it connects | Why |
+|---|---|---|
+| **Force** (push the current in and out) | south header pins, female jumpers | any resistance here is harmless, the current is the same whatever the path drops |
+| **Sense** (read the voltage) | as close to the die as you can get | any resistance here lands directly on your R_s |
+| **Current sense** | across the 100 Ω on the breadboard | must be its own tap, not shared with a voltage sense |
+
+That is the whole idea of the wiring below. Two of the three sense points can still be
+header pins, for free, because of how the board is laid out:
+
+- **Anode sense is free.** All eight A pins are one copper bus, so forcing at pin 1 and
+  sensing at the die's own A pin leaves the bus drop outside the measurement. Two header
+  pins, true 4-wire, no extra hardware.
+- **Cathode sense has only one pin per channel**, so it cannot be split the same way. That
+  is the one connection worth moving to a gold pad, and it is the only difference between
+  the two modes below.
+- **Chain dice have no pins at all**, so they need clips on the solder edges for both force
+  and sense.
+
 ## Two modes, one wire apart
 
 **No-needle mode.** Everything through the header pins. The cathode trace and the pin
@@ -189,6 +215,10 @@ take two seatings on every one.
 
 Log the four NTC resistances with the DMM every time you pick up a different board, same
 as round 1 step 3.
+
+**Interleave the boards**, same reason as round 1. Sweeping all of board 1, then all of
+board 2, ties sample number to time of day, and rig drift then looks exactly like a process
+difference. Rotate through the boards instead.
 
 Green and blue have about 3.0 V forward drop, so the bank tops out near 10 mA on them
 instead of 17 mA. That is expected, not a fault.
