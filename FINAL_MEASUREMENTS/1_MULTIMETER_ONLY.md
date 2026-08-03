@@ -141,31 +141,68 @@ filename**.
 
 ## Step 5 — shorts (each board, each die)
 
-Stay on `Ω`, locked at 60.00 MΩ from 4d.
+Nothing to change on the meter. Still resistance, still locked on 60.00 MΩ from 4d.
 
-For each die, using its four pins from the table above, **read out each**:
-- K_G and K_B
-- K_B and K_R
-- K_G and K_R
-- A and K_R, then swap the probes over and read again
-- A and K_G, then swap and read again
-- A and K_B, then swap and read again
+**Three readings per die.** For D1, touch:
+
+| Touch | and |
+|---|---|
+| pin 2 | pin 3 |
+| pin 3 | pin 4 |
+| pin 2 | pin 4 |
+
+**For the next die, add 4 to every number.**
+
+| Die | Pairs |
+|---|---|
+| D1 | **2-4 only** (2-3 and 3-4 already done in 4d) |
+| D2 | 6-7, 7-8, 6-8 |
+| D3 | 10-11, 11-12, 10-12 |
+| D4 | 14-15, 15-16, 14-16 |
+| D5 | 18-19, 19-20, 18-20 |
+| D6 | 22-23, 23-24, 22-24 |
+| D7 | 26-27, 27-28, 26-28 |
+| D8 | 30-31, 31-32, 30-32 |
+
+Every one should read `OL`. **Read out anything that shows a number** and tell me which pair.
+
+Fastest way to report: work a whole board, then say "board 1 all OL", and call out only the
+pairs that show a number.
+
+Skip the three dice that are not there: board 1 D5, board 2 D7, board 5/6 D6.
 
 ---
 
 ## Step 6 — light up every channel (each board, each die)
 
-- Flick the dial off and back. Press `SELECT` **twice** (diode).
+- Flick the dial off the position and back. Press `SELECT` **twice** (diode).
 - Turn the lights down so you can see the die glow.
 - Backlight quits after 15 seconds. Long-press `HOLD` to bring it back.
 
-For each die: red probe on its **A** pin, black probe on:
-- **K_R** → **read out the number, and `lit` or `dark`**
-- **K_G** → **read out the number, and `lit` or `dark`**
-- **K_B** → **read out the number, and `lit` or `dark`**
+**Use the four gold pads under each die, not the header pins.** They run left to right:
 
-If all three say `OL`: put both probes on that die's own two solder edges instead of the
-header, and **read out** what you get.
+| Gold pad | Is |
+|---|---|
+| 1st (leftmost) | **A**, anode |
+| 2nd | **K_G**, green |
+| 3rd | **K_B**, blue |
+| 4th | **K_R**, red |
+
+Same for every die. For each one:
+
+- **Red probe stays on the 1st pad.**
+- Black probe on the **4th** → **read out the number, and `lit` or `dark`**
+- Black probe on the **2nd** → **read out the number, and `lit` or `dark`**
+- Black probe on the **3rd** → **read out the number, and `lit` or `dark`**
+
+Expect roughly 1.8-1.9 V on red, 2.6-2.8 V on green and blue.
+
+Report like: `board 1 D1: 1.812 lit, 2.71 lit, 2.68 lit` for red, green, blue in that order.
+
+If all three read `OL`: put both probes on that die's own two solder edges instead of the
+pads, and **read out** what you get.
+
+Skip board 1 D5, board 2 D7, board 5/6 D6.
 
 ---
 

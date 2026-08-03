@@ -10,29 +10,30 @@
 
 Strips of the LED row, about 1600 x 350 each.
 
-## What these photos can and cannot show
+## Do not use these photos to decide whether a die is present
 
-**Can:** flag *some* missing dice. Where a site is well lit and square to the camera, four
-bare bond pads in a 2 x 2 are visible. Two were found that way.
+An attempt was made to read die presence from them. It got **two of three calls wrong**:
 
-**But the photo pass is not a census.** It found 2 of the 3 missing dice. Board 5/6 D6 was
-called present from the photo and is actually absent; at the zoom needed to judge it, the
-image is blurred past the point of reading. Presence must be confirmed on the physical
-board, site by site. Treat the photos as a first cut only.
+| Site | Photo said | Truth (physical board) |
+|---|---|---|
+| board 2, D7 | absent | **present** |
+| board 5/6, D6 | present | **absent** |
+| board 1, D5 | absent | not yet confirmed |
 
-**Cannot:** alignment, tilt, rotation, or solder quality. At the magnification needed to
-judge a 0.95 mm die's placement against its pads, these images are already blurred past
-the point of reading. `alignment` and `solder` in `R1_dies.csv` are therefore left as
-not-assessed rather than guessed.
+The failure mode is that at the zoom needed to resolve a 0.95 mm die against its pads,
+these images are already blurred, and glare on a bare pad looks like a die while a dark
+die looks like bare board. The two errors went in opposite directions, so there is no
+correction to apply. The photo-derived presence data has been discarded.
 
-Getting those columns needs a microscope pass, roughly 20x, one frame per die.
+**Presence, alignment and solder all come from the physical board.** These photos are
+useful only as a record of what the boards looked like on the day, and for locating
+features.
 
-## Findings
+Anything worth documenting properly needs a microscope pass at roughly 20x, one frame per
+die.
 
-- **Board 1, D5: die absent.** (found in photo)
-- **Board 2, D7: die absent.** (found in photo)
-- **Board 5/6, D6: die absent.** (found by eye on the board; photo pass missed it)
-- Other 37 individual dice believed present, pending physical confirmation.
-- Board 1 both chains populated, 6 and 12 dice counted.
-- Boards 5/6 and 7/8 show noticeable white residue around most sites, consistent with
-  flux. Not a defect on its own; worth a note if those samples read oddly.
+## Observation that does survive
+
+Boards 5/6 and 7/8 show noticeably more white residue around the die sites than 1, 2 and
+3/4. Consistent with flux. Not a defect on its own, but worth remembering if those four
+samples read oddly.
