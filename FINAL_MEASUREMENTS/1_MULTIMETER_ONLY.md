@@ -179,25 +179,33 @@ Skip the three dice that are not there: board 1 D5, board 2 D7, board 5/6 D6.
 - Turn the lights down so you can see the die glow.
 - Backlight quits after 15 seconds. Long-press `HOLD` to bring it back.
 
-**Use the four gold pads under each die, not the header pins.** They run left to right:
+**Use the four gold pads under each die, not the header pins.**
 
-| Gold pad | Is |
-|---|---|
-| 1st (leftmost) | **A**, anode |
-| 2nd | **K_G**, green |
-| 3rd | **K_B**, blue |
-| 4th | **K_R**, red |
+### First, find the anode. Once per board.
 
-Same for every die. For each one:
+The silkscreen and netlist cannot be trusted for this. **Board 1's dice sit rotated 90°
+from what the board says. Whether the other boards do too is unknown.**
 
-- **Red probe stays on the 1st pad.**
-- Black probe on the **4th** → **read out the number, and `lit` or `dark`**
-- Black probe on the **2nd** → **read out the number, and `lit` or `dark`**
-- Black probe on the **3rd** → **read out the number, and `lit` or `dark`**
+On the first die of each board:
+
+- Red probe on **pad 2**, black probe on each of pads 1, 3, 4 in turn.
+- If all three light, pad 2 is the anode. That board matches board 1.
+- If not, try red probe on **pad 1** instead, black on 2, 3, 4.
+- Whichever pad lights all three is the anode. **Tell me which pad it was.**
+
+Then note which colour appears on which pad, by watching the light.
+
+Board 1 came out as: **pad 1 = red cathode, pad 2 = anode, pad 3 = green, pad 4 = blue.**
+
+### Then, every die on that board
+
+- **Red probe stays on the anode pad.**
+- Black probe on each of the other three in turn.
+- **Read out the number and `lit` or `dark`** for each, and say which colour lit.
 
 Expect roughly 1.8-1.9 V on red, 2.6-2.8 V on green and blue.
 
-Report like: `board 1 D1: 1.812 lit, 2.71 lit, 2.68 lit` for red, green, blue in that order.
+Report like: `board 1 D1: 1.78 lit, 2.263 lit, 2.522 lit` for red, green, blue in that order.
 
 If all three read `OL`: put both probes on that die's own two solder edges instead of the
 pads, and **read out** what you get.
