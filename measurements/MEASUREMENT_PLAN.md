@@ -7,7 +7,8 @@
 > - Samples 1 and 2 are whole boards: D1 - D8 plus both daisy chains (26 sites each).
 > - Samples 3 - 8 sit two to a PCB, split at the x = 46.5 mm centreline, and have
 >   **only D1 - D4 (odd) or D5 - D8 (even) bonded**. No chains.
-> - Sections 9, 10 and 12's chain items therefore apply to samples 1 and 2 only.
+> - **Chain sections (9, 10 and the chain part of 12) are VOID.** The chains are
+>   electrically dead by a design fault, see `DECISIONS.md` D3. Individual LED row only.
 > - The DoE bond-pad array, TLM ladders and Van der Pauw cloverleaves carry no solder
 >   and no dice on any board. **Section 13 has been removed** and they are out of scope
 >   for the whole campaign.

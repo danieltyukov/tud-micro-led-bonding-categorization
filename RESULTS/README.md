@@ -46,8 +46,20 @@ fill whichever one you name.
 | `R1_channels.csv` | 156 | board, sample, die, channel, both pin numbers | diode volts, lit/dark, two isolation readings |
 | `R1_chain_ends.csv` | 4 | board, sample, chain | forward and reverse readings |
 
-`R1_channels.csv` is the main one: 120 individual-die channels across the five boards, plus
-36 chain-die rows on boards 1 and 2 that get probed on the die's own solder edges.
+`R1_channels.csv` is the main one: **120 individual-die channels** across the five boards.
+The 36 chain-die rows are present but marked `excluded`, see below.
+
+## Daisy chains are excluded
+
+The chains on boards 1 and 2 are **electrically dead by a board design fault**, not by any
+bond failure. The dice sit rotated 90°, so the chain wiring joins each die's red cathode to
+its blue cathode and leaves the anode floating. Every chain die is two back-to-back diodes
+and no series path exists.
+
+Measured: `OL` in resistance mode on all four chains, and 0 V under a torch where a working
+6-die chain would have given 5-9 V. Full reasoning in `../measurements/DECISIONS.md` D3.
+
+Samples 1 and 2 are therefore worth **7 and 6 dice**, not 25 and 24.
 
 ## Board 3/4 is contaminated
 

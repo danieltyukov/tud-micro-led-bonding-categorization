@@ -4,6 +4,34 @@ Append-only. Newest first. One entry per decision that would otherwise get re-ar
 
 ---
 
+## D3. Daisy chains are electrically dead: v3 must rotate the LED footprint
+
+**Date:** 2026-08-03
+**Status:** measured fact, supersedes D2
+
+The dice sit rotated 90 deg from the KiCad footprint. Confirmed on boards 1 and 2 by
+lighting each die and watching the colour. Real mapping per footprint corner:
+top-left = red cathode, top-right = blue cathode, bottom-right = green cathode,
+**bottom-left = anode**.
+
+The daisy chains wire top-left to top-right on each die, intending anode to red cathode.
+They therefore connect **red cathode to blue cathode**, leaving the anode floating. Each
+die is two back-to-back diodes; the chain cannot conduct either way.
+
+Confirmed by measurement: `OL` in resistance mode on all four chains, and **0 V under
+illumination**, where a working 6-die chain should have produced 5-9 V photovoltaic.
+
+### Consequences
+
+- Both chains on both boards are unmeasurable **by any instrument**. D2's deferred battery
+  stack is moot: the series path does not exist.
+- The 36 chain dice remain measurable individually on their own solder fillets, anode at
+  the bottom-left corner.
+- **v3 fix:** correct the LED footprint's pad-to-net assignment against the Wuerth pinout
+  figure. Until then any reuse of this board inherits the fault.
+
+---
+
 ## D2. Defer driving the daisy chains end to end
 
 **Date:** 2026-08-03

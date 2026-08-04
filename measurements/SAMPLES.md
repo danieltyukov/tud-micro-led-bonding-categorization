@@ -10,12 +10,12 @@ Supersedes the "two boards" assumption in `MEASUREMENT_PLAN.md`.
 
 | Sample | PCB | Region | Individual LEDs | Daisy chains | NTCs | Sites |
 |---|---|---|---|---|---|---|
-| 1 | A | whole board | D1 - D8 | DC-A (N=6) **and** DC-B (N=12) | TH1 - TH4 | 26 |
-| 2 | B | whole board | D1 - D8 | DC-A (N=6) **and** DC-B (N=12) | TH1 - TH4 | 26 |
-| 3 | C | left half | D1 - D4 | none bonded | TH1, TH2 | 4 |
-| 4 | C | right half | D5 - D8 | none bonded | TH3, TH4 | 4 |
+| 1 | A | whole board | D1 - D8, **D5 detached** | chains dead, excluded | TH1 - TH4 | **7** |
+| 2 | B | whole board | D1 - D8, **D1 + D7 detached** | chains dead, excluded | TH1 - TH4 | **6** |
+| 3 | C | left half | D1 - D4 | none bonded | TH1, TH2 | 4 (**contaminated**) |
+| 4 | C | right half | D5 - D8 | none bonded | TH3, TH4 | 4 (**contaminated**) |
 | 5 | D | left half | D1 - D4 | none bonded | TH1, TH2 | 4 |
-| 6 | D | right half | D5 - D8 | none bonded | TH3, TH4 | 4 |
+| 6 | D | right half | D5 - D8, **D8 detached** | none bonded | TH3, TH4 | **3** |
 | 7 | E | left half | D1 - D4 | none bonded | TH1, TH2 | 4 |
 | 8 | E | right half | D5 - D8 | none bonded | TH3, TH4 | 4 |
 
@@ -26,11 +26,46 @@ The split on PCBs C, D and E is the handwritten purple vertical line at the boar
 centreline, **x ≈ 46.5 mm**, which falls between D4 (x = 38.5 - 44.5 mm) and D5
 (x = 48.5 - 54.5 mm). Confirmed: odd sample = left half, even sample = right half.
 
-**Totals:** 40 bonded dice (8 + 8 + 6 × 4), plus 36 chain dice on samples 1 and 2
-(18 each). 76 bonded sites, 304 bonds, since each WL-SFCC die has 4 bonds
-(A, K_R, K_G, K_B).
+**Totals as measured:** 40 dice were bonded on the individual LED row. **4 detached**
+(board 1 D5, board 2 D1 and D7, board 5/6 D8), leaving **36 measurable**. The 36 chain dice
+are excluded, see section 2. Each WL-SFCC die has 4 bonds (A, K_R, K_G, K_B).
 
-## 2. Out of scope
+## 2. Daisy chains: excluded from the campaign
+
+**The two chains on samples 1 and 2 are electrically dead by a board design fault.**
+
+The dice sit rotated 90° from the KiCad footprint. Confirmed on boards 1 and 2 by lighting
+each die and watching the colour:
+
+| Footprint corner | Design intended | Actually is |
+|---|---|---|
+| top-left | anode | **red cathode** |
+| top-right | red cathode | **blue cathode** |
+| bottom-right | blue cathode | green cathode |
+| bottom-left | green cathode | **anode** |
+
+The chains wire each die's top-left to its top-right pad, intending anode to red cathode.
+They therefore join **red cathode to blue cathode** and leave the anode floating. Every
+chain die is two back-to-back diodes, so no series path exists in either direction.
+
+Measured: `OL` in resistance mode on all four chains, and **0 V under illumination**, where
+a working 6-die chain should have produced 5-9 V photovoltaic. Both boards, both chains.
+
+No instrument recovers this. See `DECISIONS.md` entry D3.
+
+### What it costs
+
+Samples 1 and 2 lose 18 sites each. They are worth **7 and 6 dice**, not 25 and 24. That
+makes them comparable in weight to the four-die samples rather than dominant, and it
+removes the only structure that put many bonds in one series path.
+
+The 36 chain dice could in principle still be measured individually on their own solder
+fillets, since the real anode is reachable at the bottom-left corner. That is excluded too,
+as a deliberate scope decision: it is slow, fiddly probing on 0.95 mm fillets, and the
+individual LED row already gives every sample a common basis. Reversible if the die count
+later proves too thin.
+
+## 3. Out of scope
 
 The following structures are present on every PCB as **bare ENIG with no solder and no
 dice**, so there is nothing on them to measure. They are excluded from the whole
@@ -50,10 +85,18 @@ section 4.
 that compares the eight bonding conditions must be built on it. Samples 1 and 2 also
 carry chains, which makes them richer but not more comparable.
 
-| Comparison | Basis | n per sample |
+| Sample | Dice measurable | Note |
 |---|---|---|
-| All 8 conditions | individual LEDs | 4 dice (samples 3-8), 8 dice (samples 1, 2) |
-| Samples 1 vs 2 only | chains DC-A and DC-B | 18 additional dice each |
+| 1 | 7 | 1 detached |
+| 2 | 6 | 2 detached |
+| 3 | 4 | contaminated, excluded from V_F stats |
+| 4 | 4 | contaminated, excluded from V_F stats |
+| 5 | 4 | |
+| 6 | 3 | 1 detached |
+| 7 | 4 | |
+| 8 | 4 | |
+
+Usable for bond comparison, excluding the contaminated board: **28 dice across 6 samples.**
 
 ### The n = 4 problem, and what to do about it
 

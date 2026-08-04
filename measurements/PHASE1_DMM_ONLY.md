@@ -8,18 +8,23 @@ Successor session: `MEASUREMENT_PLAN.md`, which needs a bench PSU.
 
 ## Scope
 
-**In scope:** the individual LED row D1 - D8 on all five PCBs, and the two daisy chains
-on samples 1 and 2.
+**In scope:** the individual LED row D1 - D8 on all five PCBs.
+
+**Daisy chains: excluded.** They are electrically dead by a board design fault (die rotation
+leaves the chain wired cathode-to-cathode with the anode floating). See `SAMPLES.md`
+section 2 and `DECISIONS.md` D3.
 
 **Out of scope, permanently:** the DoE bond-pad array, the TLM ladders and the Van der
 Pauw cloverleaves. They carry no solder and no dice on any of these boards. The only
 passive structure still used is the `EIS CAL` block, as the meter calibration artefact.
 
-| Sample | What there is to measure |
-|---|---|
-| 1, 2 | 8 individual dice + 18 chain dice each |
-| 3, 5, 7 | 4 individual dice each (D1 - D4) |
-| 4, 6, 8 | 4 individual dice each (D5 - D8) |
+| Sample | Dice measurable | Note |
+|---|---|---|
+| 1 | 7 | 1 detached |
+| 2 | 6 | 2 detached |
+| 3, 4 | 4 each | board contaminated, excluded from V_F stats |
+| 5, 7, 8 | 4 each | |
+| 6 | 3 | 1 detached |
 
 ## What this session is and is not
 
@@ -48,7 +53,6 @@ all of phase 1 and then build the rig: about 80 min of it would be duplicated wo
 |---|---|
 | Step 4, diode V_F on D1 - D8 | The rig measures V_F at 63 currents per channel instead of one, and extracts R_s |
 | Step 6, reverse leakage | The rig reaches ~100 nA; the DMM only distinguishes `OL` from not-`OL` |
-| Step 7b, per-site chain V_F | Same measurement, but swept |
 
 Still do **step 4 on one board** before building the rig. It costs 20 min and gives you
 ground truth: a channel the DMM says is dead is dead, so when the Arduino later reads
@@ -63,14 +67,14 @@ that validates the rig's absolute V_F.
 | Step 2, wiring integrity | The rig's Kelvin sensing is meaningless until you know each header pin actually reaches its probe pad. |
 | Step 3, NTC temperature | The DMM does this at 0.022 K in seconds. |
 | Step 5, short and bridge screen | The rig cannot measure 60 MΩ. See the hard dependency below. |
-| Step 7a, chain end-to-end screen | Same. |
 
 ### Hard prerequisites, in order (about 2 h)
 
 Everything here must be done and logged **before** the first die sees Arduino current.
 
 1. **Step 1**, meter self-characterization. Needed regardless.
-2. **Step 0**, site map, all 76 sites. The rig cannot tell an empty site from an open bond.
+2. **Step 0**, site map, all 40 individual-die sites. The rig cannot tell an empty site
+   from an open bond.
 3. **Step 2**, wiring integrity, all five PCBs. Specifically 2a: the rig forces current
    through the header pin and senses at the probe pad, so if that trace is open the force
    path is dead and you would chase a phantom bond failure.
@@ -117,8 +121,7 @@ timestamp, block_id, sample_id, pcb_id, device, channel, test,
 range_locked, rel_zeroed, reading, unit, verdict, notes
 ```
 
-- `device`: `D1`..`D8`, `DCL6`, `DCL12`, `DCL6-L01`..`L06`, `DCL12-L01`..`L12`,
-  `CAL_LOAD`, `CAL_SHORT`, `CAL_OPEN`
+- `device`: `D1`..`D8`, `CAL_LOAD`, `CAL_SHORT`, `CAL_OPEN`
 - `channel`: `R`, `G`, `B`, or blank
 - `test`: `diode`, `ohm`, `ohm_rev`, `cont`, `ntc`, `iso`
 - `verdict`: `pass`, `open`, `short`, `leaky`, `OL`, `n/a`
@@ -150,18 +153,16 @@ row: 4067 / 4092 / 4100 / 4110 K for B25/50, B25/80, B25/85, B25/100).
 Not a DMM step, but it gates the interpretation of every DMM reading. A site with no die
 reads `OL`, which is indistinguishable from an open bond in the electrical data alone.
 
-76 bonded sites total. Fill `01_site_map.csv`:
+40 individual-die sites. Fill `01_site_map.csv`:
 
 ```
 sample_id, site, present, alignment, solder, notes
 ```
 
-- `site`: `D1`..`D8` for every sample; plus `DCL6-L01`..`L06` and `DCL12-L01`..`L12` for
-  samples 1 and 2 only
+- `site`: `D1`..`D8` for every sample. Chain dice are excluded, see Scope.
 - `present`: y / n
 - `alignment`: ok / shifted / rotated / tombstoned
 - `solder`: ok / excess / starved / bridged
-- Chain LEDs are numbered from the IN pad side. L1 is nearest IN.
 
 Photograph everything that is not `ok`.
 
@@ -362,7 +363,7 @@ resistor would unlock DC-A for a few euro; see `EQUIPMENT_DMM.md` section 7.
       That difference is your reproducibility and belongs in the write-up as an error bar
 - [ ] Final NTC block logged
 - [ ] Every `OL` and every anomaly has a photo
-- [ ] `01_site_map.csv` complete for all 76 bonded sites
+- [ ] `01_site_map.csv` complete for all 40 individual-die sites
 - [ ] Photos backed up, boards in ESD bags, labelled
 
 ---

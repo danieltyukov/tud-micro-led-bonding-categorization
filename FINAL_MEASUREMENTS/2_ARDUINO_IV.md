@@ -1,405 +1,159 @@
-# Round 2: Arduino UNO current sweep
+# Round 2 — do this
 
-Hardware on the table: the 5 green PCBs, the Arduino **UNO** (not the Nano ESP32), a
-breadboard, jumper wires, loose resistors and capacitors, and the multimeter for setup
-only.
+Do round 1 first.
 
-Do round 1 first. Its short-and-bridge screen catches a fault this rig cannot see: two
-bridged cathodes split the drive current between two junctions, and the sweep comes back
-looking perfectly normal.
+For single readings, read the value out to me. For sweeps, save the serial output to a file
+and send me the file. I write everything into `../RESULTS/`. You write nothing.
 
-Theory, error budget and the reasoning behind every choice: `../measurements/ARDUINO_IV_RIG.md`.
-
-## What you end up with
-
-A 63-point current-voltage curve for every channel, and from each curve a fitted series
-resistance R_s to about ±10 mΩ. That turns "the bond works" into a number, so the 8
-bonding conditions can be compared on a continuous scale instead of pass/fail.
+Background if you ever want it: `../measurements/ARDUINO_IV_RIG.md`.
 
 ---
 
-## Parts to gather
+## Parts
 
-Datasheet-verified electrical limits for this build are in
-`../docs/datasheets/INSTRUMENTS.md`, extracted from the Microchip ATmega328P datasheet.
-The one that constrains the design:
+| Part | Count |
+|---|---|
+| 10 kΩ, 4.7 kΩ, 2.2 kΩ, 1 kΩ, 470 Ω, 220 Ω | 1 each |
+| 1 kΩ | 3 |
+| 100 nF | 3 |
+| 100 Ω metal film | 1 |
+| 10 kΩ metal film | 1 |
+| Female-to-male jumper wires | 4+ |
+| Male-to-male jumper wires | a handful |
 
-> **Maximum current per port: ±30 mA.** Arduino D0 - D7 are all Port D, so the six bank
-> pins share one 30 mA budget. The bank below draws about 13.7 mA total on a red channel
-> and 9.2 mA on blue, so it sits at under half the limit. Do not add more branches without
-> redoing that sum. The 40 mA per-pin figure is not the binding limit here.
+Arduino **UNO**, not the Nano ESP32.
 
-| Part | Count | Use |
+## Pads and pins
+
+Left to right under each die:
+
+| Pad | Is | Header pin, die Dn |
 |---|---|---|
-| 10 kΩ, 4.7 kΩ, 2.2 kΩ, 1 kΩ, 470 Ω, 220 Ω | 1 each | the current bank |
-| 1 kΩ | 3 | series into the ADC pins |
-| 100 nF | 3 | ADC pin to GND |
-| 100 Ω metal film | 1 | the current sense resistor |
-| 10 kΩ metal film | 1 | reverse leakage, step 7 |
-| **Female-to-male** jumper wires | 4 or more | the board's headers are male pins, so the board end must be female |
-| Male-to-male jumper wires | a handful | breadboard to UNO |
+| 1 | red cathode, **common to all 8 dice** | 4n−3 |
+| 2 | anode | 4n−2 |
+| 3 | green cathode | 4n−1 |
+| 4 | blue cathode | 4n |
 
-**Two fine probe needles or sharp grabber clips.** Optional for steps 1 - 6 (see "two
-modes" below), but **required** for the 36 chain dice on boards 1 and 2. Those have no
-header pins: the only way to reach one is to land on its own two solder edges. If you do
-not have clips, sweep the 40 header-reachable dice and mark the chain dice as deferred.
-
----
-
-## Where to connect, and why it changes from round 1
-
-Round 1 said: use a header pin wherever one exists, because the 0.1 - 0.5 Ω of trace and
-contact never mattered there. **Round 2 inverts that**, because that 0.1 - 0.5 Ω is now
-larger than the bond you are trying to measure.
-
-The fix is not to abandon the pins. It is to separate the two jobs:
-
-| Job | Where it connects | Why |
-|---|---|---|
-| **Force** (push the current in and out) | south header pins, female jumpers | any resistance here is harmless, the current is the same whatever the path drops |
-| **Sense** (read the voltage) | as close to the die as you can get | any resistance here lands directly on your R_s |
-| **Current sense** | across the 100 Ω on the breadboard | must be its own tap, not shared with a voltage sense |
-
-That is the whole idea of the wiring below. Two of the three sense points can still be
-header pins, for free, because of how the board is laid out:
-
-- **Anode sense is free.** All eight A pins are one copper bus, so forcing at pin 1 and
-  sensing at the die's own A pin leaves the bus drop outside the measurement. Two header
-  pins, true 4-wire, no extra hardware.
-- **Cathode sense has only one pin per channel**, so it cannot be split the same way. That
-  is the one connection worth moving to a gold pad, and it is the only difference between
-  the two modes below.
-- **Chain dice have no pins at all**, so they need clips on the solder edges for both force
-  and sense.
-
-## Two modes, one wire apart
-
-**No-needle mode.** Everything through the header pins. The cathode trace and the pin
-contact end up inside the measured resistance. Contact resistance is constant during a
-sweep but changes each time you re-seat the jumper, which adds scatter between channels.
-This is the default and it is fine for the bulk run.
-
-**One-needle mode.** One ADC wire moves from the breadboard to a needle held on the die's
-own gold probe pad in the LED row. That removes the cathode trace and pin contact
-entirely. Use it on a handful of channels to measure how much no-needle mode costs you.
-
-The wiring below is the same for both. Only the `A0` wire moves.
+So D1 is pins 1,2,3,4 and D2 is 5,6,7,8, up to D8 at 29,30,31,32.
 
 ---
 
 ## Build
 
-### The bank
-
-Six resistors on the breadboard, one leg each into UNO pins **D2 - D7**, all other legs
-into one common breadboard rail called **FORCE**.
+Six resistors, one leg each into UNO **D2-D7**, other legs all into one breadboard rail
+called **FORCE**:
 
 ```
   D2 ──[10k ]──┐
   D3 ──[4k7 ]──┤
   D4 ──[2k2 ]──┤
-  D5 ──[1k  ]──┼── FORCE rail
+  D5 ──[1k  ]──┼── FORCE
   D6 ──[470 ]──┤
   D7 ──[220 ]──┘
 ```
 
-### The loop
+Then:
 
 ```
-  FORCE rail ──F/M jumper──► south header, an A pin that is NOT the die under test
-                             (use pin 1; use pin 5 when testing D1)
+  FORCE ────F/M jumper────► die's ANODE pin (4n−2)
 
-  south header, die's OWN A pin ──F/M jumper──► breadboard node ANODE_SENSE
-  south header, die's K pin     ──F/M jumper──► breadboard node RETURN
+  die's CATHODE pin ────F/M jumper────► breadboard node RETURN
+        red   = pin 4n−3
+        green = pin 4n−1
+        blue  = pin 4n
 
-  RETURN ──[100 Ω sense]── UNO GND
+  RETURN ──[100 Ω]── UNO GND
 
-  ANODE_SENSE ──[1k]──► UNO A1      (+100 nF from A1 to GND)
-  RETURN      ──[1k]──► UNO A2      (+100 nF from A2 to GND)
-  RETURN      ──[1k]──► UNO A0      (+100 nF from A0 to GND)      <- no-needle mode
+  FORCE  ──[1k]──► UNO A1     (+100 nF A1 to GND)
+  RETURN ──[1k]──► UNO A0     (+100 nF A0 to GND)
+  RETURN ──[1k]──► UNO A2     (+100 nF A2 to GND)
 ```
 
-**One-needle mode:** move the `A0` wire off `RETURN` and onto a needle resting on that
-die's own cathode probe pad, the gold square in the LED row (4th square in the die's group
-for red). Nothing else changes.
-
-**Why force and sense go to different A pins.** All eight A pins are one common copper bus.
-Injecting at pin 1 and sensing at the die's own A pin leaves the bus voltage drop outside
-the measurement. It is a free 4-wire connection on the anode side, no extra hardware.
-
-UNO GND connects to the board **once**, through the sense resistor. Do not add a second
-ground wire.
+UNO GND touches the board once, through the 100 Ω. No second ground wire.
 
 ---
 
-## Step 1. Calibrate the sense resistor against the board
+## Step 1 — calibrate the sense resistor
 
-The board carries a 100 Ω part with 0.1 % tolerance, marked **100R LOAD** in the EIS CAL
-box. Use it to transfer accuracy onto your loose resistor, which removes the meter's own
-gain error.
+DMM: dial 4 clicks clockwise from OFF, tips together, `RANGE` once, `REL Δ` once.
 
-DMM to **Ω**, `600.0` locked, tips shorted, `REL Δ`.
+- Touch the two ends of `100R LOAD` on the board. **Read out.**
+- Touch the two ends of your loose 100 Ω. **Read out.**
+- Touch each of the six bank resistors. **Read out each.**
 
-1. Read the board's **100R LOAD**, call it `R_board`.
-2. Read your loose 100 Ω, call it `R_ext`.
-3. The true value is
+## Step 2 — measure the 5 V rail
 
-```
-                        100.0
-   R_sense  =  R_ext × ─────────
-                        R_board
-```
+DMM: dial **2 clicks** clockwise from OFF (DC volts). Leave on `AUTO`.
 
-Put `R_sense` into the sketch. Example: `R_board` = 100.2, `R_ext` = 99.4, so
-`R_sense` = 99.4 × 100.0 / 100.2 = **99.20 Ω**.
+- Red probe on the UNO's `5V` pin, black on `GND`, USB plugged in. **Read out.**
+- Repeat later with the rig sweeping at full current. **Read out.**
 
-Also read each of the six bank resistors and record them. They do not need to be accurate,
-but knowing them tells you which currents to expect.
+## Step 3 — verify the rig on a plain resistor
 
-## Step 2. Measure the UNO's 5 V rail
+No LED in the loop yet.
 
-DMM to **DC V**, `6 V` range. Red probe on the UNO's **5V** pin, black on **GND**.
-
-Take it twice: once with the UNO idle, once with the rig actually sweeping at its highest
-current. **Use the loaded number in the sketch.** This is a direct gain error on every R_s
-you will extract. Re-measure it if you change USB cable or port.
-
-## Step 3. Flash and verify on a plain resistor, before any die
-
-Sketch: `../measurements/ARDUINO_IV_RIG.md` section 5. Set `R_SENSE` and `VCC` from steps
-1 and 2. Serial at 115200.
-
-Wire a **loose 100 Ω where the LED would be**: FORCE rail to one leg, other leg to
-`RETURN`. `A1` on the FORCE-side leg, `A0` and `A2` on `RETURN`.
-
-Run one sweep. Fit a straight line through voltage against current. **The slope must come
-out at 100 Ω.** If it does not, something is wrong in the wiring, the reference, or the
-`VCC` constant, and no LED data would be trustworthy.
-
-Repeat this verification sweep at the start of every session.
-
-Capture serial straight to a file:
+- Put your loose 100 Ω where the die would be: `FORCE` to one leg, other leg to `RETURN`.
+- Flash the sketch from `../measurements/ARDUINO_IV_RIG.md` section 5, with `R_SENSE` and
+  `VCC` from steps 1 and 2.
+- Capture the serial output:
 
 ```
 stty -F /dev/ttyACM0 115200 raw -echo
-cat /dev/ttyACM0 | tee R2_sweeps/verify_2026-08-12.csv
+cat /dev/ttyACM0 | tee verify.csv
 ```
 
-## Step 4. Self-heating check, on one channel, before the bulk run
+- **Send me `verify.csv`.**
 
-Pick one healthy red channel. Sweep it three times, changing only `OVERSAMPLE` in the
-sketch: **64**, then **256**, then **1024**. Fit R_s from each.
+Do this at the start of every session.
 
-Why those numbers matter, from the ATmega328P datasheet. A conversion takes **13 ADC clock
-cycles**, and the sketch sets the prescaler to /32, so at 16 MHz the ADC clock is 500 kHz
-and one conversion is 26 µs:
+## Step 4 — self-heating check
 
-| `OVERSAMPLE` | Time for 3 channels | Effective bits |
-|---|---|---|
-| 64 | 5.0 ms | 13 |
-| 256 | 20 ms | 14 |
-| 1024 | 80 ms | 15 |
+Pick one healthy red channel.
 
-That is the pulse length the die is powered for, so it is directly the amount of
-self-heating you are baking into R_s.
+- Sweep it three times, changing only `OVERSAMPLE` in the sketch: **64**, then **256**,
+  then **1024**.
+- Save each to its own file: `heat_os64.csv`, `heat_os256.csv`, `heat_os1024.csv`.
+- **Send me all three.**
 
-Note that /32 is deliberately outside the datasheet's stated window: "the successive
-approximation circuitry requires an input clock frequency between 50kHz and 200kHz to get
-maximum resolution." Raw per-sample resolution is degraded, oversampling more than recovers
-it, and the shorter pulse is worth more than the lost bit. This step is what confirms that
-trade holds for your dice rather than assuming it.
+Wait for my answer before step 5. It sets the `OVERSAMPLE` value you use for everything.
 
-If R_s changes between them, the die is heating during the pulse and that heating is being
-counted as resistance. Drop to the shortest setting whose R_s still agrees with the one
-below it, and use that setting for every channel afterwards.
+## Step 5 — sweep every channel
 
-This is the check that decides whether the whole round is valid. Do not skip it.
+For each die, for each of red, green, blue:
 
-## Step 5. Sweep every channel
+- Move the two jumpers: `FORCE` to the anode pin, `RETURN` to that channel's cathode pin.
+- Run one sweep.
+- Save as `s<sample>_<die>_<channel>_seat1.csv`, e.g. `s1_D1_R_seat1.csv`.
 
-For each die, for each of R, G, B: move the two F/M jumpers (own A pin, and the K pin),
-run one sweep, save the serial output to its own file.
+Skip the four detached dice: board 1 D5, board 2 D1, board 2 D7, board 5/6 D8.
 
-Filename convention, so nothing gets lost:
+Re-seat and re-sweep **one channel per board** a second and third time, saving as
+`_seat2` and `_seat3`.
 
-```
-R2_sweeps/s<sample>_<die>_<channel>_seat<n>.csv
-R2_sweeps/s1_D1_R_seat1.csv
-R2_sweeps/s3_D2_G_seat1.csv
-R2_sweeps/s1_DCL6-L01_R_seat1.csv
-```
+Log the four NTC resistances with the DMM each time you pick up a different board, same as
+round 1 step 3. **Read those out.**
 
-`seat` is which time you seated the jumpers. Re-seat and re-sweep **one reference channel
-per board** a second and third time. That repeat scatter is your real error bar and it
-cannot be recovered later if you do not collect it.
+Work through the boards in rotation, not one board at a time.
 
-Skip any channel round 1 marked `short` or `open`. Note the skip rather than leaving a gap.
+**Send me the files.**
 
-**Chain dice, boards 1 and 2.** These have no header pins. Replace the two F/M jumpers
-with grabber clips on the die's own solder edges: anode-side edge to `ANODE_SENSE`,
-cathode-side edge to `RETURN`. Everything else in the wiring is unchanged. 36 dice, red
-channel only, and the clips make this slower and less repeatable than the header route, so
-take two seatings on every one.
+## Step 6 — reverse leakage
 
-Log the four NTC resistances with the DMM every time you pick up a different board, same
-as round 1 step 3.
-
-**Interleave the boards**, same reason as round 1. Sweeping all of board 1, then all of
-board 2, ties sample number to time of day, and rig drift then looks exactly like a process
-difference. Rotate through the boards instead.
-
-Green and blue have about 3.0 V forward drop, so the bank tops out near 10 mA on them
-instead of 17 mA. That is expected, not a fault.
-
-## Step 6. The spread check, then decide
-
-After the **first board only**, fit R_s for its channels and compute the standard deviation
-of R_s within that sample, **separately for R, G and B**, excluding anything round 1
-flagged as defective.
-
-| Result | Meaning |
-|---|---|
-| spread much bigger than 10 mΩ | the dice themselves dominate, the rig is good enough, carry on |
-| spread near 10 mΩ | the rig is the limit, and an SMU session is worth booking |
-
-Record both numbers before continuing. They set what the whole campaign can resolve, and
-they belong in the write-up as a stated sensitivity limit. Background:
-`../measurements/DECISIONS.md` entry D1.
-
-## Step 7. Reverse leakage, properly this time
-
-Round 1 step 8 only told you `OL` or not-`OL`, which is nearly no information. This gets
-you to about **10 nA**.
-
-The UNO is used here only as a clean, regulated 5 V source. **The DMM is the meter**, not
-the ADC: on its 600.0 mV range the DMM resolves 0.1 mV, and through a 10 kΩ that is 10 nA.
-The ADC route would only reach about 100 nA, so do not use it.
-
-Unplug the current bank first. Then:
+Unplug the bank from `FORCE` first.
 
 ```
-  UNO 5V pin ──[ 10 kΩ ]──┬── die's CATHODE  (K pin on the south header)
-                          │
-                        DMM across the 10 kΩ, DC mV range
-                          │
-  UNO GND ─────────────── die's ANODE  (any A pin)
+  UNO 5V ──[10 kΩ]──► die's CATHODE pin
+  UNO GND ──────────► die's ANODE pin (4n−2)
 ```
 
-Note the polarity: 5 V to the **cathode**, ground to the **anode**. That reverse-biases
-the die. Wire it the other way and you forward-bias it through a 10 kΩ, which will not
-damage anything but gives a meaningless reading.
+DMM: dial 2 clicks clockwise from OFF (DC volts), `RANGE` until it shows `mV`.
 
-Per channel: wait about 5 s for the reading to settle, then record the millivolts.
-
-```
-  leakage current  =  reading in mV  /  10.0     gives microamps
-```
-
-1.0 mV means 100 nA. A healthy die should sit at a few tenths of a mV or less. Anything
-above about 10 mV (1 µA) is a finding.
-
-Do the red channel on every die, and G and B on any die round 1 flagged as suspect. Never
-exceed 5 V reverse; the UNO rail is exactly at that limit, which is why no battery is used
-here.
-
-### Record: `R2_reverse.csv`
-
-```
-when,board_tag,sample,die,channel,r_bias_ohm,reading_mV,dmm_range,note
-```
-
-```
-2026-08-12T15:02,1,1,D1,R,9970,0.2,600mV,
-2026-08-12T15:04,1,1,D2,R,9970,14.6,600mV,about 1.5 uA, well above the rest
-```
-
-Send `reading_mV` and `r_bias_ohm` raw. Do not convert to current yourself.
+- Probes across the 10 kΩ.
+- Wait 5 seconds, then **read out the millivolts.**
+- Red channel on every die. Green and blue only where round 1 flagged something.
 
 ---
 
-## What to record
+## Done
 
-### `R2_rig.csv`
-
-```
-when,item,value,unit,how,note
-```
-
-`item` values: `r_board_100R`, `r_ext_100R`, `r_sense_computed`, `bank_10k`, `bank_4k7`,
-`bank_2k2`, `bank_1k`, `bank_470`, `bank_220`, `vcc_idle`, `vcc_loaded`,
-`verify_sweep_slope`
-
-```
-2026-08-12T10:00,r_board_100R,100.2,ohm,DMM 600R REL,EIS CAL box board tag 1
-2026-08-12T10:02,r_ext_100R,99.4,ohm,DMM 600R REL,
-2026-08-12T10:03,r_sense_computed,99.20,ohm,99.4*100.0/100.2,goes in the sketch
-2026-08-12T10:10,vcc_loaded,4.981,V,DMM 6V on UNO 5V pin,rig sweeping at max current
-2026-08-12T10:30,verify_sweep_slope,100.4,ohm,fit of loose 100R sweep,rig proven
-```
-
-### `R2_index.csv` — one row per sweep file
-
-```
-when,board_tag,sample,die,channel,mode,seat,file,oversample,cool_ms,vcc_used,r_sense_used,th1_ohm,th2_ohm,th3_ohm,th4_ohm,status,note
-```
-
-- `mode`: `no_needle` / `one_needle`
-- `status`: `ok` / `skipped_short` / `skipped_open` / `bad_contact` / `redo`
-
-```
-2026-08-12T11:02,1,1,D1,R,no_needle,1,R2_sweeps/s1_D1_R_seat1.csv,256,250,4.981,99.20,10240,10190,10210,10230,ok,
-2026-08-12T11:06,1,1,D1,R,no_needle,2,R2_sweeps/s1_D1_R_seat2.csv,256,250,4.981,99.20,10240,10190,10210,10230,ok,repeat for scatter
-2026-08-12T11:20,3,3,D2,R,no_needle,1,,256,250,4.981,99.20,10180,10150,10160,10170,skipped_short,round 1 found KB-KR bridge
-```
-
-### `R2_selfheat.csv`
-
-```
-when,board_tag,sample,die,channel,oversample,file,note
-```
-
-```
-2026-08-12T10:40,1,1,D1,R,64,R2_sweeps/heat_D1_R_os64.csv,
-2026-08-12T10:45,1,1,D1,R,256,R2_sweeps/heat_D1_R_os256.csv,
-2026-08-12T10:50,1,1,D1,R,1024,R2_sweeps/heat_D1_R_os1024.csv,
-```
-
-Do not fit these yourself. Send the three files and I will fit them.
-
-### `R2_sweeps/*.csv`
-
-Raw serial output, unedited. The sketch already writes the header line:
-
-```
-level,i_mA,v_die_V,v_anode_V,v_cath_V,v_sense_V
-```
-
-Keep the `#` comment lines. Do not delete points that look odd.
-
----
-
-## Hand-off
-
-| File | Content |
-|---|---|
-| `R2_rig.csv` | about 12 rows, plus one verify-sweep row per session |
-| `R2_index.csv` | one row per sweep file, roughly 130 header-reachable plus up to 72 chain-die rows |
-| `R2_selfheat.csv` | 3 rows |
-| `R2_reverse.csv` | 40 rows, plus any G/B follow-ups |
-| `R2_sweeps/` | the raw serial files |
-
-Send it raw. No fitting, no averaging, no cleaning. The odd-looking points are often the
-finding.
-
----
-
-## Safety
-
-- Wrist strap. Connect GND first, disconnect GND last.
-- Current off before moving any jumper or probe. The sketch turns the bank off between
-  points and after each sweep; do not defeat that.
-- Never exceed 20 mA forward, never exceed 5 V reverse.
-- Nothing above 5 V may reach an ADC pin. In this build nothing can, because the whole rig
-  runs off the UNO's own rail. That stops being true the moment you add batteries for the
-  daisy chains, which is a separate build with clamps
-  (`../measurements/ARDUINO_IV_RIG.md` section 9).
+Tell me when every step is finished. Only then, tell me which bonding process each tag was.

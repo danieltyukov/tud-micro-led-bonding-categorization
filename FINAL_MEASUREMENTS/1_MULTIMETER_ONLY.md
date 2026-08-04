@@ -214,20 +214,20 @@ Skip board 1 D5, board 2 D7, board 5/6 D6.
 
 ---
 
-## Step 7 — chains (boards 1 and 2 only)
+## Daisy chains — excluded, do not measure
 
-**7a**
-- Flick the dial off and back. Hold `RANGE` **2 seconds**. Hold the probes apart in the air.
-  Press `RANGE` **once**.
-- Touch the gold pad marked `IN` and the one marked `OUT` on the **left** chain.
-  **Read out.** Swap the probes over. **Read out.**
-- Same on the **right** chain. **Read out** both ways.
+The two chains on boards 1 and 2 are **electrically dead by a board design fault**, not by
+any bond failure.
 
-**7b**
-- Press `SELECT` **twice** (diode).
-- Put both probes on the two solder edges of the first chain die. **Read out.**
-- Lift both probes, land them again. **Read out.**
-- Do that for all 6 dice in the left chain and all 12 in the right chain, on both boards.
+The chain wires each die's top-left pad to its top-right pad. Those were meant to be anode
+and red cathode. With the dice sitting rotated 90°, they are the **red cathode and the blue
+cathode**, and the real anode on the bottom-left corner is wired to nothing. Every chain
+die is therefore two back-to-back diodes, and no series path exists in either direction.
+
+Confirmed by measurement: `OL` in resistance mode on all four chains, and **0 V under a
+torch**, where a working 6-die chain would have produced 5-9 V.
+
+No instrument recovers this. Full reasoning in `../measurements/DECISIONS.md` entry D3.
 
 ---
 
