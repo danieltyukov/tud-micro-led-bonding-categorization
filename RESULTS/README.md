@@ -49,6 +49,15 @@ fill whichever one you name.
 `R1_channels.csv` is the main one: 120 individual-die channels across the five boards, plus
 36 chain-die rows on boards 1 and 2 that get probed on the die's own solder edges.
 
+## Board 3/4 is contaminated
+
+Heavy solder smear around the pads, not cleanable. Confirmed to cause shorts. Every row for
+that board carries a flag.
+
+Its readings characterise a **post-process contamination failure**, not the bond. Keep them
+in the analysis as a process result, but exclude them from any V_F statistics, otherwise
+they will poison the comparison between the other samples.
+
 ## Blind
 
 Do not tell me which bonding process belongs to which tag until every reading is in. The
