@@ -9,19 +9,58 @@ Background if you ever want it: `../measurements/ARDUINO_IV_RIG.md`.
 
 ---
 
-## Parts
+## Parts — built from what you have
 
-| Part | Count |
+**One of each. No duplicates needed.**
+
+### Resistors — 8, all different values
+
+| Value | Where it goes |
 |---|---|
-| 10 kΩ, 4.7 kΩ, 2.2 kΩ, 1 kΩ, 470 Ω, 220 Ω | 1 each |
-| 1 kΩ | 3 |
-| 100 nF | 3 |
-| 100 Ω metal film | 1 |
-| 10 kΩ metal film | 1 |
-| Female-to-male jumper wires | 4+ |
-| Male-to-male jumper wires | a handful |
+| 10 kΩ | bank, on D2 |
+| 5.1 kΩ | bank, on D3 |
+| 2 kΩ | bank, on D4 |
+| 1 kΩ | bank, on D5 |
+| 330 Ω | bank, on D6 |
+| 220 Ω | bank, on D7 |
+| 100 Ω | sense resistor, RETURN to GND |
+| 100 kΩ | reverse leakage, step 6 only |
 
-Arduino **UNO**, not the Nano ESP32.
+### Capacitors — 3
+
+Any three from **68 nF / 72 nF / 66 nF / 60 nF / 33 nF / 31 nF**. The value is not
+critical, they are only charge reservoirs for the ADC. One from each of A0, A1, A2 to GND.
+
+### Everything else
+
+| Part | How many |
+|---|---|
+| Breadboard | 1 |
+| Male-to-male jumpers | 11 |
+| Female-to-male jumpers | 2, plus spares |
+| Arduino **UNO** | 1, not the Nano ESP32 |
+| USB cable + computer | 1 |
+
+### What this bank gives you
+
+Currents on a red channel, one branch at a time:
+
+| Branch | Current |
+|---|---|
+| 10 kΩ | 0.32 mA |
+| 5.1 kΩ | 0.62 mA |
+| 2 kΩ | 1.53 mA |
+| 1 kΩ | 2.93 mA |
+| 330 Ω | 7.49 mA |
+| 220 Ω | 10.06 mA |
+| all six | 15.6 mA |
+
+63 combinations spanning 0.32 to 15.6 mA. Port D total peaks at 15.6 mA against its 30 mA
+limit, and the busiest single pin carries 7.6 mA against 40 mA. Comfortable.
+
+Tolerance does not matter anywhere. Step 1 measures the 100 Ω against the board's 0.1 %
+reference, and every sweep point measures its own current. Use the same physical 100 Ω
+every session and do not hold it between sweeps.
 
 ## Pads and pins
 
@@ -64,10 +103,15 @@ Then:
 
   RETURN ──[100 Ω]── UNO GND
 
-  FORCE  ──[1k]──► UNO A1     (+100 nF A1 to GND)
-  RETURN ──[1k]──► UNO A0     (+100 nF A0 to GND)
-  RETURN ──[1k]──► UNO A2     (+100 nF A2 to GND)
+  FORCE  ─────────► UNO A1     (+ cap from A1 to GND)
+  RETURN ─────────► UNO A0     (+ cap from A0 to GND)
+  RETURN ─────────► UNO A2     (+ cap from A2 to GND)
 ```
+
+No series resistors on the ADC inputs. They were only there for protection and filtering,
+and neither is needed: nothing in this rig can exceed 5 V because it all runs off the UNO's
+own rail, and the caps do the filtering. A cap straight onto the pin is the better
+arrangement anyway, since it feeds the sample-and-hold from a low impedance.
 
 UNO GND touches the board once, through the 100 Ω. No second ground wire.
 
@@ -80,6 +124,7 @@ DMM: dial 4 clicks clockwise from OFF, tips together, `RANGE` once, `REL Δ` onc
 - Touch the two ends of `100R LOAD` on the board. **Read out.**
 - Touch the two ends of your loose 100 Ω. **Read out.**
 - Touch each of the six bank resistors. **Read out each.**
+- Touch the 100 kΩ. **Read out.**
 
 ## Step 2 — measure the 5 V rail
 
@@ -142,13 +187,13 @@ Work through the boards in rotation, not one board at a time.
 Unplug the bank from `FORCE` first.
 
 ```
-  UNO 5V ──[10 kΩ]──► die's CATHODE pin
+  UNO 5V ──[100 kΩ]──► die's CATHODE pin
   UNO GND ──────────► die's ANODE pin (4n−2)
 ```
 
 DMM: dial 2 clicks clockwise from OFF (DC volts), `RANGE` until it shows `mV`.
 
-- Probes across the 10 kΩ.
+- Probes across the 100 kΩ.
 - Wait 5 seconds, then **read out the millivolts.**
 - Red channel on every die. Green and blue only where round 1 flagged something.
 

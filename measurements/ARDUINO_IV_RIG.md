@@ -187,21 +187,27 @@ better than about 0.5 % on its own.
   UNO D6 ──[470 ]──┤
   UNO D7 ──[220 ]──┘
 
-                        PP_Dn_A  ──[1k]──► A1      (+100 nF to GND)
+                        PP_Dn_A  ─────────► A1      (+ cap to GND)
                             │
                        [ die Dn, channel c ]
                             │
-                        PP_Dn_Kc ──[1k]──► A0      (+100 nF to GND)
+                        PP_Dn_Kc ─────────► A0      (+ cap to GND)
                             │
   H_S pin 4(n−1)+1+k ───────┴──┬──[ R_sense 100 Ω ]── UNO GND
                                │
-                               └──[1k]──► A2       (+100 nF to GND)
+                               └─────────► A2       (+ cap to GND)
 ```
 
-The 1 kΩ series resistors and 100 nF caps on the ADC inputs are an anti-alias filter and
-a little probe protection. 1 kΩ stays well inside the ATmega's 10 kΩ recommended source
-impedance, so the sample-and-hold still settles. Allow ~1 ms after switching current
-before reading, since 1 kΩ × 100 nF is a 100 µs time constant.
+**Revised 2026-08-03: no series resistors, and the cap value is not critical.** The series
+resistors were for protection and anti-aliasing. Neither is needed, because everything in
+this rig runs off the UNO's own 5 V rail so no input can exceed it, and the caps alone do
+the filtering. A cap straight onto the pin is in fact the better arrangement: it feeds the
+sample-and-hold from a low impedance, which is what the datasheet's "approximately 10k or
+less" recommendation is really asking for.
+
+Anything from about 30 nF to 1 µF works. The cap has to recharge through the bank between
+current levels, so with the largest branch at 10 kΩ and a 68 nF cap the time constant is
+0.7 ms, comfortably inside the sketch's 2 ms settle.
 
 Connect the UNO GND to the board **once**. Do not create a second ground path.
 
