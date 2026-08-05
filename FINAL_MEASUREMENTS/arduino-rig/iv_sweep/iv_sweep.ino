@@ -31,7 +31,7 @@ const float VCC_DMM = 5.034f;   // V, measured at the 5V pin with the rig idle.
 // number to paste in here. Once set, every sweep point divides by the LIVE
 // rail instead of this constant, which removes rail sag from R_s. Sag is
 // current-dependent, so it lands on R_s and does not cancel within a sweep.
-const float VBG_X1024 = 1112.5f;   // = VCC_DMM x bandgap raw 221, taken idle
+const float VBG_X1024 = 1110.70f;  // = VCC_DMM x bandgap raw 220.641, taken idle
 
 // Common-mode ADC offset. Every channel reads LOW by this. Measured three
 // independent ways on the 100 R dummy (constant mV deficit vs theory; AVR pin
@@ -64,25 +64,29 @@ void setLevel(uint8_t mask) {
 // Measures the 1.1 V bandgap against AVCC. The bandgap's absolute value is only
 // specified to 1.0-1.2 V, but we do not need absolute: calibrated once against
 // the DMM, its ratio between readings tracks AVCC exactly.
-uint16_t bandgapRaw() {
+// Returns a FLOAT on purpose. Truncating this to an integer count quantises
+// the rail to 1/220 = 0.45 %, and since vcc multiplies every voltage that put a
+// 2-3 mV noise floor on v_die and cost a factor of ~13 in the R_s fit precision.
+// 64 samples, undivided, gives 1/64 count and makes the term negligible.
+float bandgapRaw() {
   ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
   delayMicroseconds(500);                       // bandgap source is high-Z
   ADCSRA |= _BV(ADSC);                          // throw the first one away
   while (bit_is_set(ADCSRA, ADSC)) { }
   (void)ADCL; (void)ADCH;
   uint32_t acc = 0;
-  for (uint8_t i = 0; i < 16; i++) {
+  for (uint8_t i = 0; i < 64; i++) {
     ADCSRA |= _BV(ADSC);
     while (bit_is_set(ADCSRA, ADSC)) { }
     uint8_t lo = ADCL, hi = ADCH;
     acc += (uint16_t)((hi << 8) | lo);
   }
-  return (uint16_t)(acc >> 4);
+  return (float)acc / 64.0f;
 }
 
 float readVcc() {
   if (VBG_X1024 <= 0.0f) return VCC_DMM;        // uncalibrated: fall back
-  return VBG_X1024 / (float)bandgapRaw();
+  return VBG_X1024 / bandgapRaw();
 }
 
 // ------------------------------------------------------------------ sensing
@@ -157,16 +161,16 @@ void setup() {
   ADCSRA = (ADCSRA & ~0x07) | 0x05;      // prescaler /32 -> 500 kHz, 26 us/conv
   setLevel(0);
   delay(200);
-  uint16_t raw = bandgapRaw();
+  float raw = bandgapRaw();
   Serial.println(F("# ---------------------------------------------------------"));
   if (VBG_X1024 <= 0.0f) {
-    Serial.print(F("# BANDGAP NOT CALIBRATED. Raw count now: ")); Serial.println(raw);
-    Serial.print(F("# Set VBG_X1024 = ")); Serial.print(VCC_DMM * (float)raw, 1);
+    Serial.print(F("# BANDGAP NOT CALIBRATED. Raw count now: ")); Serial.println(raw, 3);
+    Serial.print(F("# Set VBG_X1024 = ")); Serial.print(VCC_DMM * raw, 2);
     Serial.println(F("  and reflash, then the rail is tracked per point."));
     Serial.println(F("# Do that with the rig idle and the DMM agreeing with VCC_DMM."));
   } else {
-    Serial.print(F("# bandgap raw ")); Serial.print(raw);
-    Serial.print(F("  ->  rail now ")); Serial.print(VBG_X1024 / (float)raw, 4);
+    Serial.print(F("# bandgap raw ")); Serial.print(raw, 3);
+    Serial.print(F("  ->  rail now ")); Serial.print(VBG_X1024 / raw, 4);
     Serial.println(F(" V"));
   }
   Serial.println(F("# ---------------------------------------------------------"));
