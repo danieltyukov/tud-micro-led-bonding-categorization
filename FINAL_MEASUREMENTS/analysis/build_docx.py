@@ -28,6 +28,11 @@ for r in r1:
 tot = {s: sum(N[s].values()) for s in N}
 ok  = {s: N[s]["pass"] for s in N}
 
+leak = list(csv.DictReader(open(os.path.join(ROOT, "RESULTS", "R2_leakage.csv"))))
+LK = {}
+for r_ in leak:
+    LK.setdefault(int(r_["sample"]), []).append(r_)
+
 red = [f for f in fits if f["colour"] == "R" and f["physical"] == "1"]
 bys = {}
 for f in red:
@@ -151,10 +156,13 @@ for s in sorted(bys):
     v  = [float(f["Rs"]) for f in bys[s]]
     vf = [float(f["vf10"]) for f in bys[s]]
     nn = [float(f["nid"]) for f in bys[s]]
+    lk = LK.get(s, [])
+    nsh = sum(1 for x in lk if x["verdict"] == "shunt")
+    lktxt = f"{sum(1 for x in lk if x['verdict']=='healthy')} clean" + (f", {nsh} shunted" if nsh else "")
     rows.append([s, len(v), fmt(mean(vf), sd(vf), 4), fmt(mean(v), sd(v)),
-                 f"{min(nn):.2f}–{max(nn):.2f}"])
-table(["Condition", "Channels n", "V_F at 10 mA (V)", "R_s (Ω)", "Ideality n"], rows,
-      widths=[2.4, 2.4, 4.2, 4.0, 3.0])
+                 f"{min(nn):.2f}–{max(nn):.2f}", lktxt])
+table(["Condition", "Channels n", "V_F at 10 mA (V)", "R_s (Ω)", "Ideality n",
+       "Reverse check"], rows, widths=[2.0, 2.0, 3.6, 3.4, 2.6, 3.0])
 allRs = [float(f["Rs"]) for f in red]; allVf = [float(f["vf10"]) for f in red]
 P(f"Across {len(red)} red channels the mean series resistance is {mean(allRs):.2f} Ω with a "
   f"standard deviation of {sd(allRs):.2f} Ω. One-way ANOVA across the eight conditions gives "
@@ -219,7 +227,29 @@ P("Between 5 and 20 ms the result is unchanged within the fit error. At 80 ms it
   "matching the measurement to within 25 %. The package thermal time constant therefore lies "
   "between 20 and 80 ms. All campaign data was taken at 5 ms.")
 
-P("F.  Summary", style="Heading 2")
+P("F.  Reverse bias check", style="Heading 2")
+P("Every surviving red channel was also biased in reverse to look for conduction paths around "
+  "the junction. The die sits in series with the 100 kΩ across the 5 V rail and the meter reads "
+  "the voltage across the die, so the die's own resistance sets the reading. A healthy junction "
+  "leaves the meter's 10 MΩ input impedance as the only load and reads 4.99 V; a shunt pulls it "
+  "down. Reading the small voltage across the sense resistor instead does not work with a "
+  "handheld meter, because 1 nA through 98 kΩ is 0.1 mV and sits inside the meter's noise.")
+P("Thirty-four channels were measured. Thirty read 4.988 to 4.989 V, the open-die limit, which "
+  "places their shunt resistance above 10 MΩ and their leakage below roughly 50 nA. Three read "
+  "0 V and confirm the round 1 shorts. One channel, S3 D1 red, read 0.085 V, which corresponds "
+  "to a shunt of about 1.7 kΩ.")
+P("That channel is the one the sweep had already flagged in Section C, where the forward "
+  "characteristic implied roughly 2.9 kΩ. Two measurements at opposite bias polarity agree to "
+  "within a factor of two on a defect that a 1 mA diode test passes. It was recorded as "
+  "\u201csuspect\u201d in the round 1 screening on the operator's judgement alone; it is now "
+  "confirmed, and condition 3's yield stands as measured rather than estimated.")
+P("The result is otherwise a null, and worth stating as one. Condition 8 loses two channels to "
+  "shorts, but its survivors are indistinguishable from those of conditions 5 and 7, so its "
+  "failures are isolated rather than a coupon-wide contamination problem. No condition other "
+  "than 3 carries a partial conduction path. Reverse bias corroborates the yield ranking; it "
+  "does not add a new axis to it.")
+
+P("G.  Summary", style="Heading 2")
 caption("Table IV. Summary across assembly conditions.")
 rows = []
 for s in range(1, 9):
@@ -228,20 +258,28 @@ for s in range(1, 9):
     rows.append([s, f"{100*ok[s]/tot[s]:.1f}",
                  ", ".join(f"{LABEL[m]} {N[s][m]}" for m in MODES[1:] if N[s][m]) or "none",
                  f"{mean(vf):.3f}" if vf else "—",
-                 f"{mean(v):.2f}" if v else "—", VERDICT[s]])
-table(["Condition", "Yield (%)", "Failure modes", "V_F at 10 mA (V)", "R_s (Ω)", "Assessment"],
-      rows, widths=[1.9, 1.9, 4.8, 2.9, 2.2, 2.6])
-P("Two results stand. Channel yield and failure mode separate the eight conditions at "
+                 f"{mean(v):.2f}" if v else "—",
+                 "1 shunt" if any(x["verdict"] == "shunt" for x in LK.get(s, [])) else "clean",
+                 VERDICT[s]])
+table(["Condition", "Yield (%)", "Failure modes", "V_F at 10 mA (V)", "R_s (Ω)",
+       "Reverse", "Assessment"], rows, widths=[1.7, 1.7, 4.2, 2.6, 2.0, 1.8, 2.4])
+P("Three results stand. Channel yield and failure mode separate the eight conditions at "
   "p = 2.2 × 10⁻⁴ and place conditions 5 and 7 ahead of the rest, with no failures in 12 "
   "channels each. Series resistance does not separate them, and the reason is measured rather "
   "than assumed: fixture repeatability of 0.84 Ω exceeds the bond resistances by more than an "
-  "order of magnitude.")
+  "order of magnitude. Reverse bias found one partial shunt in 34 channels and confirms "
+  "the yield ranking rather than adding to it.")
 P("The failure modes give a direction as well as a ranking. Conditions 1, 2 and 6 lose "
   "channels to detachment and opens, so they are under-bonded. Conditions 3, 4 and 8 lose them "
-  "to shorts and bridges, so they are over-bonded. Conditions 5 and 7 lose none. A follow-up "
-  "should sense at the Tier-1 probe pads to make series resistance usable, and should measure "
-  "reverse leakage, which is insensitive to contact resistance and would quantify the shunt "
-  "found in Section C.")
+  "to shorts and bridges, so they are over-bonded. Conditions 5 and 7 lose none. The reverse "
+  "check adds that the surviving joints are electrically sound on every condition except 3, "
+  "which narrows the gap between condition 8 and the two clean conditions: its failures are "
+  "isolated shorts rather than a coupon-wide problem.")
+P("The one measurement still worth recovering is series resistance. Sensing at the Tier-1 probe "
+  "pads instead of the breadboard would move the jumper contacts outside the measured loop and "
+  "bring the repeatability from 0.84 Ω down to the fit precision, which was 0.16 Ω once the "
+  "firmware was corrected. That is the change that would let R_s resolve a bond difference.")
+
 P("Not measured: TLM ladders, van der Pauw cloverleaves and impedance spectroscopy, all of "
   "which need a four-wire source-measure unit or an LCR meter. The DCL6 and DCL12 daisy chains "
   "read open on every coupon because the chain routes each die's top-left pad to its top-right "

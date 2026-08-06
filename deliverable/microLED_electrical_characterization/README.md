@@ -9,17 +9,19 @@ channel and fitted the diode equation.
 Channel yield and failure mode separate the eight conditions (chi-square, p = 2.2e-4) and
 place conditions 5 and 7 ahead of the rest. Series resistance does not separate them, because
 the measurement fixture repeats to only 0.84 ohm while bond resistances are 10 to 100 mohm.
+A reverse-bias check on 34 channels found one partial shunt, on condition 3, and confirms the
+yield ranking rather than adding to it.
 
 | condition | yield | failure modes | assessment |
 |---|---|---|---|
 | 1 | 83.3 % | open 1, detached 3 | under-bonded |
 | 2 | 58.3 % | open 4, detached 6 | under-bonded |
-| 3 | 25.0 % | suspect 1, cross-lit 2, open 2, short 4 | over-bonded |
+| 3 | 25.0 % | suspect 1, cross-lit 2, open 2, short 4 | over-bonded, 1 shunt confirmed |
 | 4 | 66.7 % | suspect 1, cross-lit 1, open 1, short 1 | over-bonded |
 | 5 | 100 % | none | in window |
 | 6 | 75.0 % | detached 3 | under-bonded |
 | 7 | 100 % | none | in window |
-| 8 | 83.3 % | short 2 | over-bonded |
+| 8 | 83.3 % | short 2 | over-bonded, survivors clean |
 
 ## Contents
 
@@ -67,8 +69,13 @@ which is 85 % of the apparent die-to-die spread. Sensing at the probe pads would
 Green and blue fits are not physical. Their ideality factors come out at 3.2 to 4.0 because
 the 5 V rail leaves only a 20-fold current range at V_F near 2.8 V. Red only.
 
-Reverse leakage was not measured. TLM, van der Pauw and impedance spectroscopy need
-instruments that were not available.
+Reverse bias was measured as a shunt check, not as a leakage measurement. The die sits in a
+divider with the 100 kohm and the meter reads across the die, so the floor is the meter's own
+10 Mohm input impedance: it detects shunts below about 10 Mohm and cannot grade healthy dies.
+Reading millivolts across the sense resistor instead does not work with a handheld meter, since
+1 nA through 98 kohm is 0.1 mV. Results in `data/R2_leakage.csv`.
+
+TLM, van der Pauw and impedance spectroscopy need instruments that were not available.
 
 The DCL6 and DCL12 daisy chains read open on every coupon. The chain routes each die's
 top-left pad to its top-right pad, and with the dice rotated 90 degrees those are the red and
