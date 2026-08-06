@@ -243,8 +243,8 @@ add(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
     f'viewBox="0 0 {W} {H}" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">')
 add(f'<rect width="{W}" height="{H}" fill="#fbfaf6"/>')
 T(60, 58, "Step 6  -  reverse leakage.  Rewire from the sweep rig.", 31, "#111", "start", "bold")
-T(60, 88, "Different circuit. The bank comes off, the die is driven BACKWARDS, and the DMM "
-          "reads across a 100 k resistor.", 16, "#5a5a5a", "start")
+T(60, 88, "The bank comes off, the die is driven BACKWARDS, and the meter reads ACROSS THE "
+          "DIE. Healthy reads near 5 V; a shunt pulls it down.", 16, "#5a5a5a", "start")
 
 DUT_X, DUT_Y, DPP = 1010.0, 82.0, 19.0
 def dpx(p): return DUT_X + 46 + (p - 1) * DPP
@@ -309,13 +309,19 @@ plug(rx(28), Y_GND, C["gnd"])
 T(rx(28) - 20, Y_GND - 28, "GND rail col 28", 12.5, C["gnd"], "end", halo=5)
 
 # ---------------------------------------------------------------- DMM probes
-for col, lab, cc in ((10, "red", "#d81e1e"), (14, "black", "#222")):
-    x = hx(col)
-    add(f'<line x1="{x:.1f}" y1="{ROWY["J"]:.1f}" x2="{x:.1f}" y2="{BB_Y-56:.1f}" '
-        f'stroke="{cc}" stroke-width="5" stroke-linecap="round"/>')
-    add(f'<circle cx="{x:.1f}" cy="{ROWY["J"]:.1f}" r="7" fill="{cc}"/>')
-    T(x, BB_Y - 66, lab, 13.5, cc, weight="bold")
-T((hx(10) + hx(14)) / 2, BB_Y - 96, "DMM probes in J10 and J14", 16, "#111", weight="bold")
+xr = hx(14)
+add(f'<line x1="{xr:.1f}" y1="{ROWY["J"]:.1f}" x2="{xr:.1f}" y2="{BB_Y-56:.1f}" '
+    f'stroke="#d81e1e" stroke-width="5" stroke-linecap="round"/>')
+add(f'<circle cx="{xr:.1f}" cy="{ROWY["J"]:.1f}" r="7" fill="#d81e1e"/>')
+T(xr, BB_Y - 66, "RED probe  -  J14", 14, "#d81e1e", weight="bold")
+xb = rx(30)
+add(f'<line x1="{xb:.1f}" y1="{Y_GND:.1f}" x2="{xb:.1f}" y2="{BB_BOT+62:.1f}" '
+    f'stroke="#222" stroke-width="5" stroke-linecap="round"/>')
+add(f'<circle cx="{xb:.1f}" cy="{Y_GND:.1f}" r="7" fill="#222"/>')
+T(xb, BB_BOT + 82, "BLACK probe", 14, "#222", weight="bold")
+T(xb, BB_BOT + 100, "any GND rail hole", 12.5, "#555")
+T(hx(20), BB_Y - 96, "the meter goes across the DIE, not across the resistor",
+  16, "#111", weight="bold")
 
 # =================================================================== panels
 LX, LY, LW = 1010.0, 380.0, DUT_W
@@ -334,55 +340,57 @@ for i, (col, s2) in enumerate(STEPS):
     T(LX + 60, y, s2, 14.5, "#222", "start")
 
 NX, NY = LX, LY + 320
-add(f'<rect x="{NX}" y="{NY}" width="{LW:.1f}" height="250" rx="12" fill="#fff9ec" '
+add(f'<rect x="{NX}" y="{NY}" width="{LW:.1f}" height="290" rx="12" fill="#fff9ec" '
     f'stroke="#ecdcae" stroke-width="2"/>')
 T(NX + 24, NY + 38, "reading it", 19, "#111", "start", "bold")
-NOTES = ["DMM: 2 clicks clockwise from OFF (DC volts), then RANGE",
-         "down to mV. Red probe on the 5V side of the 100 k.",
-         "Wait 5 seconds to settle, then read the millivolts.",
+NOTES = ["DMM on DC VOLTS, 20 V range. Not millivolts.",
+         "Red probe in J14, black in any GND rail hole.",
+         "Wait 5 seconds, then read the volts.",
          "",
-         "i_leak = V_mV / 98.0 k   ->   1 uA reads 98 mV",
-         "",
-         "Red on every die. Green and blue only where round 1",
-         "flagged something."]
+         "healthy die  (>10 M)        about 4.95 V",
+         "1 M shunt                   4.50 V",
+         "100 k shunt                 2.49 V",
+         "2.9 k shunt                 0.14 V"]
 for i, n in enumerate(NOTES):
-    T(NX + 26, NY + 74 + i * 22, n, 14.5, "#3a3a3a", "start")
+    T(NX + 26, NY + 74 + i * 25, n, 14.5, "#3a3a3a", "start")
+T(NX + 26, NY + 274, "Low reading = a conducting path around the junction.",
+  14, "#8a5a00", "start", "bold")
 
-SX, SY = 1010.0, NY + 270
-add(f'<rect x="{SX}" y="{SY}" width="{LW:.1f}" height="300" rx="12" fill="#fff" '
+SX, SY = 1010.0, NY + 310
+add(f'<rect x="{SX}" y="{SY}" width="{LW:.1f}" height="290" rx="12" fill="#fff" '
     f'stroke="#e2ded2" stroke-width="2"/>')
 T(SX + 24, SY + 36, "the circuit", 19, "#111", "start", "bold")
 def sl(pts, col="#222", w=2.6):
     d = f'M {pts[0][0]:.1f} {pts[0][1]:.1f}' + "".join(f' L {p[0]:.1f} {p[1]:.1f}' for p in pts[1:])
     add(f'<path d="{d}" fill="none" stroke="{col}" stroke-width="{w}" stroke-linecap="round"/>')
-ay = SY + 130
+ay = SY + 120
 T(SX + 34, ay + 5, "UNO 5V", 15, "#b8002e", "start", "bold")
-sl([(SX + 116, ay), (SX + 178, ay)], "#b8002e", 3)
-seg = 70 / 6
-pts = [(SX + 178, ay)]
+sl([(SX + 116, ay), (SX + 168, ay)], "#b8002e", 3)
+seg = 66 / 6
+pts = [(SX + 168, ay)]
 for i in range(6):
-    pts.append((SX + 178 + (i + 0.5) * seg, ay + (9 if i % 2 == 0 else -9)))
-pts.append((SX + 248, ay)); sl(pts)
-T(SX + 213, ay + 32, "100 k", 14, "#7a5a10", weight="bold")
-sl([(SX + 248, ay), (SX + 350, ay)], "#b8002e", 3)
-add(f'<path d="M {SX+350:.1f} {ay-16:.1f} L {SX+350:.1f} {ay+16:.1f} L {SX+382:.1f} {ay:.1f} Z" '
+    pts.append((SX + 168 + (i + 0.5) * seg, ay + (9 if i % 2 == 0 else -9)))
+pts.append((SX + 234, ay)); sl(pts)
+T(SX + 201, ay - 24, "100 k", 14, "#7a5a10", weight="bold")
+sl([(SX + 234, ay), (SX + 330, ay)], "#b8002e", 3)
+add(f'<path d="M {SX+330:.1f} {ay-16:.1f} L {SX+330:.1f} {ay+16:.1f} L {SX+362:.1f} {ay:.1f} Z" '
     f'fill="#ffd166" stroke="#222" stroke-width="2"/>')
-sl([(SX + 350, ay - 18), (SX + 350, ay + 18)], "#222", 3.4)
-T(SX + 366, ay + 46, "die, REVERSED", 13.5, "#333", weight="bold")
-T(SX + 366, ay + 64, "cathode on the left, bar side", 12.5, "#666")
-sl([(SX + 382, ay), (SX + 480, ay)], C["gnd"], 3)
-sl([(SX + 480, ay), (SX + 480, ay + 20)], C["gnd"], 3)
+sl([(SX + 330, ay - 18), (SX + 330, ay + 18)], "#222", 3.4)
+T(SX + 346, ay + 50, "die, REVERSED", 13.5, "#333", weight="bold")
+sl([(SX + 362, ay), (SX + 452, ay)], C["gnd"], 3)
+sl([(SX + 452, ay), (SX + 452, ay + 20)], C["gnd"], 3)
 for i, hw in enumerate((13, 8, 4)):
-    sl([(SX + 480 - hw, ay + 20 + i * 6), (SX + 480 + hw, ay + 20 + i * 6)], "#222", 2.6)
-T(SX + 502, ay + 26, "UNO GND", 14, C["gnd"], "start", "bold")
-sl([(SX + 178, ay - 50), (SX + 178, ay - 10)], "#888", 2)
-sl([(SX + 248, ay - 50), (SX + 248, ay - 10)], "#888", 2)
-sl([(SX + 178, ay - 50), (SX + 248, ay - 50)], "#888", 2)
-T(SX + 213, ay - 58, "DMM, mV", 13.5, "#111", weight="bold")
-T(SX + 24, SY + 250, "5 V reverse across the die. Never exceed that.", 14.5, "#8a5a00",
-  "start", "bold")
-T(SX + 24, SY + 274, "Contact resistance is irrelevant here: nanoamps through 98 k.",
-  13.5, "#666", "start")
+    sl([(SX + 452 - hw, ay + 20 + i * 6), (SX + 452 + hw, ay + 20 + i * 6)], "#222", 2.6)
+T(SX + 474, ay + 26, "UNO GND", 14, C["gnd"], "start", "bold")
+sl([(SX + 282, ay - 62), (SX + 282, ay - 12)], "#888", 2)
+sl([(SX + 452, ay - 62), (SX + 452, ay - 12)], "#888", 2)
+sl([(SX + 282, ay - 62), (SX + 452, ay - 62)], "#888", 2)
+add(f'<circle cx="{SX+282:.1f}" cy="{ay:.1f}" r="4.2" fill="#d81e1e"/>')
+T(SX + 367, ay - 70, "DMM, 20 V DC", 14, "#111", weight="bold")
+T(SX + 24, SY + 236, "The 100 k and the die form a divider off the 5 V rail.",
+  14, "#333", "start")
+T(SX + 24, SY + 258, "The die's own resistance sets the reading.", 14, "#333", "start")
+T(SX + 24, SY + 280, "5 V reverse maximum. Never exceed it.", 14, "#8a5a00", "start", "bold")
 
 add('</svg>')
 open(OUT + "leakage.svg", "w").write("\n".join(o))
