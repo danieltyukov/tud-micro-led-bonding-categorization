@@ -4,12 +4,23 @@ Hi Ahmed,
 
 Thanks for the paraphrase, it reads well.
 
-References: fourteen, one per method used in the measurements. They are in the attached
-Word file, each tied to the sentence in your draft it belongs to, so you can drop them
-straight in. BibTeX is attached as well if you prefer to import.
+References: five, all IEEE, all pulled from Xplore and read rather than cited from the
+abstract. They are in the attached Word file, each tied to the sentence it supports, with
+a note on what the paper actually says. BibTeX attached too.
 
-Daisy chain: plotted in the same style as the other electrical figures, as PNG and vector
-PDF, with a bar version in case that suits the layout better.
+Five rather than a long list on purpose. These are the ones that carry a claim we make:
+your own ECTC 2025 paper for the daisy chain and the ResMap sheet resistance, Zhanghu (TED
+2024) for reading the ideality factor, Jung (TED 2015) for the parasitic shunt across the
+junction, Roccato (TED 2024) for pulse length against self-heating, and Gacio (TIA 2013)
+for forward voltage against junction temperature and its effect on dynamic resistance.
+
+Two things I could not source to IEEE, so I did not force it. The Wilson interval, the
+chi-square test and the ANOVA have no IEEE home, and the diode fit itself is textbook. My
+suggestion is to name them without a citation, which is normal for a packaging paper. It is
+in section 3 of the attached file.
+
+Daisy chain: plotted in the same style as the other electrical figures, PNG and vector PDF,
+with a bar version in case that suits the layout better.
 
 One result worth putting in the text. The chain ranking tracks the LED yield ranking
 closely, Spearman rho = -0.92, p = 0.003. Conditions 5 and 7 have the lowest chain
@@ -20,7 +31,13 @@ resistance never could: re-seating the jumpers alone moved that by 0.84 ohm. Two
 independent structures agreeing puts the process window on much firmer ground than either
 one on its own.
 
-Three numbers I would change before this goes out. The arithmetic is in section 3 of the
+One thing reading your ECTC paper turned up. The draft gives the Au effective resistivity
+as 10e-8 ohm.m. The ECTC paper, same instrument and same group, gives 2.86e-8 for Au
+(3.59e-8 Cu, 2.74e-8 Ag). Bulk gold is 2.44e-8, so 2.86 looks right and 10 is four times
+bulk. Worth checking against the raw ResMap output, since the two numbers will sit close
+together in the same paper.
+
+Three numbers I would change before this goes out. Arithmetic is in section 5 of the
 attached file.
 
 - The shunt fraction is about 44 %, not one third and not 61 %. Our meter sources 1.42 mA
@@ -29,13 +46,13 @@ attached file.
   too. Separately, the paragraph starting "One numerical correction:" is an editing note in
   the first person and is still sitting in the body.
 
-- The re-seating variance share is 85 %. The draft currently has both 83 % and 85 %. The
-  83 % comes from rounding 0.84 before squaring.
+- The re-seating variance share is 85 %. The draft has both 83 % and 85 %. The 83 % comes
+  from rounding 0.84 before squaring.
 
 - Self-heating: 200 K/W with -2 mV/K gives 0.80 ohm, not 1.2 ohm, so the agreement "to
   within 25 %" does not hold as written. Cleaner to invert it, since the measured 1.49 ohm
-  implies about 370 K/W, which is ordinary for a 0404 package on two-layer FR-4. The
-  conclusion is unaffected: heating sets in between 20 and 80 ms, so 5 ms is safe.
+  implies about 370 K/W, ordinary for a 0404 package on two-layer FR-4. The conclusion is
+  unaffected: heating sets in between 20 and 80 ms, so 5 ms is safe.
 
 Smaller things: the equation symbols dropped out of the paraphrase in two places, the
 sentence about the chi-square result is missing a word after "assembly condition and

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Build the method-reference note for the article as a .docx.
 
-Same content as docs/article/METHOD_REFERENCES.md, in the format Ahmed actually works in.
+Same content as docs/article/METHOD_REFERENCES.md, in the format Ahmed works in.
+IEEE-only reference set, every entry downloaded from Xplore and read.
 Styles come from the existing section document at the repo root; the body is written fresh.
 """
 import os
 from docx import Document
 from docx.shared import Pt
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs", "article", "Method_references_and_draft_notes.docx")
@@ -19,14 +19,12 @@ for child in list(body):
         body.remove(child)
 
 
-def P(text="", style=None, italic=False, bold=False, size=None, space_after=None):
-    p = doc.add_paragraph(style=style)
+def P(text="", italic=False, bold=False, size=None):
+    p = doc.add_paragraph()
     r = p.add_run(text)
     r.italic, r.bold = italic, bold
     if size:
         r.font.size = Pt(size)
-    if space_after is not None:
-        p.paragraph_format.space_after = Pt(space_after)
     return p
 
 
@@ -35,200 +33,197 @@ def H(text, level):
 
 
 def REF(tag, text):
-    """One hanging-indent reference entry."""
     p = doc.add_paragraph()
     p.paragraph_format.left_indent = Pt(34)
     p.paragraph_format.first_line_indent = Pt(-34)
-    p.paragraph_format.space_after = Pt(4)
-    r = p.add_run(f"[{tag}] ")
-    r.bold = True
+    p.paragraph_format.space_after = Pt(6)
+    p.add_run(f"[{tag}] ").bold = True
     p.add_run(text)
     return p
 
 
+def B(text):
+    return doc.add_paragraph(text, style="List Bullet")
+
+
 P("Method references and notes on the draft", bold=True, size=16)
-P('For "Contactless Die Attach Methods Via Solder Paste", section on electrical '
-  "characterization. Prepared 12 August 2026.", italic=True)
-P("Fourteen references, one per method actually used in the measurements. Each was checked "
-  "against the publisher record, and each is tied below to the sentence in the draft it "
-  "supports. Numbered [R1] to [R14] so the numbering cannot collide with the citations "
-  "already in the article.")
+P('For "Contactless Die Attach Methods Via Solder Paste", electrical characterization '
+  "only. Prepared 12 August 2026.", italic=True)
+P("Five references, IEEE only. Each was found on IEEE Xplore through the TU Delft Library "
+  "proxy, the metadata was taken from the Xplore record, and the full text was downloaded "
+  "and read before being tied to a sentence.")
+P("Five rather than fourteen, because these are the ones that actually carry a claim we "
+  "make. Where no IEEE source genuinely supports a method, that is said below rather than "
+  "papered over with a citation that does not fit.")
 
 H("1. Reference list", 1)
-
 REFS = [
-    ("R1", "F. M. Smits, “Measurement of sheet resistivities with the four-point "
-           "probe,” Bell Syst. Tech. J., vol. 37, no. 3, pp. 711-718, May 1958, "
-           "doi: 10.1002/j.1538-7305.1958.tb03883.x."),
-    ("R2", "Test Method for Measuring Resistivity of Silicon Wafers with an In-Line "
-           "Four-Point Probe, SEMI MF84, SEMI, Milpitas, CA, USA."),
-    ("R3", "D. K. Schroder, Semiconductor Material and Device Characterization, 3rd ed. "
-           "Hoboken, NJ, USA: Wiley-IEEE Press, 2006, doi: 10.1002/0471749095."),
-    ("R4", "Performance Test Methods and Qualification Requirements for Surface Mount "
-           "Solder Attachments, IPC-9701A, IPC, Bannockburn, IL, USA, Feb. 2006."),
-    ("R5", "E. F. Schubert, Light-Emitting Diodes, 2nd ed. Cambridge, U.K.: Cambridge "
-           "Univ. Press, 2006, doi: 10.1017/CBO9780511790546."),
-    ("R6", "D. C. Montgomery, Design and Analysis of Experiments, 9th ed. Hoboken, NJ, "
-           "USA: Wiley, 2017."),
-    ("R7", "E. B. Wilson, “Probable inference, the law of succession, and statistical "
-           "inference,” J. Amer. Statist. Assoc., vol. 22, no. 158, pp. 209-212, "
-           "Jun. 1927, doi: 10.1080/01621459.1927.10502953."),
-    ("R8", "A. Agresti and B. A. Coull, “Approximate is better than ‘exact’ "
-           "for interval estimation of binomial proportions,” Amer. Statistician, "
-           "vol. 52, no. 2, pp. 119-126, May 1998, doi: 10.1080/00031305.1998.10480550."),
-    ("R9", "Integrated Circuit Thermal Measurement Method - Electrical Test Method "
-           "(Single Semiconductor Device), JESD51-1, JEDEC Solid State Technology "
-           "Association, Arlington, VA, USA, Dec. 1995."),
-    ("R10", "Implementation of the Electrical Test Method for the Measurement of Real "
-            "Thermal Resistance and Impedance of Light-Emitting Diodes with Exposed "
-            "Cooling Surface, JESD51-51, JEDEC Solid State Technology Association, "
-            "Arlington, VA, USA, Apr. 2012."),
-    ("R11", "S. K. Cheung and N. W. Cheung, “Extraction of Schottky diode parameters "
-            "from forward current-voltage characteristics,” Appl. Phys. Lett., "
-            "vol. 49, no. 2, pp. 85-87, Jul. 1986, doi: 10.1063/1.97359."),
-    ("R12", "J. H. Werner, “Schottky barrier and pn-junction I/V plots - small signal "
-            "evaluation,” Appl. Phys. A, vol. 47, no. 3, pp. 291-300, 1988, "
-            "doi: 10.1007/BF00615935."),
-    ("R13", "J. M. Shah, Y.-L. Li, Th. Gessmann, and E. F. Schubert, “Experimental "
-            "analysis and theoretical model for anomalously high ideality factors "
-            "(n ≫ 2.0) in AlGaN/GaN p-n junction diodes,” J. Appl. Phys., "
-            "vol. 94, no. 4, pp. 2627-2630, Aug. 2003, doi: 10.1063/1.1593218."),
-    ("R14", "M. S. Wong et al., “Quantitative analysis of leakage current in "
-            "III-nitride micro-light-emitting diodes,” Appl. Phys. Lett., vol. 126, "
-            "no. 4, 043506, Jan. 2025, doi: 10.1063/5.0250282."),
+    ("R1", "A. Abdelwahab, H. van Zeijl, R. van Hoorn, H. Kuipers, and M. Mastrangeli, "
+           "“Pick-and-Release: A Novel Contactless Bonding Method for Die Attachment,” "
+           "in 2025 IEEE 75th Electronic Components and Technology Conference (ECTC), "
+           "May 2025, pp. 2125-2132, doi: 10.1109/ECTC51687.2025.00363."),
+    ("R2", "M. Zhanghu, Y. Liu, B.-R. Hyun, Y. Li, and Z. Liu, “Optimizing InGaN "
+           "Micro-LED Efficiency: Investigating the Internal Quantum Efficiency and "
+           "Ideality Factor Connection,” IEEE Trans. Electron Devices, vol. 71, no. 10, "
+           "pp. 6190-6197, Oct. 2024, doi: 10.1109/TED.2024.3449829."),
+    ("R3", "E. Jung, J. K. Lee, M. S. Kim, and H. Kim, “Leakage Current Analysis of "
+           "GaN-Based Light-Emitting Diodes Using a Parasitic Diode Model,” IEEE Trans. "
+           "Electron Devices, vol. 62, no. 10, pp. 3322-3325, Oct. 2015, "
+           "doi: 10.1109/TED.2015.2468581."),
+    ("R4", "N. Roccato et al., “Fast Characterization of Power LEDs: Circuit Design and "
+           "Experimental Results,” IEEE Trans. Electron Devices, vol. 71, no. 6, "
+           "pp. 3753-3760, Jun. 2024, doi: 10.1109/TED.2024.3393448."),
+    ("R5", "D. Gacio, J. M. Alonso, J. Garcia, M. S. Perdigao, E. Sousa Saraiva, and "
+           "F. E. Bisogno, “Effects of the Junction Temperature on the Dynamic "
+           "Resistance of White LEDs,” IEEE Trans. Ind. Appl., vol. 49, no. 2, "
+           "pp. 750-760, Mar./Apr. 2013, doi: 10.1109/TIA.2013.2243092."),
 ]
 for tag, text in REFS:
     REF(tag, text)
 
-H("2. Where each one goes", 1)
+H("2. Where each one goes, and what it actually says", 1)
 
-MAP = [
-    ("“The sheet resistance of the 4-inch Au-coated wafer was measured using a CDE "
-     "ResMap 178 multiprobe station”", "[R1], [R2], [R3]",
-     "[R1] is the source of the geometric correction factors any four-point probe applies; "
-     "[R2] is the standardised procedure; [R3] Ch. 1 is the textbook treatment"),
-    ("“the DC test structure consisted of a daisy chain incorporating six 1 x 1 mm2 "
-     "Au-coated dummy dies”", "[R4], [R3]",
-     "[R4] is why a daisy chain is the accepted structure for judging surface-mount solder "
-     "attachments; [R3] Ch. 3 covers the four-terminal measurement of the chain"),
-    ("“probed through the gold contact pads using the diode-test mode of a digital "
-     "multimeter”", "[R5]",
-     "Forward voltage of an LED and what a junction-voltage reading means"),
-    ("“A chi-square test applied to all 120 channels”", "[R6]",
-     "Chi-square test of independence"),
-    ("“Error bars are 95 % Wilson intervals on the pass fraction” (Fig. 5 caption)",
-     "[R7], [R8]",
-     "[R7] is the interval itself; [R8] is why it is the right choice at n = 12 and at "
-     "100 % yield, where the normal approximation degenerates"),
-    ("“the current was pulsed for 5 ms followed by an off-time of 250 ms”",
-     "[R9], [R10]",
-     "The forward-voltage electrical test method and its pulsing requirements; [R10] is "
-     "the LED-specific form"),
-    ("“extracted using a three-parameter nonlinear least-squares fit”",
-     "[R11], [R12], [R5]",
-     "Standard extraction of ideality and series resistance from a forward sweep"),
-    ("“V0, n and Rs were strongly correlated, making the fit poorly identifiable”",
-     "[R12]", "Werner analyses exactly this degeneracy over a short current range"),
-    ("“physically plausible fits were defined by ideality factors between 1.2 and "
-     "2.4”", "[R13], [R5]",
-     "[R13] is the standard reference for what an out-of-range ideality factor in a "
-     "III-nitride junction indicates"),
-    ("“A one-way ANOVA comparing the eight assembly conditions”", "[R6]", "ANOVA"),
-    ("“the smallest difference in mean series resistance detectable by the present "
-     "setup”", "[R6]", "Minimum detectable difference and power"),
-    ("“a forward-voltage temperature coefficient of approximately -2 mV/K”",
-     "[R5], [R10]",
-     "The coefficient and the thermal-characterisation framework it comes from"),
-    ("“characterized under reverse bias to identify possible conduction paths parallel "
-     "to the LED junction”", "[R14]",
-     "Reverse-bias I-V used to separate a parallel leakage path from the junction. Their "
-     "leakage is intrinsic to the sidewall and ours is assembly-induced, so cite it for "
-     "the measurement, not the mechanism"),
-]
-t = doc.add_table(rows=1, cols=3)
-t.style = "Table Grid"
-hdr = t.rows[0].cells
-for c, txt in zip(hdr, ["Sentence in the draft", "Cite", "Why"]):
-    c.text = ""
-    r = c.paragraphs[0].add_run(txt)
-    r.bold = True
-for sent, cite, why in MAP:
-    row = t.add_row().cells
-    row[0].text, row[1].text, row[2].text = sent, cite, why
-for row in t.rows:
-    for cell in row.cells:
-        for p in cell.paragraphs:
-            for r in p.runs:
-                r.font.size = Pt(8)
+H("[R1] Abdelwahab et al., ECTC 2025", 2)
+P("Cite at the daisy-chain sentence and at the sheet-resistance sentence.")
+P("This is the method source for both, not a background citation. Its Section E describes "
+  "the same structure the new figure measures: a daisy chain bridging six 1 mm x 1 mm "
+  "dummy dies on a PCB that also carries van der Pauw and TLM structures and RGB-LED "
+  "footprints, read on a Summit 11K/12K probe station, with sheet resistance taken on the "
+  "CDE ResMap 178 multi-probe station. It reports chain resistances from 0.199 ± 0.019 Ω "
+  "(Ag, with pressure) to 0.380 ± 0.025 Ω (Au, pressure-less), the same order as the 0.22 "
+  "to 0.61 Ω in the new eight-condition data.")
+P("Because it uses the same instrument and the same structure, it removes the need to cite "
+  "a generic four-point-probe or daisy-chain standard for either sentence.")
 
-H("3. Three numbers in the draft worth fixing", 1)
+H("[R2] Zhanghu et al., TED 2024", 2)
+P("Cite where the ideality window of 1.2 to 2.4 is defined, and where the anomalous "
+  "channel is excluded.")
+P("It supplies the physical reading of the number: n = 1 corresponds to band-to-band "
+  "radiative recombination, n = 2 to Shockley-Read-Hall recombination through defect "
+  "levels, and n > 2 to deep-level-assisted tunnelling. That is exactly the reasoning "
+  "behind treating a fit outside the window as evidence of an extra conduction path rather "
+  "than a bad fit. It also reports an inverse correlation between ideality factor and "
+  "internal quantum efficiency, and observes that leakage paths raise the apparent series "
+  "resistance, which is the same coupling we see on S3-D1.")
+
+H("[R3] Jung et al., TED 2015", 2)
+P("Cite where the parallel path across the junction is introduced, in the forward-sweep "
+  "defect section and again in the reverse-bias section.")
+P("It analyses LED leakage as a parasitic element shunting the main diode and separates "
+  "the two by their turn-on voltages, 2.64 V for the main diode against 0.94 V for the "
+  "parasitic one. That is the same separation we make when a channel conducts at 1.21 V, "
+  "well below a red LED’s turn-on.")
+P("One caveat to respect in the wording: their shunt is intrinsic to the device, "
+  "attributed to hydrogen-related deep levels, while ours is external contamination from "
+  "the assembly. Cite it for the model and the diagnostic, not for the mechanism.")
+
+H("[R4] Roccato et al., TED 2024", 2)
+P("Cite at the 5 ms current-on time and in the self-heating section.")
+P("Its abstract states the point outright: LED characterization is often carried out with "
+  "pulses of 10 ms and longer, conditions in which self-heating can significantly affect "
+  "the measurement. Our own result, that nothing shifts between 5 and 20 ms but 80 ms "
+  "moves the extracted series resistance, sits exactly on that boundary, so this is "
+  "corroboration rather than background.")
+
+H("[R5] Gacio et al., TIA 2013", 2)
+P("Cite at the forward-voltage temperature coefficient and in the self-heating analysis.")
+P("It defines the relation we use, V_D = V_D(25 °C) + λ(T_j − 25) with λ = ∂V_D/∂T_j, and "
+  "measures λ experimentally for four commercial LEDs. More usefully for us, it then "
+  "measures how junction temperature shifts the LED’s dynamic resistance, which is the "
+  "exact confound behind our 80 ms result. It also picks its own pulse width as a "
+  "trade-off between signal-to-noise and negligible self-heating, the same argument we "
+  "make for 5 ms.")
+
+H("3. What has no IEEE source, and what to do about it", 1)
+P("Two things in the section cannot honestly be cited to IEEE.")
+P("The statistics. The Wilson score interval on the yield bars, the chi-square test of "
+  "independence across conditions, and the one-way ANOVA on series resistance are general "
+  "statistics with no IEEE home. Three options, in order of preference:")
+B("State them without citation. They are standard and named explicitly, which is normal "
+  "practice for a packaging paper.")
+B("Cite the primary sources, which are not IEEE: E. B. Wilson, J. Amer. Statist. Assoc., "
+  "vol. 22, no. 158, pp. 209-212, 1927 for the interval, and a design-of-experiments text "
+  "for the ANOVA and chi-square.")
+B("Drop the Wilson interval from the figure and show plain counts.")
+P("I would take the first option for the tests and keep the Wilson interval named in the "
+  "caption as it already is.")
+P("The diode-equation fit itself. Fitting V = V₀ + n·V_T·ln(I) + I·R_s by nonlinear least "
+  "squares is textbook. [R2] extracts ideality factors from measured I-V curves and [R5] "
+  "fits forward-voltage data, so between them the practice is covered. Adding a separate "
+  "extraction paper would be padding.")
+
+H("4. One discrepancy the reading turned up", 1)
+P("The draft says the effective resistivity of the Au surface finish was 10 × 10⁻⁸ Ω·m, "
+  "measured on the CDE ResMap 178.")
+P("[R1], from the same group and the same instrument, reports 2.86 × 10⁻⁸ Ω·m for Au, with "
+  "3.59 × 10⁻⁸ for Cu and 2.74 × 10⁻⁸ for Ag. Bulk gold is 2.44 × 10⁻⁸ Ω·m, so 2.86 is a "
+  "sensible thin-film value and 10 is four times bulk.")
+P("Either the new wafer genuinely differs from the one in the ECTC paper, in which case "
+  "the factor of 3.5 is worth a sentence, or the number has been mistyped. Worth checking "
+  "against the raw ResMap output before submission, since [R1] is cited two lines earlier "
+  "and a reader can put the two numbers side by side.")
+
+H("5. Three numbers in the draft worth fixing", 1)
 P("Checked against the raw data. The conclusions do not change; the arithmetic does.")
 
-H("3.1 The shunt fraction at the diode test: neither one third nor 61 %", 2)
-P("Paragraph beginning “One numerical correction:”. Two things here.")
+H("5.1 The shunt fraction: neither one third nor 61 %", 2)
+P("Paragraph beginning “One numerical correction:”. Two things.")
 P("First, that paragraph is an editorial note written in the first person and it is "
   "sitting in the body of the article. It needs to come out.")
 P("Second, the number. The correct figure is about 44 %, and the reason both earlier "
   "figures missed it is the test current. This meter is not a 1 mA source. Its diode-mode "
-  "test current was measured directly during the round 1 setup: 0.142 V across a 100 Ω "
-  "0.1 % reference resistor, so 1.42 mA, cross-checked against the 1.49 mA short-circuit "
-  "figure in the instrument review.")
-P("At the 1.781 V reading, a 2.87 kΩ shunt carries 0.62 mA. Against 1.42 mA that is "
-  "44 %, and the junction takes the remaining 0.80 mA.")
-P("That split is confirmed independently. A healthy die on the same coupon sits at "
-  "1.749 V at 0.349 mA. Carrying it up to 0.80 mA through its own fitted ideality gives "
-  "1.783 to 1.793 V, against the 1.781 V actually read. The alternative reading, that the "
-  "meter is a Thevenin source of 3.245 V behind about 2.2 kΩ, would put only 0.05 mA "
-  "through the junction and predict a reading roughly 150 mV low, so the data rules it out.")
+  "test current was measured directly during the round 1 setup as 0.142 V across a 100 Ω "
+  "0.1 % reference, so 1.42 mA, cross-checked against a 1.49 mA short-circuit figure.")
+P("At the 1.781 V reading a 2.87 kΩ shunt carries 0.62 mA. Against 1.42 mA that is 44 %, "
+  "and the junction takes the remaining 0.80 mA.")
+P("That split is confirmed independently. A healthy die on the same coupon sits at 1.749 V "
+  "at 0.349 mA; carrying it to 0.80 mA through its own fitted ideality gives 1.783 to "
+  "1.793 V, against the 1.781 V actually read. The alternative reading, that the meter is "
+  "a Thevenin source of 3.245 V behind about 2.2 kΩ, would put only 0.05 mA through the "
+  "junction and predict a reading roughly 150 mV low, so the data rules it out.")
 P("Suggested replacement: “At the 1.781 V reading, the shunt carries 0.62 mA of the "
-  "meter’s 1.42 mA diode-test current, so the junction sees only 0.80 mA and the "
-  "channel still reads as a normal red LED.”", italic=True)
+  "meter’s 1.42 mA diode-test current, so the junction sees only 0.80 mA and the channel "
+  "still reads as a normal red LED.”", italic=True)
 
-H("3.2 The variance share is 85 %, not 83 %", 2)
-P("The re-seating paragraph currently reads “approximately 83 %, or about 85 %”. "
-  "One number, and it is 85 %.")
+H("5.2 The variance share is 85 %, not 83 %", 2)
+P("The re-seating paragraph currently reads “approximately 83 %, or about 85 %”. One "
+  "number, and it is 85 %.")
 P("The pooled within-condition standard deviation over the 29 physical red-channel fits is "
-  "0.9147 Ω, and the re-seating pooled standard deviation is 0.843 Ω. The variance "
-  "ratio is 0.843² / 0.9147² = 84.9 %. The 83 % comes from rounding the re-seating "
-  "figure to 0.84 before squaring. Rounding both to two decimals in the text is fine, but "
-  "the quoted percentage should be computed from the unrounded values.")
+  "0.9147 Ω and the re-seating pooled standard deviation is 0.843 Ω, so the variance ratio "
+  "is 0.843² / 0.9147² = 84.9 %. The 83 % comes from rounding 0.84 before squaring.")
 
-H("3.3 The self-heating estimate does not reproduce 1.2 Ω", 2)
-P("The stated inputs are 200 K/W, 28.4 mW and -2 mV/K. Because the dissipated power is very "
+H("5.3 The self-heating estimate does not reproduce 1.2 Ω", 2)
+P("The stated inputs are 200 K/W, 28.4 mW and −2 mV/K. Because dissipated power is very "
   "nearly proportional to current over this range, the thermal perturbation is linear in "
   "current and folds entirely into the fitted series resistance:")
-P("ΔRₛ ≈ α · Rₜₕ · V_F = (2 mV/K)(200 K/W)(2.01 V) "
-  "= 0.80 Ω", italic=True)
-P("not 1.2 Ω. Against the measured 1.49 Ω that is a factor of 1.9, so the claim of "
-  "agreement “to within 25 %” does not hold as written.")
-P("Two honest ways out, both leaving the conclusion untouched:")
-doc.add_paragraph(
-    "Invert it. The measured 1.49 Ω implies Rₜₕ ≈ 370 K/W, which is an "
-    "ordinary value for a 0404 package on two-layer FR-4 with no heat-spreading copper. "
-    "This is the stronger version: the measurement yields a thermal resistance rather than "
-    "being checked against an assumed one.", style="List Bullet")
-doc.add_paragraph(
-    "Keep the forward estimate but state Rₜₕ ≈ 300 K/W, which gives 1.21 Ω "
-    "and does agree with the measurement to within 20 %.", style="List Bullet")
-P("Either way the finding stands: heating becomes significant between 20 and 80 ms, and "
-  "every campaign measurement was taken at 5 ms.")
+P("ΔR_s ≈ λ · R_th · V_F = (2 mV/K)(200 K/W)(2.01 V) = 0.80 Ω", italic=True)
+P("not 1.2 Ω. Against the measured 1.49 Ω that is a factor of 1.9, so agreement “to within "
+  "25 %” does not hold as written.")
+P("Cleanest fix is to invert it: the measured 1.49 Ω implies R_th ≈ 370 K/W, ordinary for "
+  "a 0404 package on two-layer FR-4 with no heat-spreading copper. [R5] supports doing it "
+  "this way round, since it measures the temperature dependence of LED dynamic resistance "
+  "directly. The conclusion is unaffected: heating sets in between 20 and 80 ms, so 5 ms "
+  "is safe.")
 
-H("4. Smaller editorial points", 1)
+H("6. Smaller editorial points", 1)
 for txt in [
-    "The equation variables did not survive the paraphrase. “where  is the terminal "
-    "voltage,  is the voltage offset,  is the ideality factor” and “Over this "
-    "limited range , , and  were strongly correlated” have lost their symbols.",
+    "The equation symbols dropped out of the paraphrase in two places: “where  is the "
+    "terminal voltage,  is the voltage offset,  is the ideality factor” and “Over this "
+    "limited range , , and  were strongly correlated”.",
     "“a statistically significant association between assembly condition and channel "
-    "p = 2.2 x 10⁻⁴” is missing a word, probably “channel outcome”.",
-    "Two cross-references point to “Section D”. After the renumbering, the "
-    "repeatability material looks like Section E.",
-    "The sheet-resistance sentence gives the effective resistivity, 10 x 10⁻⁸ "
-    "Ω·m, but not the sheet resistance in Ω/sq or the Au thickness. Since "
-    "ρ = R_sheet · t, giving two of the three would let a reader check it. Bulk "
-    "gold is 2.44 x 10⁻⁸ Ω·m, so the film is about four times bulk, "
-    "which is worth stating explicitly.",
+    "p = 2.2 × 10⁻⁴” is missing a word after “channel”.",
+    "Two cross-references still point at Section D.",
+    "The sheet-resistance sentence gives resistivity but not the sheet resistance in Ω/sq "
+    "or the Au thickness. Since ρ = R_sheet · t, giving two of the three lets a reader "
+    "check it. See section 4 above.",
 ]:
-    doc.add_paragraph(txt, style="List Bullet")
+    B(txt)
+
+H("Note on [R1]", 1)
+P("The title we had in our own bibliography was wrong. The Xplore record gives "
+  "“Pick-and-Release: A Novel Contactless Bonding Method for Die Attachment”, not "
+  "“Electrical Characterization of Capillary Self-Assembled Micro-LEDs on PCB "
+  "Substrates”. The DOI was right. Worth checking anywhere else it is cited.")
 
 doc.save(OUT)
 print("wrote", OUT)

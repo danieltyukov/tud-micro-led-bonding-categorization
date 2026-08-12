@@ -1,201 +1,127 @@
 % Method references for the electrical-characterization section of
 % "Contactless Die Attach Methods Via Solder Paste".
-% Compiled 12 August 2026 in response to A. Abdelwahab's request.
-% Every entry below was checked against the publisher record; DOIs are given
-% where one exists. Keys are prefixed m_ so they cannot clash with the keys
-% already in the article.
+%
+% IEEE only. Every entry was found on IEEE Xplore through the TU Delft Library
+% proxy, the metadata below was taken from the Xplore record itself, and the
+% full text was downloaded and read. PDFs are in ./references/.
+%
+% Five references, one per method that actually needs support. Keys prefixed m_
+% so they cannot clash with keys already in the article.
 
 % ---------------------------------------------------------------------------
-% Daisy-chain resistance, dummy dies
+% Daisy-chain resistance across dummy dies, and the sheet-resistance method
 % ---------------------------------------------------------------------------
 
-@techreport{m_ipc9701a,
-  author      = {{IPC}},
-  title       = {{IPC-9701A}: Performance Test Methods and Qualification Requirements
-                 for Surface Mount Solder Attachments},
-  institution = {IPC, Bannockburn, IL, USA},
-  year        = {2006},
-  month       = feb,
-  note        = {Daisy-chained test coupons and chain resistance as the standard
-                 continuity and integrity metric for surface-mount solder attachments},
-}
-
-@book{m_schroder,
-  author    = {Schroder, Dieter K.},
-  title     = {Semiconductor Material and Device Characterization},
-  edition   = {3rd},
-  publisher = {Wiley-IEEE Press},
-  address   = {Hoboken, NJ, USA},
-  year      = {2006},
-  doi       = {10.1002/0471749095},
-  note      = {Ch. 1 and 3: four-terminal (Kelvin) sensing, contact and
-               interconnect resistance, four-point-probe sheet resistance},
-}
-
-% ---------------------------------------------------------------------------
-% Sheet resistance of the Au-coated wafer (CDE ResMap 178)
-% ---------------------------------------------------------------------------
-
-@article{m_smits1958,
-  author  = {Smits, F. M.},
-  title   = {Measurement of Sheet Resistivities with the Four-Point Probe},
-  journal = {The Bell System Technical Journal},
-  volume  = {37},
-  number  = {3},
-  pages   = {711--718},
-  year    = {1958},
-  month   = may,
-  doi     = {10.1002/j.1538-7305.1958.tb03883.x},
-}
-
-@techreport{m_semimf84,
-  author      = {{SEMI}},
-  title       = {{SEMI MF84}: Test Method for Measuring Resistivity of Silicon Wafers
-                 with an In-Line Four-Point Probe},
-  institution = {SEMI, Milpitas, CA, USA},
-  year        = {2023},
-  note        = {Successor to {ASTM F84}, withdrawn 2003. Standardised in-line
-                 four-point-probe procedure},
+@inproceedings{m_abdelwahab2025,
+  author    = {Abdelwahab, Ahmed and {van Zeijl}, Henk and {van Hoorn}, Remco and
+               Kuipers, Hans and Mastrangeli, Massimo},
+  title     = {Pick-and-Release: A Novel Contactless Bonding Method for Die Attachment},
+  booktitle = {2025 IEEE 75th Electronic Components and Technology Conference (ECTC)},
+  pages     = {2125--2132},
+  year      = {2025},
+  month     = may,
+  publisher = {IEEE},
+  doi       = {10.1109/ECTC51687.2025.00363},
+  note      = {PDF: references/ECTC2025\_Abdelwahab\_pick\_and\_release.pdf.
+               Section E defines the structure the new figure measures: a daisy chain
+               bridging six 1 mm x 1 mm dummy dies, on a PCB also carrying van der Pauw
+               and TLM structures and RGB-LED footprints, read on a Summit 11K/12K probe
+               station. Sheet resistance on a CDE ResMap 178 multi-probe station.
+               Reported chain resistances 0.199 +/- 0.019 ohm (Ag, with pressure) to
+               0.380 +/- 0.025 ohm (Au, pressure-less)},
 }
 
 % ---------------------------------------------------------------------------
-% Forward I-V model and series-resistance extraction
+% Ideality factor as a quality and defect indicator
 % ---------------------------------------------------------------------------
 
-@book{m_schubert,
-  author    = {Schubert, E. Fred},
-  title     = {Light-Emitting Diodes},
-  edition   = {2nd},
-  publisher = {Cambridge University Press},
-  address   = {Cambridge, UK},
-  year      = {2006},
-  doi       = {10.1017/CBO9780511790546},
-  note      = {Forward I-V of an LED, series resistance, ideality factor and the
-               forward-voltage temperature coefficient},
+@article{m_zhanghu2024,
+  author  = {Zhanghu, Mengyuan and Liu, Yibo and Hyun, Byung-Ryool and Li, Yanfei and
+             Liu, Zhaojun},
+  title   = {Optimizing {InGaN} Micro-{LED} Efficiency: Investigating the Internal
+             Quantum Efficiency and Ideality Factor Connection},
+  journal = {IEEE Transactions on Electron Devices},
+  volume  = {71},
+  number  = {10},
+  pages   = {6190--6197},
+  year    = {2024},
+  month   = oct,
+  doi     = {10.1109/TED.2024.3449829},
+  note    = {PDF: references/TED2024\_Zhanghu\_ideality\_factor\_IQE\_microLED.pdf.
+             Gives the reading of the ideality factor that justifies an acceptance
+             window: n = 1 band-to-band radiative recombination, n = 2 SRH via defect
+             levels, n > 2 deep-level-assisted tunnelling. Also reports an inverse
+             correlation between ideality factor and internal quantum efficiency, and
+             notes that leakage paths raise the apparent series resistance},
 }
 
-@article{m_cheung1986,
-  author  = {Cheung, S. K. and Cheung, N. W.},
-  title   = {Extraction of {Schottky} Diode Parameters from Forward
-             Current-Voltage Characteristics},
-  journal = {Applied Physics Letters},
+% ---------------------------------------------------------------------------
+% Parallel conduction path across the junction
+% ---------------------------------------------------------------------------
+
+@article{m_jung2015,
+  author  = {Jung, Eunjin and Lee, June Key and Kim, Min Soo and Kim, Hyunsoo},
+  title   = {Leakage Current Analysis of {GaN}-Based Light-Emitting Diodes Using a
+             Parasitic Diode Model},
+  journal = {IEEE Transactions on Electron Devices},
+  volume  = {62},
+  number  = {10},
+  pages   = {3322--3325},
+  year    = {2015},
+  month   = oct,
+  doi     = {10.1109/TED.2015.2468581},
+  note    = {PDF: references/TED2015\_Jung\_leakage\_parasitic\_diode\_model.pdf.
+             Treats LED leakage as a parasitic shunt bypassing the main diode and
+             separates the two by their turn-on voltages, 2.64 V main against 0.94 V
+             parasitic. Their shunt is intrinsic, ours is assembly contamination, so
+             cite it for the model and the diagnostic, not the mechanism},
+}
+
+% ---------------------------------------------------------------------------
+% Pulsed measurement and self-heating
+% ---------------------------------------------------------------------------
+
+@article{m_roccato2024,
+  author  = {Roccato, Nicola and Piva, Francesco and Buffolo, Matteo and
+             Trivellin, Nicola and {De Santi}, Carlo and Narduzzi, Claudio and
+             Fraccaroli, Riccardo and Caria, Alessandro and Meneghesso, Gaudenzio and
+             Zanoni, Enrico and Meneghini, Matteo},
+  title   = {Fast Characterization of Power {LED}s: Circuit Design and Experimental
+             Results},
+  journal = {IEEE Transactions on Electron Devices},
+  volume  = {71},
+  number  = {6},
+  pages   = {3753--3760},
+  year    = {2024},
+  month   = jun,
+  doi     = {10.1109/TED.2024.3393448},
+  note    = {PDF: references/TED2024\_Roccato\_fast\_characterization\_power\_LEDs.pdf.
+             States directly that LED characterization is often done with pulses of
+             10 ms and longer, conditions in which self-heating can significantly
+             affect the result. This is the published justification for choosing a
+             short current-on time},
+}
+
+% ---------------------------------------------------------------------------
+% Forward voltage against junction temperature, and its effect on resistance
+% ---------------------------------------------------------------------------
+
+@article{m_gacio2013,
+  author  = {Gacio, David and Alonso, J. Marcos and Garcia, Jorge and
+             Perdig{\~a}o, Marina S. and {Sousa Saraiva}, E. and Bisogno, F{\'a}bio E.},
+  title   = {Effects of the Junction Temperature on the Dynamic Resistance of White
+             {LED}s},
+  journal = {IEEE Transactions on Industry Applications},
   volume  = {49},
   number  = {2},
-  pages   = {85--87},
-  year    = {1986},
-  month   = jul,
-  doi     = {10.1063/1.97359},
-}
-
-@article{m_werner1988,
-  author  = {Werner, J{\"u}rgen H.},
-  title   = {{Schottky} Barrier and pn-Junction {I/V} Plots -- Small Signal Evaluation},
-  journal = {Applied Physics A},
-  volume  = {47},
-  number  = {3},
-  pages   = {291--300},
-  year    = {1988},
-  doi     = {10.1007/BF00615935},
-}
-
-@article{m_shah2003,
-  author  = {Shah, J. M. and Li, Y.-L. and Gessmann, Th. and Schubert, E. F.},
-  title   = {Experimental Analysis and Theoretical Model for Anomalously High
-             Ideality Factors ($n \gg 2.0$) in {AlGaN/GaN} p-n Junction Diodes},
-  journal = {Journal of Applied Physics},
-  volume  = {94},
-  number  = {4},
-  pages   = {2627--2630},
-  year    = {2003},
-  month   = aug,
-  doi     = {10.1063/1.1593218},
-}
-
-% ---------------------------------------------------------------------------
-% Pulsed measurement, self-heating and junction temperature
-% ---------------------------------------------------------------------------
-
-@techreport{m_jesd51_1,
-  author      = {{JEDEC Solid State Technology Association}},
-  title       = {{JESD51-1}: Integrated Circuit Thermal Measurement Method --
-                 Electrical Test Method (Single Semiconductor Device)},
-  institution = {JEDEC, Arlington, VA, USA},
-  year        = {1995},
-  month       = dec,
-  note        = {The forward-voltage (K-factor) electrical test method and its
-                 measurement-current pulsing requirements},
-}
-
-@techreport{m_jesd51_51,
-  author      = {{JEDEC Solid State Technology Association}},
-  title       = {{JESD51-51}: Implementation of the Electrical Test Method for the
-                 Measurement of Real Thermal Resistance and Impedance of
-                 Light-Emitting Diodes with Exposed Cooling Surface},
-  institution = {JEDEC, Arlington, VA, USA},
-  year        = {2012},
-  month       = apr,
-  note        = {LED-specific form of {JESD51-1}; basis for choosing a
-                 current-on time short enough to avoid thermal bias},
-}
-
-% ---------------------------------------------------------------------------
-% Reverse-bias leakage
-% ---------------------------------------------------------------------------
-
-@article{m_wong2025leakage,
-  author  = {Wong, Matthew S. and Tak, Tanay and Ni, Andrea Y. and Nitta, Kent and
-             Gandrothula, Srinivas and Kim, JaeKwon and Cha, NamGoo and
-             Mishra, Umesh K. and Speck, James S. and DenBaars, Steven P.},
-  title   = {Quantitative Analysis of Leakage Current in {III}-Nitride
-             Micro-Light-Emitting Diodes},
-  journal = {Applied Physics Letters},
-  volume  = {126},
-  number  = {4},
-  pages   = {043506},
-  year    = {2025},
-  month   = jan,
-  doi     = {10.1063/5.0250282},
-  note    = {Reverse-bias I-V used to separate a parallel leakage path from the
-             junction. Their leakage is intrinsic to the sidewall; ours is
-             assembly-induced, but the measurement is the same},
-}
-
-% ---------------------------------------------------------------------------
-% Statistics
-% ---------------------------------------------------------------------------
-
-@article{m_wilson1927,
-  author  = {Wilson, Edwin B.},
-  title   = {Probable Inference, the Law of Succession, and Statistical Inference},
-  journal = {Journal of the American Statistical Association},
-  volume  = {22},
-  number  = {158},
-  pages   = {209--212},
-  year    = {1927},
-  month   = jun,
-  doi     = {10.1080/01621459.1927.10502953},
-}
-
-@article{m_agresti1998,
-  author  = {Agresti, Alan and Coull, Brent A.},
-  title   = {Approximate Is Better Than ``Exact'' for Interval Estimation of
-             Binomial Proportions},
-  journal = {The American Statistician},
-  volume  = {52},
-  number  = {2},
-  pages   = {119--126},
-  year    = {1998},
-  month   = may,
-  doi     = {10.1080/00031305.1998.10480550},
-}
-
-@book{m_montgomery,
-  author    = {Montgomery, Douglas C.},
-  title     = {Design and Analysis of Experiments},
-  edition   = {9th},
-  publisher = {Wiley},
-  address   = {Hoboken, NJ, USA},
-  year      = {2017},
-  note      = {One-way ANOVA, the chi-square test of independence, and the
-               minimum detectable difference used for the resolution argument},
+  pages   = {750--760},
+  year    = {2013},
+  month   = mar,
+  doi     = {10.1109/TIA.2013.2243092},
+  note    = {PDF: references/TIA2013\_Gacio\_junction\_temperature\_dynamic\_resistance.pdf.
+             Defines V_D = V_D(25 C) + lambda (T_j - 25) with lambda the forward-voltage
+             temperature coefficient, measures lambda for four commercial LEDs, and
+             measures how junction temperature shifts the dynamic resistance. Also
+             chooses its pulse width as a trade-off between signal-to-noise and
+             negligible self-heating, the same argument we make},
 }
