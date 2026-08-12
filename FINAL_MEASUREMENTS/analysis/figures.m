@@ -151,6 +151,30 @@ logx([3.5 130]); ylim([8 10.6]); xticks([5 20 80]); xticklabels(["5" "20" "80"])
 xlabel("Current-on time per point (ms)"); ylabel("Extracted {\itR}_s (\Omega)");
 save_fig(fig, fullfile(outdir, "fig8_self_heating"));
 
+%% Fig 9 - total daisy-chain resistance per condition, Au dummy dies
+% Separate structure, separate campaign (A. Abdelwahab). Six 1x1 mm^2 dummy dies per
+% chain, one chain per condition. This is the measurement that resolves bond resistance,
+% which the LED series-resistance fit could not. Source: ../../RESULTS/daisy_chain/.
+DC = readtable(fullfile(r1dir, "daisy_chain", "daisy_chain_resistance.csv"));
+fig = newfig(W, 6.4);
+errorbar(DC.condition, DC.R_total_ohm, DC.R_dev_ohm, "k", ...
+         LineStyle = "none", LineWidth = 1.0, CapSize = 4);
+plot(DC.condition, DC.R_total_ohm, "s", MarkerSize = 5.2, ...
+     MarkerFaceColor = CB, MarkerEdgeColor = "k", LineWidth = 0.7);
+xlim([0.4 8.6]); ylim([0.15 0.68]); xticks(1:8); yticks(0.2:0.1:0.6); grid on
+xlabel("Assembly condition"); ylabel("Total chain resistance (\Omega)");
+save_fig(fig, fullfile(outdir, "fig9_daisy_chain"));
+
+%% Fig 9b - same data as bars, for whichever layout the paper needs
+fig = newfig(W, 6.4);
+b = bar(DC.condition, DC.R_total_ohm, 0.68, FaceColor = CB, ...
+        FaceAlpha = 0.75, EdgeColor = "none");
+errorbar(DC.condition, DC.R_total_ohm, DC.R_dev_ohm, "k", ...
+         LineStyle = "none", LineWidth = 1.0, CapSize = 4);
+xlim([0.4 8.6]); ylim([0 0.72]); xticks(1:8); yticks(0:0.2:0.6); grid on
+xlabel("Assembly condition"); ylabel("Total chain resistance (\Omega)");
+save_fig(fig, fullfile(outdir, "fig9b_daisy_chain_bars"));
+
 %% numbers quoted in the text
 fprintf("\n--- yield, addressable channels ---\n");
 for s = 1:8
@@ -169,6 +193,19 @@ fprintf("R_s  mean %.3f sd %.3f  (N=%d), re-seating sd %.3f\n", ...
         mean(R.Rs), std(R.Rs), height(R), seatsd);
 fprintf("V_F  mean %.4f sd %.4f V\n", mean(R.vf10), std(R.vf10));
 fprintf("smallest resolvable dR_s at n=4: %.2f ohm\n", 2.4*seatsd*sqrt(2/4));
+
+fprintf("\n--- daisy chain, Au dummy dies ---\n");
+yieldpc = 100*ok./tot;
+[rho, prho] = corr(DC.R_total_ohm, yieldpc, type = "Spearman");
+fprintf("chain R range %.2f to %.2f ohm, spread %.2f ohm over 12 joints = %.0f mohm/joint\n", ...
+        min(DC.R_total_ohm), max(DC.R_total_ohm), range(DC.R_total_ohm), ...
+        1000*range(DC.R_total_ohm)/12);
+fprintf("reported deviation %.3f to %.3f ohm, %.0fx to %.0fx below the between-condition spread\n", ...
+        min(DC.R_dev_ohm), max(DC.R_dev_ohm), ...
+        range(DC.R_total_ohm)/max(DC.R_dev_ohm), range(DC.R_total_ohm)/min(DC.R_dev_ohm));
+fprintf("Spearman chain R vs LED channel yield: rho = %.2f, p = %.3f\n", rho, prho);
+fprintf("LED-coupon re-seating floor was %.2f ohm, i.e. %.0fx the whole chain spread\n", ...
+        seatsd, seatsd/range(DC.R_total_ohm));
 
 function [lo, hi] = wilson(k, n)
 z = 1.96; p = k./n; d = 1 + z^2./n;

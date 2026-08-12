@@ -1,0 +1,54 @@
+Subject: Re: Article draft, references and the daisy chain plot
+
+Hi Ahmed,
+
+Thanks for the paraphrase, it reads well.
+
+References: fourteen, one per method used in the measurements. They are in the attached
+Word file, each tied to the sentence in your draft it belongs to, so you can drop them
+straight in. BibTeX is attached as well if you prefer to import.
+
+Daisy chain: plotted in the same style as the other electrical figures, as PNG and vector
+PDF, with a bar version in case that suits the layout better.
+
+One result worth putting in the text. The chain ranking tracks the LED yield ranking
+closely, Spearman rho = -0.92, p = 0.003. Conditions 5 and 7 have the lowest chain
+resistance and were also the only two with no failed LED channels. The spread across
+conditions is 0.39 ohm over 12 joints, roughly 30 mohm per joint, against a reported
+deviation of 11 to 20 mohm. So the chain resolves bond resistance, which the LED series
+resistance never could: re-seating the jumpers alone moved that by 0.84 ohm. Two
+independent structures agreeing puts the process window on much firmer ground than either
+one on its own.
+
+Three numbers I would change before this goes out. The arithmetic is in section 3 of the
+attached file.
+
+- The shunt fraction is about 44 %, not one third and not 61 %. Our meter sources 1.42 mA
+  in diode mode, measured directly as 0.142 V across a 100 ohm 0.1 % reference, not 1 mA.
+  At the 1.781 V reading the shunt takes 0.62 mA of that. My original "one third" was wrong
+  too. Separately, the paragraph starting "One numerical correction:" is an editing note in
+  the first person and is still sitting in the body.
+
+- The re-seating variance share is 85 %. The draft currently has both 83 % and 85 %. The
+  83 % comes from rounding 0.84 before squaring.
+
+- Self-heating: 200 K/W with -2 mV/K gives 0.80 ohm, not 1.2 ohm, so the agreement "to
+  within 25 %" does not hold as written. Cleaner to invert it, since the measured 1.49 ohm
+  implies about 370 K/W, which is ordinary for a 0404 package on two-layer FR-4. The
+  conclusion is unaffected: heating sets in between 20 and 80 ms, so 5 ms is safe.
+
+Smaller things: the equation symbols dropped out of the paraphrase in two places, the
+sentence about the chi-square result is missing a word after "assembly condition and
+channel", and two cross-references still point at Section D.
+
+Happy to make any of these edits directly if you send me the working file.
+
+Best regards,
+Daniel
+
+Attachments:
+- Method_references_and_draft_notes.docx
+- method_references.bib
+- daisy_chain_resistance.png / .pdf
+- daisy_chain_resistance_bars.png / .pdf
+- daisy_chain_resistance.csv
