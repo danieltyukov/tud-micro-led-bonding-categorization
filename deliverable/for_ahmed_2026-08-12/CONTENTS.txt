@@ -4,22 +4,23 @@ Daniel Tyukov, 12 August 2026
 
 Method_references_and_draft_notes.docx
     Five IEEE references for the methods used in the electrical characterization, each
-    mapped to the sentence in the draft it supports. Also carries the notes on the draft:
-    the Au resistivity discrepancy against the ECTC paper, and three numbers to fix.
+    mapped to the sentence in the draft it supports, with a note on what each paper
+    actually says. Sections 4 to 6 carry the notes on the draft: the Au resistivity
+    discrepancy against the ECTC paper, three numbers to fix, and the smaller editorial
+    points.
 
 method_references.bib
-    The same five in BibTeX.
+    The same five in BibTeX. Also corrects the title we had for the ECTC 2025 paper.
 
 
-figures/daisy_chain_resistance.png
-figures/daisy_chain_resistance.pdf
+figures/daisy_chain_resistance.pdf   (vector, use this in the paper)
+figures/daisy_chain_resistance.png   (600 dpi, for drafts)
     Total daisy chain resistance against assembly condition, mean with deviation bars.
     Same style as the other electrical figures: Helvetica 9 pt, 8.9 cm column width.
-    PDF is vector, use that for the paper. PNG is 600 dpi for drafts.
 
-figures/daisy_chain_resistance_bars.png
 figures/daisy_chain_resistance_bars.pdf
-    Same data as bars. Pick whichever fits the layout; do not use both.
+figures/daisy_chain_resistance_bars.png
+    Same data as bars. Pick whichever fits the layout, not both.
 
     Suggested caption:
     Total daisy chain resistance for each assembly condition, measured on the v1 board
@@ -30,11 +31,19 @@ daisy_chain_resistance.csv
     The plotted numbers, from the workbook of 12 August 2026.
     Columns: condition, R_total_ohm, R_dev_ohm.
 
-    These are a separate experiment on the v1 board, not the LED coupons. Any comparison
-    with the LED yield is a comparison between assembly conditions across two test
-    vehicles, and it assumes the condition numbering is common to both.
+daisy_chain_figure.m
+    Standalone MATLAB script that regenerates both figures from the CSV, so you can
+    restyle or resize without coming back to me. Put it next to the CSV and run it.
+    Needs nothing but base MATLAB.
 
 
-Not included: the five reference PDFs. They are ~31 MB together, which will not clear a
-25 MB mail limit, and they are on IEEE Xplore under TU Delft access anyway. DOIs are in
-the Word file and the BibTeX.
+Provenance, worth keeping straight in the text
+    These chains are a separate experiment on the v1 board, not the LED coupons. Any
+    comparison against the LED yield is a comparison between assembly conditions across
+    two test vehicles, and it assumes the condition numbering is common to both. The v2
+    board carries daisy chains as well, but none were measured on it.
+
+
+Not included: the five reference PDFs. Together they are about 31 MB, which will not clear
+a 25 MB mail limit, and they are all on IEEE Xplore under TU Delft access. DOIs are in the
+Word file and in the BibTeX. Ask me if you want them sent separately.

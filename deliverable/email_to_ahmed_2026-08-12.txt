@@ -4,40 +4,29 @@ Hi Ahmed,
 
 Thanks for the paraphrase, it reads well.
 
-References are in the attached Word file: five IEEE papers, each tied to the sentence it
-supports, with a note on what the paper actually says. BibTeX is attached too. I kept it to
-five that carry a real claim rather than a long list. The Wilson interval, chi-square and
-ANOVA have no IEEE source, so I suggest naming them without a citation; that is section 3
-of the file.
+Attached are five IEEE references, each mapped to the sentence it supports, and the daisy
+chain plot in the style of the other electrical figures. Marker version and bar version,
+PNG and vector PDF, plus the script that made them if you want to restyle.
 
-Daisy chain is plotted in the style of the other electrical figures, PNG and vector PDF,
-plus a bar version if that suits the layout better.
+One thing to be careful with on the plot. The chains are a separate experiment on the v1
+board, so any comparison with my LED coupons is between assembly conditions across two
+vehicles, not two structures on one coupon. It also assumes conditions 1 to 8 mean the same
+recipes in both sets. Can you confirm that mapping? If it holds, the rankings agree at
+rho = -0.92, p = 0.003, and the chain resolves about 30 mohm per joint, which my series
+resistance never could.
 
-The chain resolves bond resistance where my LED measurement could not: 0.39 ohm of spread
-over 12 joints, about 30 mohm per joint, against a deviation of 11 to 20 mohm, while
-re-seating the jumpers alone moved my series resistance by 0.84 ohm.
+Worth checking: the draft gives the Au effective resistivity as 10e-8 ohm.m. Your ECTC
+paper gives 2.86e-8 on the same instrument, and bulk gold is 2.44e-8.
 
-The rankings also agree, Spearman rho = -0.92, p = 0.003. Conditions 5 and 7 have the
-lowest chain resistance and were the only two with no failed channels on my coupons. Since
-the chains are a separate experiment on the v1 board, that is agreement between assembly
-conditions across two test vehicles, not two structures on one coupon, and I would say so
-explicitly if you use it. It also assumes conditions 1 to 8 mean the same recipes in both
-sets. Can you confirm that mapping before it goes anywhere.
+Three numbers to fix, worked out in section 5 of the attached file:
 
-One thing to check: the draft gives the Au effective resistivity as 10e-8 ohm.m, but your
-ECTC paper gives 2.86e-8 on the same instrument, and bulk gold is 2.44e-8.
+- the shunt fraction is about 44 %, not one third and not 61 %. Our meter sources 1.42 mA
+  in diode mode, not 1 mA
+- the re-seating variance share is 85 %; the draft has both 83 and 85
+- self-heating at 200 K/W gives 0.80 ohm, not 1.2, so "within 25 %" does not hold
 
-Three numbers I would fix, all worked out in section 5 of the file:
-
-- the shunt fraction is about 44 %, not one third and not 61 %, because our meter sources
-  1.42 mA in diode mode rather than 1 mA
-- the re-seating variance share is 85 %; the draft currently has both 83 and 85
-- self-heating at 200 K/W and -2 mV/K gives 0.80 ohm, not 1.2, so "within 25 %" does not
-  hold. Inverting it gives R_th of about 370 K/W, which is ordinary for this package
-
-Also, the paragraph starting "One numerical correction:" is an editing note in the first
-person and is still in the body, the equation symbols dropped out in two places, and two
-cross-references still point at Section D.
+Also the paragraph starting "One numerical correction:" is an editing note in the first
+person and is still sitting in the body.
 
 Happy to make these edits directly if you send me the working file.
 
