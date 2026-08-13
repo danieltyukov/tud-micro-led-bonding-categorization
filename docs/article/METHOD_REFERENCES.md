@@ -58,8 +58,14 @@ multi-probe station. It reports chain resistances from 0.199 +/- 0.019 ohm (Ag, 
 pressure) to 0.380 +/- 0.025 ohm (Au, pressure-less), the same order as the 0.22 to 0.61
 ohm in the new eight-condition data.
 
-Because it uses the same instrument and the same structure, it removes the need to cite a
-generic four-point-probe or daisy-chain standard for either sentence.
+The new eight-condition data was taken on that same v1 vehicle in a separate session, so
+[R1] describes the actual hardware rather than an analogue of it. Because it is the same
+board, the same structure and the same instruments, it removes the need to cite a generic
+four-point-probe or daisy-chain standard for either sentence.
+
+Worth keeping straight in the text: the daisy-chain data and the LED-coupon data are two
+separate experiments on two different boards. Any statement that the two rankings agree is
+a statement about assembly conditions, not about two structures measured on one coupon.
 
 ### [R2] Zhanghu et al., TED 2024
 

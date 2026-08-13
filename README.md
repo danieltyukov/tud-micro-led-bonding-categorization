@@ -108,7 +108,7 @@ Three findings about the measurement itself carried more weight than the bond nu
 
 Full working log with per-channel results: [`RESULTS/R2_REPORT.md`](RESULTS/R2_REPORT.md). Packaged deliverable with figures, MATLAB and raw data: [`deliverable/`](deliverable/microLED_electrical_characterization/).
 
-**Dummy-die daisy chains.** A separate structure measured earlier by A. Abdelwahab, six Au-coated 1 mm² dummy dies per chain, one chain per condition, does resolve bond resistance where the LED coupons could not: 0.22 Ω on condition 5 against 0.61 Ω on condition 4, roughly 30 mΩ per joint, with a reported deviation of 11 to 20 mΩ. Its ranking agrees with the LED yield ranking at ρ = −0.92 (p = 0.003), putting conditions 5 and 7 in the process window from two independent measurements. Data and figure: [`RESULTS/daisy_chain/`](RESULTS/daisy_chain/).
+**Dummy-die daisy chains (separate experiment, v1 board).** Measured by A. Abdelwahab on the v1 PCB in its own session, six Au-coated 1 mm² dummy dies per chain, one chain per condition. It resolves bond resistance where the LED coupons could not: 0.22 Ω on condition 5 against 0.61 Ω on condition 4, roughly 30 mΩ per joint, with a reported deviation of 11 to 20 mΩ. Its ranking agrees with the LED yield ranking at ρ = −0.92 (p = 0.003). That is agreement between assembly conditions across two different test vehicles and two campaigns, not two structures on one coupon, and it assumes the condition numbering matches. The v2 board carries daisy chains as well, but none were measured: a layout fault left them dead, so they were diagnosed and excluded rather than characterized (see Known limits). Data and figure: [`RESULTS/daisy_chain/`](RESULTS/daisy_chain/).
 
 ---
 

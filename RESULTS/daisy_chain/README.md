@@ -1,11 +1,23 @@
-# Daisy-chain resistance, dummy dies
+# Daisy-chain resistance, dummy dies, v1 board
 
-Total daisy-chain resistance measured by A. Abdelwahab on the DC test structure: a chain of
-six 1 x 1 mm2 Au-coated dummy dies, one chain per assembly condition, eight conditions.
+Total daisy-chain resistance measured by A. Abdelwahab on the DC test structure of the
+**v1 PCB**: a chain of six 1 x 1 mm2 Au-coated dummy dies, one chain per assembly
+condition, eight conditions.
 
-Not my measurement, and not the same hardware as the LED coupons in the rest of `RESULTS/`.
-It predates this campaign and is reproduced here because it is the one dataset that resolves
-bond resistance directly.
+**This is a separate experiment.** Not my measurement, not my board, not the same session.
+It was run on its own on the v1 board, which is the vehicle described in the ECTC 2025
+paper (`../../docs/article/references/ECTC2025_Abdelwahab_pick_and_release.pdf`, Section E,
+where the same DC structure and the same CDE ResMap 178 and Summit 11K/12K probe station
+are described). The LED coupons in the rest of `RESULTS/` are a different test vehicle
+measured in a different campaign.
+
+Reproduced here because it is the one dataset that resolves bond resistance directly.
+
+The v2 board carries daisy chains too, but **no daisy-chain measurements were taken from
+it**. A layout fault left each chain die's anode floating, so those chains were diagnosed
+as dead and excluded rather than characterized (`../README.md`, and
+`../../measurements/DECISIONS.md` D3). The only daisy-chain data anywhere in this
+repository is the v1 set on this page.
 
 | File | Contents |
 |---|---|
@@ -31,11 +43,20 @@ The ranking agrees with the LED yield ranking:
 
 | | lowest chain resistance | highest chain resistance |
 |---|---|---|
-| Chain | 5 (0.22), 7 (0.24) | 4 (0.61), 3 (0.56) |
-| LED channel yield | 5 (100 %), 7 (100 %) | 3 (25 %), 4 (66.7 %) |
+| Chain, v1 board | 5 (0.22), 7 (0.24) | 4 (0.61), 3 (0.56) |
+| LED channel yield, my coupons | 5 (100 %), 7 (100 %) | 3 (25 %), 4 (66.7 %) |
 
-Two independent structures, one continuity screen and one resistance measurement, put the
-same two conditions in the process window.
+Spearman rho = -0.92, p = 0.003 across the eight conditions.
+
+**Read that as agreement between assembly conditions, not between two structures on one
+coupon.** The two datasets share condition numbering, nothing else: different board,
+different session, different operator, no shared hardware. So it is an independent
+replication of the process ranking rather than a within-sample cross-check, and it carries
+whatever session-to-session drift sits between the two campaigns.
+
+It also rests on the assumption that conditions 1 to 8 mean the same eight recipes in both
+datasets. That mapping came with the workbook and has not been independently confirmed. If
+it is wrong the correlation is meaningless, so confirm it before the number goes in a paper.
 
 ## Figure
 
@@ -45,7 +66,7 @@ writes `fig9_daisy_chain` (markers, matching the style of figures 4 and 6) and
 
 ## Caveats
 
-- Chain totals include the board traces and the probe landing, which are common to all
+- Chain totals include the v1 board traces and the probe landing, which are common to all
   conditions but were not subtracted. The figures are comparative, not absolute per-joint
   resistances.
 - Sample size behind each mean, and whether the deviation is a standard deviation or a

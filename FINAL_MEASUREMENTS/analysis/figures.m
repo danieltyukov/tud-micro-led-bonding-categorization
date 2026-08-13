@@ -151,10 +151,12 @@ logx([3.5 130]); ylim([8 10.6]); xticks([5 20 80]); xticklabels(["5" "20" "80"])
 xlabel("Current-on time per point (ms)"); ylabel("Extracted {\itR}_s (\Omega)");
 save_fig(fig, fullfile(outdir, "fig8_self_heating"));
 
-%% Fig 9 - total daisy-chain resistance per condition, Au dummy dies
-% Separate structure, separate campaign (A. Abdelwahab). Six 1x1 mm^2 dummy dies per
-% chain, one chain per condition. This is the measurement that resolves bond resistance,
-% which the LED series-resistance fit could not. Source: ../../RESULTS/daisy_chain/.
+%% Fig 9 - total daisy-chain resistance per condition, Au dummy dies, v1 board
+% Separate experiment on the v1 board (A. Abdelwahab), not these coupons and not this
+% campaign. Six 1x1 mm^2 dummy dies per chain, one chain per condition. It resolves bond
+% resistance, which the LED series-resistance fit could not. Any comparison against the
+% yield below is between assembly conditions across two boards, not within one coupon.
+% Source and caveats: ../../RESULTS/daisy_chain/README.md.
 DC = readtable(fullfile(r1dir, "daisy_chain", "daisy_chain_resistance.csv"));
 fig = newfig(W, 6.4);
 errorbar(DC.condition, DC.R_total_ohm, DC.R_dev_ohm, "k", ...

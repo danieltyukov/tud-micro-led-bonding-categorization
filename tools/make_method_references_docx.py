@@ -92,8 +92,14 @@ P("This is the method source for both, not a background citation. Its Section E 
   "CDE ResMap 178 multi-probe station. It reports chain resistances from 0.199 ± 0.019 Ω "
   "(Ag, with pressure) to 0.380 ± 0.025 Ω (Au, pressure-less), the same order as the 0.22 "
   "to 0.61 Ω in the new eight-condition data.")
-P("Because it uses the same instrument and the same structure, it removes the need to cite "
-  "a generic four-point-probe or daisy-chain standard for either sentence.")
+P("The new eight-condition data was taken on that same v1 vehicle in a separate session, so "
+  "[R1] describes the actual hardware rather than an analogue of it. Because it is the "
+  "same board, the same structure and the same instruments, it removes the need to cite a "
+  "generic four-point-probe or daisy-chain standard for either sentence.")
+P("Worth keeping straight in the text: the daisy-chain data and the LED-coupon data are two "
+  "separate experiments on two different boards. Any statement that the two rankings agree "
+  "is a statement about assembly conditions, not about two structures measured on one "
+  "coupon.")
 
 H("[R2] Zhanghu et al., TED 2024", 2)
 P("Cite where the ideality window of 1.2 to 2.4 is defined, and where the anomalous "
