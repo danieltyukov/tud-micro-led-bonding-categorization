@@ -1,0 +1,62 @@
+Edits to the electrical characterization section
+Daniel Tyukov, 17 August 2026
+
+Edited directly in the file you sent. Only the electrical characterization section was
+touched. Citations are red, everything else is plain body text so it reads normally.
+
+
+REFERENCES ADDED
+
+  [R1]  daisy chain structure, and the ResMap sheet resistance
+  [R2]  the ideality window of 1.2 to 2.4
+  [R3]  the parallel leakage path, in the forward sweep and again under reverse bias
+  [R4]  the 5 ms pulse, and the pulse-duration argument in the self-heating subsection
+  [R5]  the forward-voltage temperature coefficient
+
+  The full list is in red at the end of the document. Delete that block once the entries
+  are in EndNote. The same five are in method_references.bib if importing is easier.
+
+
+CORRECTIONS
+
+  Shunt fraction. The meter sources 1.42 mA in diode mode, not 1 mA. That was measured
+  directly as 0.142 V across a 100 ohm 0.1 % reference. At the 1.781 V reading the shunt
+  carries 0.62 mA and the junction gets 0.80 mA, so the shunt takes about 44 %. The
+  paragraph beginning "One numerical correction:" was an editing note in the first person
+  and has been deleted; its 61 % assumed a 1 mA source. The measurement setup table and
+  the reverse bias subsection now say 1.42 mA as well.
+
+  Variance share. The draft had both 83 % and 85 %. From the unrounded standard
+  deviations, 0.843 squared over 0.9147 squared is 84.9 %, so 85 %.
+
+  Self-heating. The stated inputs of 200 K/W and -2 mV/K give 0.80 ohm, not 1.2, so the
+  agreement to within 25 % did not hold. I inverted the calculation instead: the measured
+  1.49 ohm implies a junction-to-board thermal resistance of about 370 K/W, or an 11 K
+  rise at 28.4 mW. That is ordinary for a 0404 package on two-layer FR-4. The conclusion
+  is unchanged, heating sets in between 20 and 80 ms and 5 ms is safe.
+
+
+SMALLER FIXES
+
+  Chi-square sentence was missing a word, now "assembly condition and channel outcome
+  (p = 2.2 x 10-4)".
+  "(2^6-1 =63)" spaced as "2^6 - 1 = 63".
+  "the series resistance. which is the sum" had a full stop mid-sentence, now a comma.
+  "2.86x 10-8" closed up to "2.86 x 10-8".
+  Daisy chain figure caption now says what was measured and what the bars are.
+
+
+TWO THINGS I FLAGGED LAST TIME THAT WERE WRONG
+
+  The equation symbols are fine. They are equation objects, so they vanish when the file
+  is read as plain text, which is how I checked. In Word they render correctly. Left
+  untouched.
+
+  The Section B, C and D cross-references are also correct. The subsections letter A
+  channel screening, B forward characteristics, C defect detection, D measurement
+  repeatability, E self-heating, F reverse bias, G summary. Left untouched.
+
+  Sorry for the noise on both.
+
+
+A PDF of the edited file is included so you can see the red without opening Word.

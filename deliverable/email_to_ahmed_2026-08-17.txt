@@ -1,0 +1,25 @@
+Subject: Re: Article draft, references and the daisy chain plot
+
+Hi Ahmed,
+
+The edited section is attached, done directly in the file you sent. Only the electrical
+characterization section is touched.
+
+References are in as [R1] to [R5] in red, and the full list sits in red at the end of the
+document so you can assign them in EndNote and then delete that block. BibTeX is attached
+if importing is easier.
+
+Corrections: the shunt fraction is about 44 %, because the meter sources 1.42 mA in diode
+mode rather than 1 mA; the variance share is 85 %; and the self-heating estimate now runs
+the other way round, with the measured 1.49 ohm implying about 370 K/W. The leftover
+editing note is gone. CHANGES.txt lists everything in one page.
+
+Two things I flagged last time were wrong, and I have left them as they were. The equation
+symbols are fine. They are equation objects, so they vanish when the file is read as plain
+text, which is how I had checked them. The Section B, C and D cross-references are correct
+too. Sorry for the noise on both.
+
+A PDF of the edited file is included so you can see the red without opening Word.
+
+Best regards,
+Daniel
