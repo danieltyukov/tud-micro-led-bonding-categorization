@@ -1,0 +1,8 @@
+Hi Ahmed,
+
+Attached is the die shear plot in the same style as the resistance one, as PNG and vector PDF. The PDF is the one for the paper. The zip also has a marker version, the data and the MATLAB script.
+
+Is the deviation a standard deviation? If so, it's worth saying in the caption, with the number of dies per condition.
+
+Best regards,
+Daniel
